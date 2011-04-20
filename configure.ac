@@ -61,7 +61,7 @@ AC_SUBST([LIBPTHREAD])
 
 # Check for headers. 
 
-AC_CHECK_HEADERS([string.h stdio.h stdlib.h readline/readline.h curl/curl.h])
+AC_CHECK_HEADERS([string string.h stdio.h stdlib.h curl/curl.h])
 AC_CONFIG_HEADERS([config.h])
 
 # Package settings.
