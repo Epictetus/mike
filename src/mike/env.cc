@@ -53,6 +53,7 @@ namespace mike
     
     // $io
     MIKE_OBJ(mike_file);
+    MIKE_SET_METHOD(mike_file, "require", stdio::RequireFile);
     MIKE_SET_METHOD(mike_file, "read", stdio::ReadFile);
     MIKE_SET(context->Global(), "$io", mike_file);
 

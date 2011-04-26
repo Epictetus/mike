@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "mike.h"
+#include "mike/script.h"
 
 namespace mike {
   namespace stdio
@@ -11,6 +12,7 @@ namespace mike {
     
     Handle<Value> WriteStdout(const Arguments &args);
     Handle<Value> WriteStderr(const Arguments &args);
+    Handle<Value> RequireFile(const Arguments &args);
     Handle<Value> ReadFile(const Arguments &args);
   }
 }
