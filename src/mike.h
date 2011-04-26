@@ -7,6 +7,9 @@
 #include <string>
 #include <v8.h>
 
+#include "mike/env.h"
+#include "mike/stdio.h"
+
 namespace mike
 {
   void Initialize();

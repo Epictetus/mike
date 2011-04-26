@@ -8,7 +8,7 @@ namespace mike
    */
   void Initialize()
   {
-    // ...
+    v8::V8::Initialize();
   }
 
   /*
@@ -17,6 +17,6 @@ namespace mike
    */
   void Dispose()
   {
-    // ...
+    v8::V8::Dispose();
   }
 }

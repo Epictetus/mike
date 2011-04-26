@@ -2,9 +2,9 @@ AC_INIT([mike], [0.0.1], [chris@nu7hat.ch])
 
 # Base configuration.
 
-AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([build-m4])
 AC_CONFIG_SRCDIR([src/])
-AC_CONFIG_MACRO_DIR([m4])
 
 # Check for compiler.
 

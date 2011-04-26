@@ -1,11 +1,17 @@
 # C++ source files.
 
 cc_sources = \
+	mike/script.cc \
+	mike/stdio.cc \
+	mike/env.cc \
 	mike.cc
 
 # Header files. 
 
 h_sources = \
+	mike/script.h \
+	mike/stdio.h \
+	mike/env.h \
 	mike.h
 
 # Local include paths for compiler.
