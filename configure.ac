@@ -17,9 +17,9 @@ AC_LANG_CPLUSPLUS
 AM_CONDITIONAL(CPU_IS_X64, [test `uname -m` = x86_64])
 
 if test "$CPU_IS_X64" = 0; then
-   V8_ARCH=x64
-else
    V8_ARCH=ia32
+else
+   V8_ARCH=x64
 fi
 
 # Additional v8 settings.
@@ -28,10 +28,18 @@ V8_DIR=deps/v8
 V8_MODE=release
 V8_SNAPSHOT=off
 V8_LIBRARY=static
-V8_CCFLAGS="-fPIC -fno-builtin-memcpy -shared"
+V8_CCFLAGS="-fPIC -fno-builtin-memcpy"
+
+AC_SUBST([V8_DIR])
+AC_SUBST([V8_ARCH])
+AC_SUBST([V8_MODE])
+AC_SUBST([V8_SNAPSHOT])
+AC_SUBST([V8_LIBRARY])
+AC_SUBST([V8_CCFLAGS])
 
 # Check for scons (required to compile v8)
 
+AC_CHECK_PROGS([FIND], [find], [:])
 AC_CHECK_PROGS([SCONS], [scons], [:])
 AC_CHECK_PROGS([COFFEE], [coffee], [:])
 
@@ -87,6 +95,7 @@ AC_SUBST([MIKE_LIBS])
 
 AC_CONFIG_FILES(Makefile)
 AC_CONFIG_FILES(src/Makefile)
+AC_CONFIG_FILES(src/browser/Makefile)
 AC_CONFIG_FILES(test/Makefile)
 
 # Generate output. 
