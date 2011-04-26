@@ -12,7 +12,7 @@ cxx_includes = \
 # Local libraries for linker.
 
 ld_libs = \
-	$(srcdir)/../deps/v8/libv8.a
+	$(srcdir)/../deps/v8/libv8.a \
 	$(srcdir)/../src/libmike.la
 
 # Cpp code test suite config. 
