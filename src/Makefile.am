@@ -1,3 +1,5 @@
+SUBDIRS = browser
+
 # C++ source files.
 
 cc_sources = \
