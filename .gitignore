@@ -5,10 +5,10 @@
 /test/Makefile
 /test/Makefile.in
 /test/cctest/cctest
-/config
+/build-aux
+/build-m4
 /autom4te.cache
 /aclocal.m4
-/m4
 /libtool
 /stamp-h1
 /config.h*
