@@ -36,37 +36,42 @@ namespace mike
   }
   
   // Private
+
+  Handle<Object> Env::Global()
+  {
+    return context->Global();
+  }
   
   void Env::Setup()
   {
     HandleScope scope;
 
     // $stdout
-    MIKE_OBJ(mike_stdout);
-    MIKE_SET_METHOD(mike_stdout, "write", stdio::WriteStdout);
-    MIKE_SET(context->Global(), "$stdout", mike_stdout);
+    Handle<Object> o_stdout(Object::New());
+    MIKE_SET_METHOD(o_stdout, "write", stdio::WriteStdout);
+    MIKE_SET_GLOBAL("$stdout", o_stdout);
     
     // $stderr
-    MIKE_OBJ(mike_stderr);
-    MIKE_SET_METHOD(mike_stderr, "write", stdio::WriteStderr);
-    MIKE_SET(context->Global(), "$stderr", mike_stderr);
+    Handle<Object> o_stderr(Object::New());
+    MIKE_SET_METHOD(o_stderr, "write", stdio::WriteStderr);
+    MIKE_SET_GLOBAL("$stderr", o_stderr);
     
-    // $io
-    MIKE_OBJ(mike_file);
-    MIKE_SET_METHOD(mike_file, "require", stdio::RequireFile);
-    MIKE_SET_METHOD(mike_file, "read", stdio::ReadFile);
-    MIKE_SET(context->Global(), "$io", mike_file);
+    // $file
+    Handle<Object> o_file(Object::New());
+    MIKE_SET_METHOD(o_file, "load", stdio::LoadFile);
+    MIKE_SET_METHOD(o_file, "read", stdio::ReadFile);
+    MIKE_SET_GLOBAL("$file", o_file);
 
-    // $net
-    //MIKE_OBJ(mike_net);
-    //MIKE_SET_METHOD(mike_net, "open", net::Open);
-    //MIKE_SET(context->Global(), "$net", mike_net);
+    // $uri
+    //Handle<Object> o_uri(Object::New());
+    //MIKE_SET_METHOD(o_uri, "open", net::Open);
+    //MIKE_SET_GLOBAL("$uri", o_uri);
 
     // $thread
-    //MIKE_OBJ(mike_file);
-    //MIKE_SET_METHOD(mike_thread, "tick", thread::Tick);
-    //MIKE_SET_METHOD(mike_thread, "spawn", thread::Spawn);
-    //MIKE_SET_METHOD(mike_thread, "sleep", thread::Sleep);
-    //MIKE_SET(context->Global(), "$thread", mike_thread);
+    //Handle<Object> o_thread(Object::New());
+    //MIKE_SET_METHOD(o_thread, "tick", thread::Tick);
+    //MIKE_SET_METHOD(o_thread, "spawn", thread::Spawn);
+    //MIKE_SET_METHOD(o_thread, "sleep", thread::Sleep);
+    //MIKE_SET_GLOBAL("$thread", o_thread);
   }
 }

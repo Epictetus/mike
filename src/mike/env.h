@@ -15,6 +15,7 @@ namespace mike
   {
   private:
     Persistent<Context> context;
+    Handle<Object> Global();
     void Setup();
   public:
     Env();
@@ -23,11 +24,11 @@ namespace mike
   };
 }
 
-#define MIKE_OBJ(name) \
-  Handle<Object> name(Object::New())
-
-#define MIKE_SET(obj, name, assignee)			\
+#define MIKE_SET(obj, name, assignee) \
   obj->Set(v8::String::NewSymbol(name), assignee)
+
+#define MIKE_SET_GLOBAL(name, assignee)	\
+  MIKE_SET(Global(), name, assignee)
 
 #define MIKE_SET_METHOD(obj, name, callback) \
   MIKE_SET(obj, name, v8::FunctionTemplate::New(callback)->GetFunction())

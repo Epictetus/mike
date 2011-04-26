@@ -12,7 +12,7 @@ namespace mike {
     
     Handle<Value> WriteStdout(const Arguments &args);
     Handle<Value> WriteStderr(const Arguments &args);
-    Handle<Value> RequireFile(const Arguments &args);
+    Handle<Value> LoadFile(const Arguments &args);
     Handle<Value> ReadFile(const Arguments &args);
   }
 }

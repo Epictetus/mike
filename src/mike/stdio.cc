@@ -4,9 +4,38 @@ namespace mike {
   namespace stdio
   {
     using namespace v8;
+    using namespace std;
+    
+    namespace {
+      char* ReadFileContent(char *fname)
+      {
+	FILE *fp = fopen(fname, "r");
+	char *buffer;
+	long lsize;
+
+	if (fp != NULL) {
+	  fseek(fp, 0, SEEK_END);
+	  lsize = ftell(fp);
+	  rewind(fp);
+	  buffer = (char*)malloc((sizeof(char)*lsize));
+
+	  if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
+	    buffer = NULL;
+	  }
+
+	  fclose(fp);
+	}
+
+	return buffer;
+      }
+    }
     
     /* 
-     * Handler for javascript <code>$stdout.write</code> function.
+     * Handler for javascript <code>$stdout.write</code> function. It writes given
+     * string to standard output stream. 
+     *
+     *   $stdout.write("hola javascript!\n");
+     *   $stdout.write("todo bien?\n");
      *
      */
     Handle<Value> WriteStdout(const Arguments &args)
@@ -24,7 +53,10 @@ namespace mike {
     }
 
     /* 
-     * Handler for javascript <code>$stderr.write</code> function.
+     * Handler for javascript <code>$stderr.write</code> function. It writes given
+     * string to standard error stream. 
+     *
+     *   $stderr.write("uuuh, something went wrong!\n");
      *
      */
     Handle<Value> WriteStderr(const Arguments &args)
@@ -40,31 +72,13 @@ namespace mike {
 
       return True();
     }
-
-    static char* ReadFileContent(char *fname)
-    {
-      FILE *fp = fopen(fname, "r");
-      char *buffer;
-      long lsize;
-
-      if (fp != NULL) {
-	fseek(fp, 0, SEEK_END);
-	lsize = ftell(fp);
-	rewind(fp);
-	buffer = (char*)malloc((sizeof(char)*lsize));
-
-	if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
-	  buffer = NULL;
-	}
-
-	fclose(fp);
-      }
-
-      return buffer;
-    }
     
     /*
-     * Handle for javascript <code>$io.read</code> function.
+     * Handle for javascript <code>$file.read</code> function. It returns content
+     * of specified file. If file does not exist then returns <code>false</code>. 
+     *
+     *   content = $file.read("./test.txt");
+     *   ...
      *
      */
     Handle<Value> ReadFile(const Arguments &args)
@@ -88,10 +102,15 @@ namespace mike {
     }
 
     /*
-     * Handle for javascript <code>$io.require</code> function.
+     * Handle for javascript <code>$file.load</code> function. It loads given file
+     * and evaluates it content within current context. If file does not exist
+     * then returns <code>undefined</code>. 
+     *
+     *   obj = $file.load("/path/to/lib");
+     *   ...
      *
      */
-    Handle<Value> RequireFile(const Arguments &args)
+    Handle<Value> LoadFile(const Arguments &args)
     {
       HandleScope scope;
       
