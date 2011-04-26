@@ -2,6 +2,8 @@
 /Makefile.in
 /src/Makefile
 /src/Makefile.in
+/src/browser/Makefile
+/src/browser/Makefile.in
 /test/Makefile
 /test/Makefile.in
 /test/cctest/cctest
@@ -25,6 +27,8 @@
 *.a
 *.guess
 *.sub
+
+/src/browser/*.js
 
 *~
 \#*
