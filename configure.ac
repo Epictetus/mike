@@ -33,9 +33,14 @@ V8_CCFLAGS="-fPIC -fno-builtin-memcpy -shared"
 # Check for scons (required to compile v8)
 
 AC_CHECK_PROGS([SCONS], [scons], [:])
+AC_CHECK_PROGS([COFFEE], [coffee], [:])
 
 if test "$SCONS" = :; then
    AC_MSG_ERROR([this package needs scons.])
+fi
+
+if test "$COFFEE" = :; then
+   AC_MSG_ERROR([this package needs coffee.])
 fi
 
 # Check for CppUnit. 
