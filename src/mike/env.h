@@ -2,7 +2,7 @@
 #define _MIKE_ENV_H_
 
 #include "mike.h"
-#include "mike/script.h"
+#include "mike/net.h"
 #include "mike/stdio.h"
 #include "mike/script.h"
 

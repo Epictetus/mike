@@ -5,6 +5,7 @@ SUBDIRS = browser
 cc_sources = \
 	mike/script.cc \
 	mike/stdio.cc \
+	mike/net.cc \
 	mike/env.cc \
 	mike.cc
 
@@ -13,6 +14,7 @@ cc_sources = \
 h_sources = \
 	mike/script.h \
 	mike/stdio.h \
+	mike/net.h \
 	mike/env.h \
 	mike.h
 

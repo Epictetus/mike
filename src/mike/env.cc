@@ -63,9 +63,9 @@ namespace mike
     MIKE_SET_GLOBAL("$file", o_file);
 
     // $uri
-    //Handle<Object> o_uri(Object::New());
-    //MIKE_SET_METHOD(o_uri, "open", net::Open);
-    //MIKE_SET_GLOBAL("$uri", o_uri);
+    Handle<Object> o_uri(Object::New());
+    MIKE_SET_METHOD(o_uri, "open", net::Open);
+    MIKE_SET_GLOBAL("$uri", o_uri);
 
     // $thread
     //Handle<Object> o_thread(Object::New());
