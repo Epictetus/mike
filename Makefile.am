@@ -1,4 +1,8 @@
-SUBDIRS = src test
+SUBDIRS = src
+
+if HAVE_CPPUNIT 
+   SUBDIRS += test
+endif
 
 deps/v8:
 	@echo "Making V8 engine in deps/v8"

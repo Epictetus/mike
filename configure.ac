@@ -37,6 +37,10 @@ AC_SUBST([V8_SNAPSHOT])
 AC_SUBST([V8_LIBRARY])
 AC_SUBST([V8_CCFLAGS])
 
+# Init Automage with following options. 
+
+AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+
 # Check for scons (required to compile v8)
 
 AC_CHECK_PROGS([FIND], [find], [:])
@@ -53,11 +57,16 @@ fi
 
 # Check for CppUnit. 
 
+AC_CHECK_LIB([cppunit], [main], [cppunit=yes], [cppunit=no])
 ifdef([AM_PATH_CPPUNIT], [AM_PATH_CPPUNIT()], [])
 
-# Init Automage with following options. 
+if test x$cppunit = xyes; then
+   AC_MSG_RESULT([yes. Unit and Integration tests available])
+else
+   AC_MSG_RESULT([no. Unit and Integration tests disabled])
+fi
 
-AM_INIT_AUTOMAKE([foreign color-tests -Wall -Werror])
+AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 # Check for required libraries.
 
@@ -96,7 +105,10 @@ AC_SUBST([MIKE_LIBS])
 AC_CONFIG_FILES(Makefile)
 AC_CONFIG_FILES(src/Makefile)
 AC_CONFIG_FILES(src/browser/Makefile)
-AC_CONFIG_FILES(test/Makefile)
+
+if test x$cppunit = xyes; then
+   AC_CONFIG_FILES(test/Makefile)
+fi
 
 # Generate output. 
 

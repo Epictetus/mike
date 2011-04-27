@@ -17,12 +17,11 @@ ld_libs = \
 
 # Cpp code test suite config. 
 
-check_PROGRAMS = cctest/cctest
-noinst_PROGRAMS = cctest/cctest
+UNITTESTS = cctest/cctest
+TESTS = $(UNITTESTS)
+
+check_PROGRAMS = $(UNITTESTS)
+noinst_PROGRAMS = $(UNITTESTS)
 cctest_cctest_SOURCES = $(cc_sources)
 cctest_cctest_CXXFLAGS = $(cxx_includes) -fPIC
 cctest_cctest_LDFLAGS = $(ld_libs) -lcppunit
-
-# Setup test apps.
-
-TESTS = cctest/cctest
