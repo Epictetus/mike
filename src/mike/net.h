@@ -10,6 +10,8 @@ namespace mike {
   {
     using namespace std;
     using namespace v8;
+
+    void Initialize();
     
     class Curl
     {
@@ -30,7 +32,10 @@ namespace mike {
       static Curl* Open(string url);
     };
 
-    Handle<Value> Open(const Arguments &args);
+    namespace uri
+    {
+      Handle<Value> Open(const Arguments &args);
+    }
   }
 }
 

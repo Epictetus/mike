@@ -64,7 +64,7 @@ namespace mike
 
     // $uri
     Handle<Object> o_uri(Object::New());
-    MIKE_SET_METHOD(o_uri, "open", net::Open);
+    MIKE_SET_METHOD(o_uri, "open", net::uri::Open);
     MIKE_SET_GLOBAL("$uri", o_uri);
 
     // $thread

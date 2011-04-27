@@ -1,4 +1,5 @@
 #include "mike.h"
+#include "mike/net.h"
 
 namespace mike
 {
@@ -9,6 +10,7 @@ namespace mike
   void Initialize()
   {
     v8::V8::Initialize();
+    net::Initialize();
   }
 
   /*

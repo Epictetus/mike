@@ -5,6 +5,11 @@ namespace mike {
   {
     using namespace std;
 
+    void Initialize()
+    {
+      curl_global_init(CURL_GLOBAL_DEFAULT);
+    }
+    
     namespace
     {
       size_t Writer(char *data, size_t size, size_t nmemb, string *wdata)
@@ -92,24 +97,27 @@ namespace mike {
     }
 
     // JS ...
-    
-    Handle<Value> Open(const Arguments &args)
+
+    namespace uri
     {
-      HandleScope scope;
+      Handle<Value> Open(const Arguments &args)
+      {
+	HandleScope scope;
+	
+	if (args.Length() < 1) {
+	  return Undefined();
+	}
+	
+	Handle<Value> res = Undefined();
+	String::Utf8Value url(args[0]->ToString());
+	Curl *handle = Curl::Open(*url);
+	
+	if (handle->IsOK()) {
+	  res = String::New(handle->Content().c_str());
+	}
 
-      if (args.Length() < 1) {
-	return Undefined();
+	return res;
       }
-
-      Handle<Value> res = Undefined();
-      String::Utf8Value url(args[0]->ToString());
-      Curl *handle = Curl::Open(*url);
-      
-      if (handle->IsOK()) {
-	res = String::New(handle->Content().c_str());
-      }
-
-      return res;
     }
   }
 }
