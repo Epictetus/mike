@@ -6,7 +6,8 @@ namespace mike {
     using namespace v8;
     using namespace std;
     
-    namespace {
+    namespace
+    {
       char* ReadFileContent(char *fname)
       {
 	FILE *fp = fopen(fname, "r");
