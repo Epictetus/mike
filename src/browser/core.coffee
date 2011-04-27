@@ -2,7 +2,7 @@
 #
 #   print "Hello", "\n", " world!" # displays "Hello\n world!"
 #
-print = (texts...) ->
+@print = (texts...) ->
   $stdout.write text.toString() for text in texts
   true
 
@@ -11,5 +11,5 @@ print = (texts...) ->
 #
 #   puts "Hello", " ", "world!" # displays "Hello world!\n"
 #
-puts = (texts...) ->
+@puts = (texts...) ->
   print texts, "\n"
