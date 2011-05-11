@@ -52,9 +52,10 @@ It provides the following stuff:
     System
       [c] pwd()
       [c] cwd(dir)
-    $stdout
+      [ ] load(file)
+    Stdout
       [c] write(text)
-    $stderr
+    Stderr
       [c] write(text)
     Thread
       [ ] spawn()
@@ -67,7 +68,12 @@ It provides the following stuff:
       [ ] close()
     global functions
       [ ] assert(value)
-      [ ] require(file) 
+      [ ] require(module) 
       [ ] print(text, ...)
       [ ] puts(text, ...)
-  
+
+Constants:
+
+    $LOAD_PATH
+    $stdout
+    $stderr

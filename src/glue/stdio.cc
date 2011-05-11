@@ -1,8 +1,8 @@
-#include "glue/io.h"
+#include "glue/stdio.h"
 
 namespace mike {
   namespace glue {
-    namespace io
+    namespace stdio
     {
       using namespace std;
       using namespace v8;
@@ -44,7 +44,7 @@ namespace mike {
     {
       HandleScope scope;
       Handle<Object> stdoutobj(Object::New());
-      stdoutobj->Set(String::NewSymbol("write"), FunctionTemplate::New(io::stdoutWrite)->GetFunction());
+      stdoutobj->Set(String::NewSymbol("write"), FunctionTemplate::New(stdio::stdoutWrite)->GetFunction());
       return stdoutobj;
 
     }
@@ -53,7 +53,7 @@ namespace mike {
     {
       HandleScope scope;
       Handle<Object> stderrobj(Object::New());
-      stderrobj->Set(String::NewSymbol("write"), FunctionTemplate::New(io::stderrWrite)->GetFunction());
+      stderrobj->Set(String::NewSymbol("write"), FunctionTemplate::New(stdio::stderrWrite)->GetFunction());
       return stderrobj;
     }
   }
