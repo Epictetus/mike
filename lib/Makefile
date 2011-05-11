@@ -174,7 +174,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(top_builddir)/build-aux/install-sh -c -d
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /tmp/mike
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -192,6 +192,7 @@ mikelib_DATA = $(javascript_files)
 all: all-am
 
 .SUFFIXES:
+.SUFFIXES: .coffee .js
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -376,13 +377,11 @@ uninstall-am: uninstall-mikelibDATA
 	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
 	ps ps-am uninstall uninstall-am uninstall-mikelibDATA
 
-coffies:
-	-$(FIND) . -name "*.coffee" | xargs $(COFFEE) -c
+
+.coffee.js:
+	-$(COFFEE) -c $<
 clean-local:
 	-$(RM) -f *.js
-all: coffies
-
-.PHONY: coffies
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
