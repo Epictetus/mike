@@ -83,7 +83,11 @@ AC_SUBST([LIBPTHREAD])
 
 # Check for headers. 
 
-AC_CHECK_HEADERS([string string.h stdio.h stdlib.h curl/curl.h])
+AC_CHECK_HEADER([unistd.h], [], [AC_MSG_ERROR(this package requires unistd.h)])
+AC_CHECK_HEADER([sys/param.h], [], [AC_MSG_ERROR(this package requires sys/param.h)])
+
+# Config header.
+
 AC_CONFIG_HEADERS([config.h])
 
 # Package settings.
