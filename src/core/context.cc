@@ -17,6 +17,7 @@ namespace mike {
     
     Window::Window()
     {
+      HandleScope scope;
       context = v8::Context::New();
       context->Enter();
       glue::Splice(context);

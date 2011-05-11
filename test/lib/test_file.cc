@@ -12,6 +12,8 @@ class FileFunctionsTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(FileFunctionsTest);
   CPPUNIT_TEST(existsFuncTest);
+  CPPUNIT_TEST(isDirectoryFuncTest);
+  CPPUNIT_TEST(isFileFuncTest);
   CPPUNIT_TEST_SUITE_END();
 private:
   context::Window *window;
@@ -20,6 +22,8 @@ public:
   void tearDown();
 protected:
   void existsFuncTest();
+  void isDirectoryFuncTest();
+  void isFileFuncTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FileFunctionsTest);
@@ -41,4 +45,24 @@ void FileFunctionsTest::existsFuncTest()
   ASSERT_EVAL("File.exists('/tmp/test-exists')", True());
   ASSERT_EVAL("File.exists('/tmp/test-not-exists')", False());
   ASSERT_EVAL("File.exists()", Null());
+}
+
+void FileFunctionsTest::isDirectoryFuncTest()
+{
+  HandleScope scope;
+  system("touch /tmp/test-file");
+  system("mkdir -p /tmp/test-dir");
+  ASSERT_EVAL("File.isDirectory('/tmp/test-file')", False());
+  ASSERT_EVAL("File.isDirectory('/tmp/test-dir')", True());
+  ASSERT_EVAL("File.isDirectory()", Null());
+}
+
+void FileFunctionsTest::isFileFuncTest()
+{
+  HandleScope scope;
+  system("touch /tmp/test-file");
+  system("mkdir -p /tmp/test-dir");
+  ASSERT_EVAL("File.isFile('/tmp/test-file')", True());
+  ASSERT_EVAL("File.isFile('/tmp/test-dir')", False());
+  ASSERT_EVAL("File.isFile()", Null());
 }
