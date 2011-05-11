@@ -21,6 +21,7 @@ test_files = \
 	test_file.cc \
 	test_system.cc \
 	test_stdio.cc \
+	test_constants.cc \
 	main.cc
 
 cxx_includes = \

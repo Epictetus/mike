@@ -56,6 +56,7 @@ void WindowContextTest::lastExecutedScriptTest()
 
 void WindowContextTest::loadPathTest()
 {
+  HandleScope scope; 
   context::Window *window = context::New();
   ASSERT(window->LoadPath()->IsArray());
   delete window;

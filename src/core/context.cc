@@ -20,8 +20,7 @@ namespace mike {
       HandleScope scope;
       context = v8::Context::New();
       context->Enter();
-      loadPath = Persistent<Array>(Array::New());
-      context->Global()->Set(String::NewSymbol("$LOAD_PATH"), loadPath);
+      context->Global()->Set(String::NewSymbol("$LOAD_PATH"), Array::New());
       glue::Splice(context);
     }
 
@@ -40,7 +39,7 @@ namespace mike {
      */
     Handle<Array> Window::LoadPath()
     {
-      return loadPath;
+      return (Handle<Array>)Array::Cast(*context->Global()->Get(String::NewSymbol("$LOAD_PATH")));
     }
 
     /*

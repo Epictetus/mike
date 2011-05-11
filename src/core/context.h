@@ -29,7 +29,6 @@ namespace mike {
     protected:
       list<script::Info*> results;
       Persistent<Context> context;
-      Persistent<Array> loadPath;
     public:
       Window();
       ~Window();
