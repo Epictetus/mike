@@ -39,7 +39,7 @@ namespace mike {
 	char* file_read(char *fname)
 	{
 	  FILE *fp = fopen(fname, "r");
-	  char *buffer;
+	  char *buffer = NULL;
 	  long lsize;
 
 	  if (fp != NULL) {
