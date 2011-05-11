@@ -2,6 +2,7 @@
 #include <sys/param.h>
 #include <string>
 #include "glue/system.h"
+#include "glue/file.h"
 
 namespace mike {
   namespace glue {
@@ -37,6 +38,15 @@ namespace mike {
 	  if (chdir(*path) == 0) {
 	    return True();
 	  } 
+	}
+	return False();
+      }
+
+      Handle<Value> require(const Arguments &args)
+      {
+	if (args.Length() == 1) {
+	  String::Utf8Value module(args[0]->ToString());
+	  
 	}
 	return False();
       }

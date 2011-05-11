@@ -9,54 +9,51 @@ namespace mike {
       using namespace v8;
       using namespace std;
 
-      namespace
+      bool exists_p(string fname)
       {
-	bool file_exists_p(string fname)
-	{
-	  struct stat fileinfo;
+	struct stat fileinfo;
 
-	  if (access(fname.c_str(), 0) == 0) {
-	    return (stat(fname.c_str(), &fileinfo) == 0);
-	  }
-
-	  return false;
+	if (access(fname.c_str(), 0) == 0) {
+	  return (stat(fname.c_str(), &fileinfo) == 0);
 	}
 
-	bool file_check_st_mode(string fname, int mode)
-	{
-	  struct stat fileinfo;
-	  bool result = false;
+	return false;
+      }
+
+      bool check_st_mode(string fname, int mode)
+      {
+	struct stat fileinfo;
+	bool result = false;
 	  
-	  if (access(fname.c_str(), 0) == 0) {
-	    if (stat(fname.c_str(), &fileinfo) == 0) {
-	      return fileinfo.st_mode & mode;
-	    }
+	if (access(fname.c_str(), 0) == 0) {
+	  if (stat(fname.c_str(), &fileinfo) == 0) {
+	    return fileinfo.st_mode & mode;
 	  }
-
-	  return false;
 	}
 
-	char* file_read(char *fname)
-	{
-	  FILE *fp = fopen(fname, "r");
-	  char *buffer = NULL;
-	  long lsize;
+	return false;
+      }
 
-	  if (fp != NULL) {
-	    fseek(fp, 0, SEEK_END);
-	    lsize = ftell(fp);
-	    rewind(fp);
-	    buffer = (char*)malloc((sizeof(char)*lsize));
+      char* read_contents(char *fname)
+      {
+	FILE *fp = fopen(fname, "r");
+	char *buffer = NULL;
+	long lsize;
 
-	    if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
-	      buffer = NULL;
-	    }
+	if (fp != NULL) {
+	  fseek(fp, 0, SEEK_END);
+	  lsize = ftell(fp);
+	  rewind(fp);
+	  buffer = (char*)malloc((sizeof(char)*lsize));
+
+	  if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
+	    buffer = NULL;
+	  }
 	    
-	    fclose(fp);
-	  }
-
-	  return buffer;
+	  fclose(fp);
 	}
+
+	return buffer;
       }
 
       /*
@@ -69,7 +66,7 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  return file_exists_p(*fname) ? True() : False();
+	  return exists_p(*fname) ? True() : False();
 	} else {
 	  return Undefined();
 	}
@@ -85,7 +82,7 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  return file_check_st_mode(*fname, S_IFDIR) ? True() : False();
+	  return check_st_mode(*fname, S_IFDIR) ? True() : False();
 	} else {
 	  return Undefined();
 	}
@@ -101,7 +98,7 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  return file_check_st_mode(*fname, S_IFREG) ? True() : False();
+	  return check_st_mode(*fname, S_IFREG) ? True() : False();
 	} else {
 	  return Undefined();
 	}
@@ -118,7 +115,7 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  char *content = file_read(*fname);
+	  char *content = read_contents(*fname);
 
 	  if (content != NULL) {
 	    return String::New(content);

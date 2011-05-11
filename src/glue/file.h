@@ -7,15 +7,11 @@ namespace mike {
   namespace glue {
     namespace file
     {
-      using namespace std;
-      using namespace v8;
-      
-      Handle<Value> read(const Arguments &args);        // read(path, modeloptions) -> String or false
-      Handle<Value> exists(const Arguments &args);      // exists(path) -> Boolean
-      Handle<Value> isFile(const Arguments &args);      // isFile(path) -> Boolean
-      Handle<Value> isDirectory(const Arguments &args); // isDirectory(path) -> Boolean
+      bool exists_p(string fname);
+      bool check_st_mode(string fname, int mode);
+      char* read_contents(char *fname);
     }
-
+    
     Handle<Object> FileObject();
   }
 }

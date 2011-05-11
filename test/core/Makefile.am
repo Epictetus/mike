@@ -1,6 +1,7 @@
 suite = core_suite
 testeedir = $(srcdir)/../../src
 v8dir = $(srcdir)/../../deps/v8
+mikelibdir = `readlink -f $(srcdir)/../../lib`
 
 source_files = \
 	$(testeedir)/test/macros.h \
@@ -30,7 +31,7 @@ ld_libs = \
 	$(v8dir)/libv8.a
 
 core_suite_SOURCES = $(source_files) $(test_files)
-core_suite_CXXFLAGS = $(cxx_includes) -fPIC
+core_suite_CXXFLAGS = $(cxx_includes) -DMIKE_LIB_DIR=$(mikelibdir) -fPIC
 core_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
 
 check_PROGRAMS = $(suite)

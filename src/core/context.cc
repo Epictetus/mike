@@ -20,7 +20,6 @@ namespace mike {
       HandleScope scope;
       context = v8::Context::New();
       context->Enter();
-      context->Global()->Set(String::NewSymbol("$LOAD_PATH"), Array::New());
       glue::Splice(context);
     }
 

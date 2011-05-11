@@ -23,6 +23,9 @@ namespace mike {
       global->Set(String::NewSymbol("Stderr"), StderrObject());
       global->Set(String::NewSymbol("File"), FileObject());
       global->Set(String::NewSymbol("System"), SystemObject());
+
+      // Core stuff
+      global->Set(String::NewSymbol("$LOAD_PATH"), Array::New());
     }
   }
 }
