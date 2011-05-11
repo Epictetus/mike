@@ -104,10 +104,14 @@ AC_SUBST([MIKE_LIBS])
 
 AC_CONFIG_FILES(Makefile)
 AC_CONFIG_FILES(src/Makefile)
-AC_CONFIG_FILES(src/browser/Makefile)
+AC_CONFIG_FILES(src/lib/Makefile)
+AC_CONFIG_FILES(src/lib/src/Makefile)
+AC_CONFIG_FILES(src/api/Makefile)
 
 if test x$cppunit = xyes; then
    AC_CONFIG_FILES(test/Makefile)
+   AC_CONFIG_FILES(test/lib/Makefile)
+   AC_CONFIG_FILES(test/api/Makefile)
 fi
 
 # Generate output. 
