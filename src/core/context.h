@@ -29,9 +29,11 @@ namespace mike {
     protected:
       list<script::Info*> results;
       Persistent<Context> context;
+      Persistent<Array> loadPath;
     public:
       Window();
       ~Window();
+      Handle<Array> LoadPath();
       void EnterContext();
       script::Info* LastExecutedScript();
       script::Info* Evaluate(string src, string fname = "<eval>");

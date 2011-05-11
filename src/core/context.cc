@@ -20,6 +20,8 @@ namespace mike {
       HandleScope scope;
       context = v8::Context::New();
       context->Enter();
+      loadPath = Persistent<Array>(Array::New());
+      context->Global()->Set(String::NewSymbol("$LOAD_PATH"), loadPath);
       glue::Splice(context);
     }
 
@@ -30,6 +32,15 @@ namespace mike {
       }
       
       context.Dispose();
+    }
+
+    /*
+     * Returns v8 array with system load paths. 
+     *
+     */
+    Handle<Array> Window::LoadPath()
+    {
+      return loadPath;
     }
 
     /*
