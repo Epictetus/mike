@@ -42,10 +42,6 @@ namespace mike {
       }
     }
     
-    /*
-     * Returns V8 object placeholder for all file related methods.
-     *
-     */
     Handle<Object> SystemObject()
     {
       HandleScope scope;

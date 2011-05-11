@@ -6,9 +6,11 @@ source_files = \
 	$(testeedir)/test/macros.h \
 	$(testeedir)/lib/glue/file.h \
 	$(testeedir)/lib/glue/system.h \
+	$(testeedir)/lib/glue/io.h \
 	$(testeedir)/lib/glue/glue.h \
 	$(testeedir)/lib/glue/file.cc \
 	$(testeedir)/lib/glue/system.cc \
+	$(testeedir)/lib/glue/io.cc \
 	$(testeedir)/lib/glue/glue.cc \
 	$(testeedir)/core/script.h \
 	$(testeedir)/core/context.h \

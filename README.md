@@ -33,32 +33,34 @@ You have to download and install exactly version 1.4.9, and replace
 Internal standard library provided by mike is minimal as much as possible.
 It provides the following stuff:
 
-* File
-  [*] read(path, modeloptions)
-  [*] exists(path)
-  [*] isFile(path)
-  [*] isDirectory(path)
-  [ ] join(path)
-  [ ] absolute(path)
-  [ ] directory(path)
-  [ ] base(path)
-* System
-  [ ] pwd()
-  [ ] cwd(dir)
-  [ ] require(file)
-* IO
-  [ ] print(text, ...)
-  [ ] puts(text, ...)
-  [ ] write(stream, text, ...)
-* Test
-  [ ] assert(value)
-* Thread
-  [ ] spawn()
-  [ ] kill(id)
-  [ ] pid()
-* Socket
-  [ ] open(ip, port)
-  [ ] write(data)
-  [ ] read()
-  [ ] close()
+    File
+      [c] read(path, modeloptions)
+      [c] exists(path)
+      [c] isFile(path)
+      [c] isDirectory(path)
+      [ ] join(path)
+      [ ] absolute(path)
+      [ ] directory(path)
+      [ ] base(path)
+    System
+      [c] pwd()
+      [c] cwd(dir)
+    $stdout
+      [c] write(text)
+    $stderr
+      [c] write(text)
+    Thread
+      [ ] spawn()
+      [ ] kill(id)
+      [ ] pid()
+    Socket
+      [ ] open(ip, port)
+      [ ] write(data)
+      [ ] read()
+      [ ] close()
+    global functions
+      [ ] assert(value)
+      [ ] require(file) 
+      [ ] print(text, ...)
+      [ ] puts(text, ...)
   
