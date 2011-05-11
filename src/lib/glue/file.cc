@@ -49,7 +49,7 @@ namespace mike {
 	  String::Utf8Value fname(args[0]->ToString());
 	  return file_exists_p(*fname) ? True() : False();
 	} else {
-	  return Null();
+	  return Undefined();
 	}
       }
 
@@ -65,7 +65,7 @@ namespace mike {
 	  String::Utf8Value fname(args[0]->ToString());
 	  return check_file_st_mode(*fname, S_IFDIR) ? True() : False();
 	} else {
-	  return Null();
+	  return Undefined();
 	}
       }
 
@@ -81,7 +81,7 @@ namespace mike {
 	  String::Utf8Value fname(args[0]->ToString());
 	  return check_file_st_mode(*fname, S_IFREG) ? True() : False();
 	} else {
-	  return Null();
+	  return Undefined();
 	}
       }
     }

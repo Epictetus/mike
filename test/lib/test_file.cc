@@ -44,7 +44,7 @@ void FileFunctionsTest::existsFuncTest()
   system("touch /tmp/test-exists");
   ASSERT_EVAL("File.exists('/tmp/test-exists')", True());
   ASSERT_EVAL("File.exists('/tmp/test-not-exists')", False());
-  ASSERT_EVAL("File.exists()", Null());
+  ASSERT_EVAL("File.exists()", Undefined());
 }
 
 void FileFunctionsTest::isDirectoryFuncTest()
@@ -54,7 +54,7 @@ void FileFunctionsTest::isDirectoryFuncTest()
   system("mkdir -p /tmp/test-dir");
   ASSERT_EVAL("File.isDirectory('/tmp/test-file')", False());
   ASSERT_EVAL("File.isDirectory('/tmp/test-dir')", True());
-  ASSERT_EVAL("File.isDirectory()", Null());
+  ASSERT_EVAL("File.isDirectory()", Undefined());
 }
 
 void FileFunctionsTest::isFileFuncTest()
@@ -64,5 +64,5 @@ void FileFunctionsTest::isFileFuncTest()
   system("mkdir -p /tmp/test-dir");
   ASSERT_EVAL("File.isFile('/tmp/test-file')", True());
   ASSERT_EVAL("File.isFile('/tmp/test-dir')", False());
-  ASSERT_EVAL("File.isFile()", Null());
+  ASSERT_EVAL("File.isFile()", Undefined());
 }
