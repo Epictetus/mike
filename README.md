@@ -42,6 +42,13 @@ It provides the following stuff:
       [ ] absolute(path)
       [ ] directory(path)
       [ ] base(path)
+    HttpClient
+      [ ] open(method, url, async, user, password)
+      [ ] send(body)
+      [ ] setRequestHeader(name, header)
+      [ ] getResponseHeader(name)
+      [ ] getAllResponseHeaders()
+      [ ] abort()
     System
       [c] pwd()
       [c] cwd(dir)
