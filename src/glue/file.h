@@ -1,6 +1,7 @@
 #ifndef _MIKE_LIB_FILE_H_
 #define _MIKE_LIB_FILE_H_
 
+#include <sys/types.h>
 #include "glue/glue.h"
 
 namespace mike {

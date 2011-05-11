@@ -1,6 +1,5 @@
 #include "glue/file.h"
 #include <sys/stat.h>
-#include <sys/types.h>
 
 namespace mike {
   namespace glue {

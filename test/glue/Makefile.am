@@ -1,7 +1,7 @@
 suite = glue_suite
 testeedir = $(srcdir)/../../src
 v8dir = $(srcdir)/../../deps/v8
-mikelibdir = `readlink -f $(srcdir)/../../lib`
+mikelibdir = "\"$(srcdir)/../../lib\""
 
 source_files = \
 	$(testeedir)/test/macros.h \

@@ -32,6 +32,7 @@ namespace mike {
     public:
       Window();
       ~Window();
+      Handle<Value> Require(string module);
       Handle<Array> LoadPath();
       void EnterContext();
       script::Info* LastExecutedScript();

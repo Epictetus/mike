@@ -39,7 +39,7 @@ void ConstantsTest::loadPathConstTest()
   HandleScope scope;
   ASSERT_JS_EQUAL("$LOAD_PATH", window->LoadPath());
   window->LoadPath()->Set(window->LoadPath()->Length(), String::New("."));
-  ASSERT_JS_EQUAL("$LOAD_PATH[0] == '.';", True());
-  window->Evaluate("$LOAD_PATH[1] = './lib';");
-  ASSERT(window->LoadPath()->Get(1)->Equals(String::New("./lib")));
+  ASSERT_JS_EQUAL("$LOAD_PATH[1] == '.';", True());
+  window->Evaluate("$LOAD_PATH[2] = './lib';");
+  ASSERT(window->LoadPath()->Get(2)->Equals(String::New("./lib")));
 }

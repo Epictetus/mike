@@ -24,9 +24,10 @@ namespace mike {
       global->Set(String::NewSymbol("File"), FileObject());
       global->Set(String::NewSymbol("System"), SystemObject());
 
-      // Core stuff
-      global->Set(String::NewSymbol("$LOAD_PATH"), Array::New());
+      // Load path
+      Handle<Array> loadpath(Array::New());
+      loadpath->Set(0, String::New(MIKE_LIB_DIR));
+      global->Set(String::NewSymbol("$LOAD_PATH"), loadpath);
     }
   }
 }
-

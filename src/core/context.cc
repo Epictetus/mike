@@ -1,4 +1,7 @@
+#include <sys/stat.h>
 #include "core/context.h"
+#include "glue/file.h"
+#include "unistd.h"
 
 namespace mike {
   namespace context
@@ -21,6 +24,7 @@ namespace mike {
       context = v8::Context::New();
       context->Enter();
       glue::Splice(context);
+      Require("core");
     }
 
     Window::~Window()
@@ -32,6 +36,33 @@ namespace mike {
       context.Dispose();
     }
 
+    /*
+     * Requires specified module from mike's load path.
+     *
+     * TODO: some exceptions?
+     */
+    Handle<Value> Window::Require(string module)
+    {
+      HandleScope scope;
+      Handle<Array> loadpath = LoadPath();
+      
+      for (int i = 0; i < loadpath->Length(); i++) {
+	String::Utf8Value path(loadpath->Get(i)->ToString());
+	string filename = string(*path) + "/" + module + ".js"; // TODO: maybe some join here?
+	
+	if (glue::file::check_st_mode(filename, S_IFREG)) {
+	  char *content = glue::file::read_contents((char*)filename.c_str());
+	  
+	  if (content != NULL) {
+	    script::Info *info = Evaluate(content, filename);
+	    return info->result;
+	  }
+	}
+      }
+      
+      return Undefined();
+    }
+      
     /*
      * Returns v8 array with system load paths. 
      *
