@@ -1,1 +1,1 @@
-SUBDIRS = lib api
+

@@ -1,7 +1,7 @@
-#include "lib/glue/system.h"
 #include <unistd.h>
 #include <sys/param.h>
 #include <string>
+#include "glue/system.h"
 
 namespace mike {
   namespace glue {

@@ -7,7 +7,7 @@
 #include <v8.h>
 
 #include "core/script.h"
-#include "lib/glue/glue.h"
+#include "glue/glue.h"
 
 namespace mike {
   namespace context

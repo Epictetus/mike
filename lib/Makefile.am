@@ -1,5 +1,3 @@
-SUBDIRS = glue
-
 coffies:
 	-$(FIND) . -name "*.coffee" | xargs $(COFFEE) -c
 clean-local:

@@ -4,14 +4,14 @@ v8dir = $(srcdir)/../../deps/v8
 
 source_files = \
 	$(testeedir)/test/macros.h \
-	$(testeedir)/lib/glue/file.h \
-	$(testeedir)/lib/glue/system.h \
-	$(testeedir)/lib/glue/io.h \
-	$(testeedir)/lib/glue/glue.h \
-	$(testeedir)/lib/glue/file.cc \
-	$(testeedir)/lib/glue/system.cc \
-	$(testeedir)/lib/glue/io.cc \
-	$(testeedir)/lib/glue/glue.cc \
+	$(testeedir)/glue/file.h \
+	$(testeedir)/glue/system.h \
+	$(testeedir)/glue/io.h \
+	$(testeedir)/glue/glue.h \
+	$(testeedir)/glue/file.cc \
+	$(testeedir)/glue/system.cc \
+	$(testeedir)/glue/io.cc \
+	$(testeedir)/glue/glue.cc \
 	$(testeedir)/core/script.h \
 	$(testeedir)/core/context.h \
 	$(testeedir)/core/script.cc \

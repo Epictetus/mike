@@ -1,4 +1,4 @@
-#include "lib/glue/file.h"
+#include "glue/file.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 

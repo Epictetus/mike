@@ -1,7 +1,7 @@
 #ifndef _MIKE_GLUE_SYSTEM_H_
 #define _MIKE_GLUE_SYSTEM_H_
 
-#include "lib/glue/glue.h"
+#include "glue/glue.h"
 
 namespace mike {
   namespace glue {

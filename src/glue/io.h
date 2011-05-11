@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <string>
-#include "lib/glue/glue.h"
+#include "glue/glue.h"
 
 namespace mike {
   namespace glue {

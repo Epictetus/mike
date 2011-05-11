@@ -1,4 +1,4 @@
-#include "lib/glue/io.h"
+#include "glue/io.h"
 
 namespace mike {
   namespace glue {

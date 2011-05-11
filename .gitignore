@@ -5,17 +5,17 @@
 /src/Makefile.in
 /src/api/Makefile
 /src/api/Makefile.in
-/src/lib/Makefile
-/src/lib/Makefile.in
-/src/lib/glue/Makefile
-/src/lib/glue/Makefile.in
+/src/glue/Makefile
+/src/glue/Makefile.in
+/src/glue/glue/Makefile
+/src/glue/glue/Makefile.in
 
 /test/Makefile
 /test/Makefile.in
 
-/test/lib/*_suite
-/test/lib/Makefile
-/test/lib/Makefile.in
+/test/glue/*_suite
+/test/glue/Makefile
+/test/glue/Makefile.in
 
 /test/api/*_suite
 /test/api/Makefile
@@ -48,8 +48,8 @@
 *.guess
 *.sub
 
-/src/lib/*.js
-/src/browser/*.js
+/lib/*.js
+/lib/browser/*.js
 
 *~
 \#*

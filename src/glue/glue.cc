@@ -1,7 +1,7 @@
-#include "lib/glue/glue.h"
-#include "lib/glue/file.h"
-#include "lib/glue/system.h"
-#include "lib/glue/io.h"
+#include "glue/glue.h"
+#include "glue/file.h"
+#include "glue/system.h"
+#include "glue/io.h"
 
 namespace mike {
   namespace glue
