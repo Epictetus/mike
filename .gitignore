@@ -1,12 +1,30 @@
 /Makefile
 /Makefile.in
+
 /src/Makefile
 /src/Makefile.in
-/src/browser/Makefile
-/src/browser/Makefile.in
+/src/api/Makefile
+/src/api/Makefile.in
+/src/lib/Makefile
+/src/lib/Makefile.in
+/src/lib/glue/Makefile
+/src/lib/glue/Makefile.in
+
 /test/Makefile
 /test/Makefile.in
-/test/cctest/cctest
+
+/test/lib/*_suite
+/test/lib/Makefile
+/test/lib/Makefile.in
+
+/test/api/*_suite
+/test/api/Makefile
+/test/api/Makefile.in
+
+/test/core/*_suite
+/test/core/Makefile
+/test/core/Makefile.in
+
 /build-aux
 /build-m4
 /autom4te.cache
@@ -29,6 +47,7 @@
 *.guess
 *.sub
 
+/src/lib/*.js
 /src/browser/*.js
 
 *~
