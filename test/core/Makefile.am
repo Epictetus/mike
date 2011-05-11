@@ -5,10 +5,13 @@ v8dir = $(srcdir)/../../deps/v8
 source_files = \
 	$(testeedir)/test/macros.h \
 	$(testeedir)/core/script.h \
-	$(testeedir)/core/script.cc
+	$(testeedir)/core/context.h \
+	$(testeedir)/core/script.cc \
+	$(testeedir)/core/context.cc
 
 test_files = \
-	script_test.cc \
+	test_script.cc \
+	test_context.cc \
 	main.cc
 
 cxx_includes = \
