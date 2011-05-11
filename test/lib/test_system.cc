@@ -13,6 +13,7 @@ class SystemFunctionsTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(SystemFunctionsTest);
   CPPUNIT_TEST(pwdFuncTest);
+  CPPUNIT_TEST(cwdFuncTest);
   CPPUNIT_TEST_SUITE_END();
 private:
   context::Window *window;
@@ -21,6 +22,7 @@ public:
   void tearDown();
 protected:
   void pwdFuncTest();
+  void cwdFuncTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SystemFunctionsTest);
@@ -40,4 +42,13 @@ void SystemFunctionsTest::pwdFuncTest()
   HandleScope scope;
   chdir("/tmp");
   ASSERT_EVAL("System.pwd()", String::New("/tmp"));
+}
+
+void SystemFunctionsTest::cwdFuncTest()
+{
+  HandleScope scope;
+  system("mkdir -p /tmp/testing-dir");
+  ASSERT_EVAL("System.cwd('/tmp/not-exists')", False());
+  ASSERT_EVAL("System.cwd('/tmp/testing-dir')", True());
+  ASSERT_EVAL("System.pwd()", String::New("/tmp/testing-dir"));
 }
