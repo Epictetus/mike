@@ -2,7 +2,7 @@
 #define _MIKE_LIB_FILE_H_
 
 #include <v8.h>
-#include "lib/src/lib.h"
+#include "lib/glue/glue.h"
 
 namespace mike {
   namespace glue {

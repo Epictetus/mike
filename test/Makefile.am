@@ -1,2 +1,2 @@
-SUBDIRS = lib api
-TESTS = lib/suite #api/suite
+SUBDIRS = lib core api
+TESTS = lib/lib_suite core/core_suite #api/suite

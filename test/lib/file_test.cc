@@ -2,7 +2,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "test/macros.h"
-#include "lib/src/file.h"
+#include "lib/glue/file.h"
 
 class FileFunctionsTest : public CppUnit::TestFixture
 {
