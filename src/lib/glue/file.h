@@ -14,7 +14,6 @@ namespace mike {
       Handle<Value> exists(const Arguments &args);      // exists(path) -> Boolean
       Handle<Value> isFile(const Arguments &args);      // isFile(path) -> Boolean
       Handle<Value> isDirectory(const Arguments &args); // isDirectory(path) -> Boolean
-      Handle<Value> isReadable(const Arguments &args);  // isReadable(path) -> Boolean
     }
 
     Handle<Object> FileObject();

@@ -14,6 +14,7 @@ class FileFunctionsTest : public CppUnit::TestFixture
   CPPUNIT_TEST(existsFuncTest);
   CPPUNIT_TEST(isDirectoryFuncTest);
   CPPUNIT_TEST(isFileFuncTest);
+  CPPUNIT_TEST(readFuncTest);
   CPPUNIT_TEST_SUITE_END();
 private:
   context::Window *window;
@@ -24,6 +25,7 @@ protected:
   void existsFuncTest();
   void isDirectoryFuncTest();
   void isFileFuncTest();
+  void readFuncTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FileFunctionsTest);
@@ -65,4 +67,13 @@ void FileFunctionsTest::isFileFuncTest()
   ASSERT_EVAL("File.isFile('/tmp/test-file')", True());
   ASSERT_EVAL("File.isFile('/tmp/test-dir')", False());
   ASSERT_EVAL("File.isFile()", Undefined());
+}
+
+void FileFunctionsTest::readFuncTest()
+{
+  HandleScope scope;
+  system("echo 'foobar' > /tmp/test-file");
+  ASSERT_EVAL("File.read('/tmp/test-file')", String::New("foobar\n"));
+  ASSERT_EVAL("File.read('/tmp/test-notexists')", Null());
+  ASSERT_EVAL("File.read()", Undefined());
 }

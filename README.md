@@ -34,11 +34,10 @@ Internal standard library provided by mike is minimal as much as possible.
 It provides the following stuff:
 
 * File
-  [ ] read(path, modeloptions)
-  [ ] exists(path)
-  [ ] isFile(path)
-  [ ] isDirectory(path)
-  [ ] isReadable(path)
+  [*] read(path, modeloptions)
+  [*] exists(path)
+  [*] isFile(path)
+  [*] isDirectory(path)
   [ ] join(path)
   [ ] absolute(path)
   [ ] directory(path)

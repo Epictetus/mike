@@ -1,6 +1,7 @@
 #include "lib/glue/file.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <errno.h>
 
 namespace mike {
   namespace glue {
@@ -22,7 +23,7 @@ namespace mike {
 	  return false;
 	}
 
-	bool check_file_st_mode(string fname, int mode)
+	bool file_check_st_mode(string fname, int mode)
 	{
 	  struct stat fileinfo;
 	  bool result = false;
@@ -34,6 +35,28 @@ namespace mike {
 	  }
 
 	  return false;
+	}
+
+	char* file_read(char *fname)
+	{
+	  FILE *fp = fopen(fname, "r");
+	  char *buffer;
+	  long lsize;
+
+	  if (fp != NULL) {
+	    fseek(fp, 0, SEEK_END);
+	    lsize = ftell(fp);
+	    rewind(fp);
+	    buffer = (char*)malloc((sizeof(char)*lsize));
+
+	    if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
+	      buffer = NULL;
+	    }
+	    
+	    fclose(fp);
+	  }
+
+	  return buffer;
 	}
       }
 
@@ -63,7 +86,7 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  return check_file_st_mode(*fname, S_IFDIR) ? True() : False();
+	  return file_check_st_mode(*fname, S_IFDIR) ? True() : False();
 	} else {
 	  return Undefined();
 	}
@@ -79,7 +102,30 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  return check_file_st_mode(*fname, S_IFREG) ? True() : False();
+	  return file_check_st_mode(*fname, S_IFREG) ? True() : False();
+	} else {
+	  return Undefined();
+	}
+      }
+
+      /*
+       * Reads contents from specified file. If it's unable to read given file
+       * then <code>null</code> is returned. 
+       *
+       *   File.read("/path/to/file"); // contents or null
+       *
+       */
+      Handle<Value> read(const Arguments &args)
+      {
+	if (args.Length() == 1) {
+	  String::Utf8Value fname(args[0]->ToString());
+	  char *content = file_read(*fname);
+
+	  if (content != NULL) {
+	    return String::New(content);
+	  } else {
+	    return Null();
+	  }
 	} else {
 	  return Undefined();
 	}
@@ -98,6 +144,7 @@ namespace mike {
       fileobj->Set(String::NewSymbol("exists"), FunctionTemplate::New(file::exists)->GetFunction());
       fileobj->Set(String::NewSymbol("isDirectory"), FunctionTemplate::New(file::isDirectory)->GetFunction());
       fileobj->Set(String::NewSymbol("isFile"), FunctionTemplate::New(file::isFile)->GetFunction());
+      fileobj->Set(String::NewSymbol("read"), FunctionTemplate::New(file::read)->GetFunction());
 
       return fileobj;
     }
