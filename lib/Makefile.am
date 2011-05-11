@@ -5,3 +5,9 @@ clean-local:
 all: coffies
 
 .PHONY: coffies
+
+javascript_files = \
+	core.js
+
+mikelibdir = $(datarootdir)/mike/site-javascript
+mikelib_DATA = $(javascript_files)
