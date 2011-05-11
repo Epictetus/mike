@@ -33,6 +33,7 @@
 /stamp-h1
 /config.h*
 /configure
+/tmp
 
 .libs
 .deps
