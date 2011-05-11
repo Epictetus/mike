@@ -2,7 +2,11 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "test/macros.h"
-#include "lib/glue/file.h"
+#include "core/context.h"
+
+using namespace v8;
+using namespace std;
+using namespace mike;
 
 class FileFunctionsTest : public CppUnit::TestFixture
 {
@@ -10,7 +14,7 @@ class FileFunctionsTest : public CppUnit::TestFixture
   CPPUNIT_TEST(existsFuncTest);
   CPPUNIT_TEST_SUITE_END();
 private:
-  v8::Persistent<v8::Context> cxt;
+  context::Window *window;
 public:
   void setUp();
   void tearDown();
@@ -22,22 +26,19 @@ CPPUNIT_TEST_SUITE_REGISTRATION(FileFunctionsTest);
 
 void FileFunctionsTest::setUp(void)
 {
-  v8::HandleScope scope;
-  cxt = v8::Context::New();
-  cxt->Enter();
-  cxt->Global()->Set(v8::String::NewSymbol("exists"), v8::FunctionTemplate::New(mike::glue::file::exists)->GetFunction());
+  window = context::New();
 }
 
 void FileFunctionsTest::tearDown(void)
 {
-  cxt.Dispose();
+  delete window;
 }
 
 void FileFunctionsTest::existsFuncTest()
 {
-  v8::HandleScope scope;
+  HandleScope scope;
   system("touch /tmp/test-exists");
-  //ASSERT_V8_RESULT("exists('/tmp/test-exists')", v8::True());
-  //ASSERT_V8_RESULT("exists('/tmp/test-not-exists')", v8::False());
-  //ASSERT_V8_RESULT("exists()", v8::Null());
+  ASSERT_EVAL("File.exists('/tmp/test-exists')", True());
+  ASSERT_EVAL("File.exists('/tmp/test-not-exists')", False());
+  ASSERT_EVAL("File.exists()", Null());
 }

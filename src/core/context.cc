@@ -19,6 +19,7 @@ namespace mike {
     {
       context = v8::Context::New();
       context->Enter();
+      glue::Splice(context);
     }
 
     Window::~Window()

@@ -7,10 +7,14 @@ source_files = \
 	$(testeedir)/lib/glue/file.h \
 	$(testeedir)/lib/glue/glue.h \
 	$(testeedir)/lib/glue/file.cc \
-	$(testeedir)/lib/glue/glue.cc
+	$(testeedir)/lib/glue/glue.cc \
+	$(testeedir)/core/script.h \
+	$(testeedir)/core/context.h \
+	$(testeedir)/core/script.cc \
+	$(testeedir)/core/context.cc
 
 test_files = \
-	file_test.cc \
+	test_file.cc \
 	main.cc
 
 cxx_includes = \

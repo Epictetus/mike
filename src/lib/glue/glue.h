@@ -7,8 +7,12 @@
 #include <v8.h>
 
 namespace mike {
-  namespace glue {
-    // ...
+  namespace glue
+  {
+    using namespace std;
+    using namespace v8;
+
+    void Splice(Handle<Context> context);
   }
 }
 

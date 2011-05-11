@@ -1,12 +1,12 @@
 #ifndef _MIKE_LIB_FILE_H_
 #define _MIKE_LIB_FILE_H_
 
-#include <v8.h>
 #include "lib/glue/glue.h"
 
 namespace mike {
   namespace glue {
-    namespace file {
+    namespace file
+    {
       using namespace std;
       using namespace v8;
       
@@ -16,6 +16,8 @@ namespace mike {
       Handle<Value> isDirectory(const Arguments &args); // isDirectory(path) -> Boolean
       Handle<Value> isReadable(const Arguments &args);  // isReadable(path) -> Boolean
     }
+
+    Handle<Object> FileObject();
   }
 }
 
