@@ -41,14 +41,14 @@ void SystemFunctionsTest::pwdFuncTest()
 {
   HandleScope scope;
   chdir("/tmp");
-  ASSERT_EVAL("System.pwd()", String::New("/tmp"));
+  ASSERT_JS_EQUAL("System.pwd()", String::New("/tmp"));
 }
 
 void SystemFunctionsTest::cwdFuncTest()
 {
   HandleScope scope;
   system("mkdir -p /tmp/testing-dir");
-  ASSERT_EVAL("System.cwd('/tmp/not-exists')", False());
-  ASSERT_EVAL("System.cwd('/tmp/testing-dir')", True());
-  ASSERT_EVAL("System.pwd()", String::New("/tmp/testing-dir"));
+  ASSERT_JS_EQUAL("System.cwd('/tmp/not-exists')", False());
+  ASSERT_JS_EQUAL("System.cwd('/tmp/testing-dir')", True());
+  ASSERT_JS_EQUAL("System.pwd()", String::New("/tmp/testing-dir"));
 }

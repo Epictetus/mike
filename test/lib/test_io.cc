@@ -39,13 +39,13 @@ void IoFunctionsTest::tearDown(void)
 void IoFunctionsTest::stdoutWriteFuncTest()
 {
   HandleScope scope;
-  ASSERT_EVAL("$stdout.write('.')", Null());
-  ASSERT_EVAL("$stdout.write('.', '.')", Null());
+  ASSERT_JS_EQUAL("$stdout.write('.')", Null());
+  ASSERT_JS_EQUAL("$stdout.write('.', '.')", Null());
 }
 
 void IoFunctionsTest::stderrWriteFuncTest()
 {
   HandleScope scope;
-  ASSERT_EVAL("$stderr.write('.')", Null());
-  ASSERT_EVAL("$stderr.write('.', '.')", Null());
+  ASSERT_JS_EQUAL("$stderr.write('.')", Null());
+  ASSERT_JS_EQUAL("$stderr.write('.', '.')", Null());
 }
