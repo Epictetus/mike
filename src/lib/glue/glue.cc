@@ -1,5 +1,6 @@
 #include "lib/glue/glue.h"
 #include "lib/glue/file.h"
+#include "lib/glue/system.h"
 
 namespace mike {
   namespace glue
@@ -17,6 +18,7 @@ namespace mike {
       Handle<Object> global = context->Global();
 
       global->Set(String::NewSymbol("File"), FileObject());
+      global->Set(String::NewSymbol("System"), SystemObject());
     }
   }
 }

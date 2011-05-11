@@ -1,7 +1,6 @@
 #include "lib/glue/file.h"
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <errno.h>
 
 namespace mike {
   namespace glue {
