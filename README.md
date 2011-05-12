@@ -77,12 +77,10 @@ Modules:
 
 Global functions:
 
-    [ ] require(module) 
-    [ ] print(text, ...)
-    [ ] puts(text, ...)
+    [c] require(module) 
+    [j] print(text, ...)
+    [j] puts(text, ...)
 
 Constants:
 
     $LOAD_PATH
-    $stdout
-    $stderr
