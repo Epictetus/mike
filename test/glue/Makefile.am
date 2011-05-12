@@ -1,7 +1,7 @@
 suite = glue_suite
 testeedir = $(srcdir)/../../src
 v8dir = $(srcdir)/../../deps/v8
-mikelibdir = "\"$(srcdir)/../../lib\""
+mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
 
 source_files = \
 	$(testeedir)/test/macros.h \
@@ -33,7 +33,7 @@ ld_libs = \
 	$(v8dir)/libv8.a
 
 glue_suite_SOURCES = $(source_files) $(test_files)
-glue_suite_CXXFLAGS = $(cxx_includes) -DMIKE_LIB_DIR=$(mikelibdir) -fPIC
+glue_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
 glue_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
 
 check_PROGRAMS = $(suite)

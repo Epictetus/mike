@@ -6,6 +6,10 @@
 #include <string>
 #include <v8.h>
 
+#ifndef MIKE_LIBDIR
+#define MIKE_LIBDIR DATADIR "/mike/site-javascript"
+#endif
+
 namespace mike {
   namespace glue
   {

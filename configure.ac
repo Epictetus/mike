@@ -104,6 +104,10 @@ AC_SUBST([MIKE_LIB_VERSION_INFO])
 AC_SUBST([MIKE_LIB_RELEASE])
 AC_SUBST([MIKE_LIBS])
 
+# Define mike's std lib dir.
+
+AC_DEFINE([MIKE_LIBDIR], [DATADIR + "/mike/site-javascript"], [Mike's lib directory.])
+
 # Specify makefiles. 
 
 AC_CONFIG_FILES(Makefile)

@@ -65,8 +65,11 @@ Modules:
     Test
       [ ] run()
     Assert
-      [ ] ok(expr, msg)
-      [ ] equal(expr1, expr2, msg)
+      [j] ok(guard, message)
+      [j] equal(actual, expected, message)
+      [j] notEqual(actual, expected, message)
+      [j] strictEqual(actual, expected, message)
+      [j] notStrictEqual(actual, expected, message)
     OS
       [ ] sleep(miliseconds)
     Socket

@@ -9,6 +9,8 @@
 #include "core/script.h"
 #include "glue/glue.h"
 
+#define MIKE_LIB_DIR DATADIR + "/mike/site-javascript"
+
 namespace mike {
   namespace context
   {

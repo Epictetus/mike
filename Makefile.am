@@ -1,4 +1,5 @@
 SUBDIRS = lib src
+AM_CPPFLAGS = -DDATADIR='"$(datadir)"'
 
 if HAVE_CPPUNIT 
    SUBDIRS += test

@@ -26,7 +26,7 @@ namespace mike {
 
       // Load path
       Handle<Array> loadpath(Array::New());
-      loadpath->Set(0, String::New(MIKE_LIB_DIR));
+      loadpath->Set(0, String::New(MIKE_LIBDIR));
       global->Set(String::NewSymbol("$LOAD_PATH"), loadpath);
     }
   }
