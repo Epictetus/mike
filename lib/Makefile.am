@@ -1,5 +1,6 @@
 javascript_files = \
-	core.js
+	core.js \
+	assert.js
 
 mikelibdir = $(datarootdir)/mike/site-javascript
 mikelib_DATA = $(javascript_files)
