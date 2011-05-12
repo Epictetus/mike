@@ -33,6 +33,8 @@ You have to download and install exactly version 1.4.9, and replace
 Internal standard library provided by mike is minimal as much as possible.
 It provides the following stuff:
 
+Modules:
+
     File
       [c] read(path, modeloptions)
       [c] exists(path)
@@ -52,7 +54,6 @@ It provides the following stuff:
     System
       [c] pwd()
       [c] cwd(dir)
-      [ ] load(file)
     Stdout
       [c] write(text)
     Stderr
@@ -61,16 +62,24 @@ It provides the following stuff:
       [ ] spawn()
       [ ] kill(id)
       [ ] pid()
+    Test
+      [ ] run()
+    Assert
+      [ ] ok(expr, msg)
+      [ ] equal(expr1, expr2, msg)
+    OS
+      [ ] sleep(miliseconds)
     Socket
       [ ] open(ip, port)
       [ ] write(data)
       [ ] read()
       [ ] close()
-    global functions
-      [ ] assert(value)
-      [ ] require(module) 
-      [ ] print(text, ...)
-      [ ] puts(text, ...)
+
+Global functions:
+
+    [ ] require(module) 
+    [ ] print(text, ...)
+    [ ] puts(text, ...)
 
 Constants:
 

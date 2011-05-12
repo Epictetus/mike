@@ -29,12 +29,13 @@ namespace mike {
     protected:
       list<script::Info*> results;
       Persistent<Context> context;
+      void SpliceRequire();
+      void EnterContext();
     public:
       Window();
       ~Window();
       Handle<Value> Require(string module);
       Handle<Array> LoadPath();
-      void EnterContext();
       script::Info* LastExecutedScript();
       script::Info* Evaluate(string src, string fname = "<eval>");
     };

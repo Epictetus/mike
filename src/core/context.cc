@@ -9,6 +9,29 @@ namespace mike {
     using namespace v8;
     using namespace std;
 
+    namespace {
+      /*
+       * Caller for <code>Window::Require</code> method. Requires specified module and returns
+       * it's exports. Examples:
+       *
+       *   assert = require('assert');
+       *   assert.ok(true, "should be true!");
+       *
+       */
+      Handle<Value> require(const Arguments &args)
+      {
+	HandleScope scope;
+      
+	if (args.Length() == 1 && !args.Data().IsEmpty() && args.Data()->IsExternal()) {
+	  Window *window = (Window*)External::Cast(*args.Data())->Value();
+	  String::Utf8Value module(args[0]->ToString());
+	  return window->Require(*module);
+	}
+      
+	return Undefined();
+      }
+    }
+    
     /*
      * Creates and returns new Window context.
      *
@@ -17,13 +40,14 @@ namespace mike {
     {
       return new Window();
     }
-    
+
     Window::Window()
     {
       HandleScope scope;
       context = v8::Context::New();
       context->Enter();
       glue::Splice(context);
+      SpliceRequire();
       Require("core");
     }
 
@@ -34,6 +58,13 @@ namespace mike {
       }
       
       context.Dispose();
+    }
+    
+    void Window::SpliceRequire()
+    {
+      HandleScope scope;
+      Handle<FunctionTemplate> tpl = FunctionTemplate::New(require, External::New((void*)this));
+      context->Global()->Set(String::NewSymbol("require"), tpl->GetFunction());
     }
 
     /*

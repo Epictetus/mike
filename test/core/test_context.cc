@@ -30,8 +30,6 @@ void WindowContextTest::creatingAndEnteringContextTest()
 {
   ASSERT(!Context::InContext());
   context::Window *window = context::New();
-  Context::GetEntered()->Exit();
-  window->EnterContext();
   ASSERT(Context::InContext());
   delete window;
 }
