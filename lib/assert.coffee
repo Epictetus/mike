@@ -9,18 +9,16 @@ class AssertionError extends Error
     @actual = options.actual
     @expected = options.expected
     @operator = options.operator
-
-    startStackFunction = options.startStackFunction || fail
+    @startStackFunction = options.startStackFunction || fail
 
     if (Error.captureStackTrace)
-      Error.captureStackTrace(this, startStackFunction)
+      Error.captureStackTrace(this, @startStackFunction)
 
   toString: ->
     if @message
-      return [@name+":", @message].join(" ")
+      [@name+":", @message].join(" ")
     else
-      return [@name+":", @expected+"", @operator, @actual+""].join(" ")
-
+      [@name+":", @expected+"", @operator, @actual+""].join(" ")
 
 # All of the following functions must throw an AssertionError
 # when a corresponding condition is not met, with a message that
@@ -65,3 +63,11 @@ strictEqual = (actual, expected, message) ->
 notStrictEqual = (actual, expected, message) ->
   if actual is expected
     fail(actual, expected, message, '!==', notStrictEqual)
+
+# Expected to throw an error.
+throws = (block, errorclass, message) ->
+  try
+    block()
+  catch error
+    if (!(error instanceof errorclass))
+      fail(error, errorclass, 'instanceof', message)

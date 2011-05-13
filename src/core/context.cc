@@ -28,7 +28,7 @@ namespace mike {
 	  return window->Require(*module);
 	}
       
-	return Undefined();
+	return Null();
       }
     }
     
@@ -91,7 +91,7 @@ namespace mike {
 	}
       }
       
-      return Undefined();
+      return Null();
     }
       
     /*

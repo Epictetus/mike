@@ -1,7 +1,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "test/macros.h"
+#include "test/helpers.h"
 #include "core/context.h"
 
 using namespace v8;

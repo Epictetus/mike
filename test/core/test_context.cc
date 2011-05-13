@@ -2,7 +2,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <string>
 
-#include "test/macros.h"
+#include "test/helpers.h"
 #include "core/context.h"
 
 using namespace std;

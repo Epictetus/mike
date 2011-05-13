@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <sys/param.h>
 
-#include "test/macros.h"
+#include "test/helpers.h"
 #include "core/context.h"
 
 using namespace v8;

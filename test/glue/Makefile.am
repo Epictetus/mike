@@ -4,7 +4,8 @@ v8dir = $(srcdir)/../../deps/v8
 mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
 
 source_files = \
-	$(testeedir)/test/macros.h \
+	$(testeedir)/test/helpers.h \
+	$(testeedir)/test/helpers.cc \
 	$(testeedir)/glue/file.h \
 	$(testeedir)/glue/system.h \
 	$(testeedir)/glue/stdio.h \
