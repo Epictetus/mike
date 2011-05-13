@@ -1,3 +1,4 @@
+# Original `require` function from C implementation.
 _require = @require
 
 # This error is raised when given module can't be loaded using
@@ -17,7 +18,8 @@ class LoadError extends Error
 @puts = (texts...) ->
   print(texts, "\n")
 
-# Extended version of `require` function.
+# Extended version of `require` function. This one raises appropriate
+# error when module can't be loaded.
 @require = (module) ->
   exports = _require(module)
   unless exports?

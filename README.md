@@ -70,6 +70,7 @@ Modules:
       [j] notEqual(actual, expected, message)
       [j] strictEqual(actual, expected, message)
       [j] notStrictEqual(actual, expected, message)
+      [j] throws(block, errorclass, message)
     OS
       [ ] sleep(miliseconds)
     Socket
