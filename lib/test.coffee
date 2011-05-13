@@ -1,19 +1,28 @@
+# The "test" module provides a "run" method that runs unit tests
+# and catalogs their results. The "run" method must return the total
+# number of failures, suitable for use as a process exit status code.
+
 # Collection of assertion errors encountered in test suites.
 errors = []
 
-# Runs given list of test suites. The "run" method must return the
-# total number of failures, suitable for use as a process exit status
-# code. The idiom for a self-running test module program would be:
+# Accepts any `Object`, usually a unit test module's exports. It will scan
+# the object for all functions and object properties that have names that
+# begin with but are not equal to "test", and other properties for specific
+# flags. Sub-objects with names that start with but are not equal to "test"
+# will be run as sub-tests.
 #
 #   test = require("test");
 #   assert = require("assert");
-#   var suite = {name: "foobar"};
+#   var suite = {testFoobar: {}};
 #
-#   suite["foo should be"] = function() {
+#   suite.testFoobar.testFoo = function() {
 #     assert.ok("foo");
 #   });
-#   suite["bar shuld be bar"] = function() {
+#   suite.testFoobar.testBar = function() {
 #     assert.equal("bar", "bar");
+#   });
+#   suite.testSomethingElse = function() {
+#     assert.equal("something", "something");
 #   });
 #
 #   test.run(suite);
@@ -22,9 +31,13 @@ run = (suites...) ->
   result = 0
   for suite in suites
     for name, block in suite
-      continue if name == 'name'
-      try
-        block()
-      catch err
-        errors.push({suite: suite.name, name: test, error: err})
-        result += 1
+      if name =~ /^test(.+)$/
+        if typeof(block) == "function"
+          try
+            block()
+          catch err
+            errors.push({name: name, error: err})
+            result += 1
+        else if typeof(block) == "object"
+          result += run(block)
+  return result
