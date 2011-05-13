@@ -63,7 +63,7 @@ Modules:
       [ ] kill(id)
       [ ] pid()
     Test
-      [ ] run()
+      [j] run()
     Assert
       [j] ok(guard, message)
       [j] equal(actual, expected, message)

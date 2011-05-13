@@ -69,5 +69,5 @@ throws = (block, errorclass, message) ->
   try
     block()
   catch error
-    if (!(error instanceof errorclass))
+    if !(error instanceof errorclass)
       fail(error, errorclass, 'instanceof', message)

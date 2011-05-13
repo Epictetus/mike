@@ -5,9 +5,11 @@ _require = @require
 # `require` function.
 class LoadError extends Error
   constructor: (module) ->
+    @name = "LoadError"
     @module = module
+
   toString: ->
-    "No such module to load: " + @module
+    [@name, ": no such module to load -- ", @module].join("")
 
 # Writes given args to stdout.
 @print = (texts...) ->
