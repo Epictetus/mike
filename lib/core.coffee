@@ -1,3 +1,6 @@
+# The core module provides basic stuff like `require`, `print`, `puts`
+# methods, common exception classes, etc.
+
 # Original `require` function from C implementation.
 _require = @require
 
