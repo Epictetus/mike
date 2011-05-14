@@ -84,3 +84,18 @@ Global functions:
 Constants:
 
     $LOAD_PATH
+
+## Browser implementation
+
+Mike's embedded browser is mostly written in javascript (coffee), and so far
+supports the following elements:
+
+    [ ] XMLHttpRequest
+    [ ] WebSocket
+    [ ] DOM
+    [ ] window
+    [ ] document
+    [ ] history
+    [ ] cache
+    [ ] cookies
+    [ ] EventLoop
