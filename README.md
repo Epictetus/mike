@@ -40,7 +40,7 @@ Modules:
       [c] exists(path)
       [c] isFile(path)
       [c] isDirectory(path)
-      [ ] join(path)
+      [j] join(path)
       [ ] absolute(path)
       [ ] directory(path)
       [ ] base(path)
