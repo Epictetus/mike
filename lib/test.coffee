@@ -2,12 +2,13 @@
 # and catalogs their results. The "run" method must return the total
 # number of failures, suitable for use as a process exit status code.
 
-test = {};
+assert = require('assert')
+test = {}
 
 # Collection of assertion errors encountered in test suites.
-test.failures = [];
+test.failures = []
 # Number of passed cases.
-test.passed = 0;
+test.passed = 0
 
 # Accepts any `Object`, usually a unit test module's exports. It will scan
 # the object for all functions and object properties that have names that
@@ -41,6 +42,10 @@ test.run = (suite) ->
           print(".")
           test.passed += 1
         catch err
+          if err instanceof assert.AssertionError
+            print("F")
+          else
+            print("E")
           test.failures.push({name: name, error: err})
           result += 1
       else if typeof(block) == "object"

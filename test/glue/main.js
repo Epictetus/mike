@@ -4,8 +4,9 @@ try {
 
     var suite = {};
     require('test_file');
+    require('test_system');
+    
     result = test.run(suite);
-
     puts("\n\nOK (" + test.passed + " suites)");
 
     if (result > 0) {
