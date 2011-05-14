@@ -12,9 +12,9 @@ namespace mike {
     void assertJsEqual(context::Window* window, string js, v8::Handle<v8::Value> result)
     {
       v8::HandleScope scope;
-      script::Info* info = window->Evaluate(js);
-      CPPUNIT_ASSERT(info->error == script::seNone);
-      CPPUNIT_ASSERT(info->result->Equals(result));
+      v8::Handle<v8::Value> res = window->Evaluate(js);
+      CPPUNIT_ASSERT(!res.IsEmpty());
+      CPPUNIT_ASSERT(res->Equals(result));
     }    
   }
 }

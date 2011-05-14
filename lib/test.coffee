@@ -2,8 +2,12 @@
 # and catalogs their results. The "run" method must return the total
 # number of failures, suitable for use as a process exit status code.
 
+test = {};
+
 # Collection of assertion errors encountered in test suites.
-errors = []
+test.failures = [];
+# Number of passed cases.
+test.passed = 0;
 
 # Accepts any `Object`, usually a unit test module's exports. It will scan
 # the object for all functions and object properties that have names that
@@ -27,17 +31,20 @@ errors = []
 #
 #   test.run(suite);
 #
-run = (suites...) ->
+test.run = (suite) ->
   result = 0
-  for suite in suites
-    for name, block in suite
-      if name =~ /^test(.+)$/
-        if typeof(block) == "function"
-          try
-            block()
-          catch err
-            errors.push({name: name, error: err})
-            result += 1
-        else if typeof(block) == "object"
-          result += run(block)
+  for name, block of suite
+    if name.match(/^test(.+)$/)
+      if typeof(block) == "function"
+        try
+          block()
+          print(".")
+          test.passed += 1
+        catch err
+          test.failures.push({name: name, error: err})
+          result += 1
+      else if typeof(block) == "object"
+        result += test.run(block)
   return result
+
+return test

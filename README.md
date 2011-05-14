@@ -63,7 +63,7 @@ Modules:
       [ ] kill(id)
       [ ] pid()
     Test
-      [j] run()
+      [j] run(suites...)
     Assert
       [j] ok(guard, message)
       [j] equal(actual, expected, message)
@@ -82,8 +82,8 @@ Modules:
 Global functions:
 
     [c] require(module) 
-    [j] print(text, ...)
-    [j] puts(text, ...)
+    [j] print(text...)
+    [j] puts(text...)
 
 Constants:
 

@@ -1,10 +1,18 @@
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+#include "core/context.h"
+#include "assert.h"
+#include "unistd.h"
+
+using namespace v8;
+using namespace mike;
+using namespace std;
 
 int main(int argc, char **argv)
 {
-  CppUnit::TextUi::TestRunner runner;
-  CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
-  runner.addTest(registry.makeTest());
-  return runner.run("", false) ? 0 : 1;
+  HandleScope scope;
+  context::Window *window = context::New();
+  Handle<Value> result = window->Evaluate("$LOAD_PATH.push(System.pwd()+'/glue'); require('glue_suite');");
+  assert(!result.IsEmpty());
+  int failures = result->Int32Value();
+  delete window;
+  return failures;
 }

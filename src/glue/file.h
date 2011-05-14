@@ -10,7 +10,7 @@ namespace mike {
     {
       bool exists_p(string fname);
       bool check_st_mode(string fname, int mode);
-      char* read_contents(char *fname);
+      bool read_contents(string *content, string fname);
     }
     
     Handle<Object> FileObject();

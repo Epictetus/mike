@@ -1,5 +1,8 @@
 #include "glue/file.h"
 #include <sys/stat.h>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 namespace mike {
   namespace glue {
@@ -33,26 +36,19 @@ namespace mike {
 	return false;
       }
 
-      char* read_contents(char *fname)
+      bool read_contents(string *content, string fname)
       {
-	FILE *fp = fopen(fname, "r");
-	char *buffer = NULL;
-	long lsize;
+	ifstream fp(fname.c_str());
 
-	if (fp != NULL) {
-	  fseek(fp, 0, SEEK_END);
-	  lsize = ftell(fp);
-	  rewind(fp);
-	  buffer = (char*)malloc((sizeof(char)*lsize));
-
-	  if (buffer == NULL || fread(buffer, 1, lsize, fp) != lsize) {
-	    buffer = NULL;
-	  }
-	    
-	  fclose(fp);
+	if (fp.is_open()) {
+	  stringstream buffer;
+	  buffer << fp.rdbuf();
+	  fp.close();
+	  *content = buffer.str();
+	  return true;
 	}
 
-	return buffer;
+	return false;
       }
 
       /*
@@ -114,10 +110,9 @@ namespace mike {
       {
 	if (args.Length() == 1) {
 	  String::Utf8Value fname(args[0]->ToString());
-	  char *content = read_contents(*fname);
-
-	  if (content != NULL) {
-	    return String::New(content);
+	  string content;
+	  if (read_contents(&content, *fname)) {
+	    return String::New(content.c_str());
 	  } else {
 	    return Null();
 	  }
@@ -129,7 +124,6 @@ namespace mike {
 
     Handle<Object> FileObject()
     {
-      HandleScope scope;
       Handle<Object> fileobj(Object::New());
 
       fileobj->Set(String::NewSymbol("exists"), FunctionTemplate::New(file::exists)->GetFunction());

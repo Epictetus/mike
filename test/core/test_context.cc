@@ -46,6 +46,7 @@ void WindowContextTest::evaluateTest()
 
 void WindowContextTest::lastExecutedScriptTest()
 {
+  HandleScope scope;
   context::Window *window = context::New();
   script::Info *info = window->Evaluate("var a=1; a;");
   ASSERT(window->LastExecutedScript() == info);

@@ -1,36 +1,15 @@
 #include <sys/stat.h>
 #include "core/context.h"
+#include "glue/glue.h"
 #include "glue/file.h"
 #include "unistd.h"
+#include "stdio.h"
 
 namespace mike {
   namespace context
   {
     using namespace v8;
     using namespace std;
-
-    namespace {
-      /*
-       * Caller for <code>Window::Require</code> method. Requires specified module and returns
-       * it's exports. Examples:
-       *
-       *   assert = require('assert');
-       *   assert.ok(true, "should be true!");
-       *
-       */
-      Handle<Value> require(const Arguments &args)
-      {
-	HandleScope scope;
-      
-	if (args.Length() == 1 && !args.Data().IsEmpty() && args.Data()->IsExternal()) {
-	  Window *window = (Window*)External::Cast(*args.Data())->Value();
-	  String::Utf8Value module(args[0]->ToString());
-	  return window->Require(*module);
-	}
-      
-	return Null();
-      }
-    }
     
     /*
      * Creates and returns new Window context.
@@ -46,27 +25,15 @@ namespace mike {
       HandleScope scope;
       context = v8::Context::New();
       context->Enter();
-      glue::Splice(context);
-      SpliceRequire();
+      glue::Splice(this, context->Global());
       Require("core");
     }
 
     Window::~Window()
     {
-      for (list<script::Info*>::iterator it = results.begin(); it != results.end(); it++) {
-	delete *it;
-      }
-      
       context.Dispose();
     }
     
-    void Window::SpliceRequire()
-    {
-      HandleScope scope;
-      Handle<FunctionTemplate> tpl = FunctionTemplate::New(require, External::New((void*)this));
-      context->Global()->Set(String::NewSymbol("require"), tpl->GetFunction());
-    }
-
     /*
      * Requires specified module from mike's load path.
      *
@@ -74,24 +41,23 @@ namespace mike {
      */
     Handle<Value> Window::Require(string module)
     {
-      HandleScope scope;
       Handle<Array> loadpath = LoadPath();
       
       for (int i = 0; i < loadpath->Length(); i++) {
 	String::Utf8Value path(loadpath->Get(i)->ToString());
-	string filename = string(*path) + "/" + module + ".js"; // TODO: maybe some join here?
+	string filename = string(*path) + "/" + module + ".js";
 	
 	if (glue::file::check_st_mode(filename, S_IFREG)) {
-	  char *content = glue::file::read_contents((char*)filename.c_str());
+	  string content;
 	  
-	  if (content != NULL) {
-	    script::Info *info = Evaluate(content, filename);
-	    return info->result;
+	  if (glue::file::read_contents(&content, filename) && content != "") {
+	    return Evaluate(content, filename);
 	  }
 	}
       }
-      
-      return Null();
+
+      ThrowException(Exception::Error(String::New(("no such module to load -- " + module).c_str())));
+      return Undefined();
     }
       
     /*
@@ -110,9 +76,7 @@ namespace mike {
      */
     void Window::EnterContext()
     {
-      if (!Context::InContext() || Context::GetEntered() != context) {
-	context->Enter();
-      }
+      
     }
 
     /*
@@ -125,26 +89,31 @@ namespace mike {
      *   delete window;
      *
      */
-    script::Info* Window::Evaluate(string src, string fname/*= "<eval>"*/)
+    Handle<Value> Window::Evaluate(string src, string fname/*= "<eval>"*/)
     {
-      HandleScope scope;
-      EnterContext();
-      script::Info* info = script::Run(src, fname);
-      results.push_back(info);
-      return info;
-    }
-
-    /*
-     * Returns <code>script::Info</code> object for the last executed script.
-     *
-     */
-    script::Info* Window::LastExecutedScript()
-    {
-      if (results.empty()) {
-	return NULL;
-      } else {
-	return results.back();
+      if (!Context::InContext() || Context::GetEntered() != context) {
+	context->Enter();
       }
+
+      Handle<String> source = String::New(src.c_str());
+      Handle<String> name = String::New(fname.c_str());
+      
+      TryCatch try_catch;
+      Handle<Script> script = Script::Compile(source, String::New("<eval>"));
+      
+      if (try_catch.HasCaught()) {
+	// error...
+      } else {
+	Handle<Value> result = script->Run();
+
+	if (try_catch.HasCaught()) {
+	  // error...
+	} else {
+	  return result;
+	}
+      }
+
+      return Handle<Value>();
     }
   }
 }

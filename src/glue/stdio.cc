@@ -18,7 +18,7 @@ namespace mike {
       {
 	for (int i = 0; i < args.Length(); i++) {
 	  String::Utf8Value text(args[i]->ToString());
-	  printf("%s", *text);
+	  fprintf(stdout, "%s", *text);
 	}
 	return Null();
       }
@@ -42,7 +42,6 @@ namespace mike {
 
     Handle<Object> StdoutObject()
     {
-      HandleScope scope;
       Handle<Object> stdoutobj(Object::New());
       stdoutobj->Set(String::NewSymbol("write"), FunctionTemplate::New(stdio::stdoutWrite)->GetFunction());
       return stdoutobj;
@@ -51,7 +50,6 @@ namespace mike {
 
     Handle<Object> StderrObject()
     {
-      HandleScope scope;
       Handle<Object> stderrobj(Object::New());
       stderrobj->Set(String::NewSymbol("write"), FunctionTemplate::New(stdio::stderrWrite)->GetFunction());
       return stderrobj;

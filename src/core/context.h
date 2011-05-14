@@ -6,9 +6,6 @@
 #include <list>
 #include <v8.h>
 
-#include "core/script.h"
-#include "glue/glue.h"
-
 #define MIKE_LIB_DIR DATADIR + "/mike/site-javascript"
 
 namespace mike {
@@ -29,7 +26,6 @@ namespace mike {
     class Window
     {
     protected:
-      list<script::Info*> results;
       Persistent<Context> context;
       void SpliceRequire();
       void EnterContext();
@@ -38,8 +34,7 @@ namespace mike {
       ~Window();
       Handle<Value> Require(string module);
       Handle<Array> LoadPath();
-      script::Info* LastExecutedScript();
-      script::Info* Evaluate(string src, string fname = "<eval>");
+      Handle<Value> Evaluate(string src, string fname = "<eval>");
     };
   }
 }

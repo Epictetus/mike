@@ -6,6 +6,8 @@
 #include <string>
 #include <v8.h>
 
+#include "core/context.h"
+
 #ifndef MIKE_LIBDIR
 #define MIKE_LIBDIR DATADIR "/mike/site-javascript"
 #endif
@@ -16,7 +18,7 @@ namespace mike {
     using namespace std;
     using namespace v8;
 
-    void Splice(Handle<Context> context);
+    void Splice(context::Window *window, Handle<Object> global);
   }
 }
 

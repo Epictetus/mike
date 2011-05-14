@@ -4,6 +4,9 @@
 # Original `require` function from C implementation.
 _require = @require
 
+# Placeholder for already loaded modules.
+_loaded_modules = {}
+
 # This error is raised when given module can't be loaded using
 # `require` function.
 class LoadError extends Error
@@ -23,9 +26,9 @@ class LoadError extends Error
 @puts = (texts...) ->
   print(texts, "\n")
 
-# Extended version of `require` function. This one raises appropriate
-# error when module can't be loaded.
+# Extended version of `require` function. This one caches already
+# loaded modules.
 @require = (module) ->
-  exports = _require(module)
-  unless exports?
-    throw new LoadError(module)
+  unless typeof(_loaded_modules[module]) != 'undefined'
+    _loaded_modules[module] = _require(module)
+  return _loaded_modules[module]

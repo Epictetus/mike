@@ -44,7 +44,6 @@ namespace mike {
     
     Handle<Object> SystemObject()
     {
-      HandleScope scope;
       Handle<Object> systemobj(Object::New());
 
       systemobj->Set(String::NewSymbol("pwd"), FunctionTemplate::New(system::pwd)->GetFunction());
