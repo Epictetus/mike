@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
   HandleScope scope;
   context::Window *window = context::New();
-  Handle<Value> result = window->Evaluate("$LOAD_PATH.push(System.pwd()+'/jstest'); require('main');");
+  Handle<Value> result = window->Evaluate("$LOAD_PATH.push($mike.System.pwd()+'/jstest'); require('main');");
   assert(!result.IsEmpty());
   int failures = result->Int32Value();
   delete window;

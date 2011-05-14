@@ -33,20 +33,25 @@ namespace mike {
      */
     void Splice(context::Window *window, Handle<Object> global)
     {
-      // Global objects
-      global->Set(String::NewSymbol("Stdout"), StdoutObject());
-      global->Set(String::NewSymbol("Stderr"), StderrObject());
-      global->Set(String::NewSymbol("File"), FileObject());
-      global->Set(String::NewSymbol("System"), SystemObject());
+      Handle<Object> mike(Object::New());
+      
+      // Native objects
+      mike->Set(String::NewSymbol("Stdout"), StdoutObject());
+      mike->Set(String::NewSymbol("Stderr"), StderrObject());
+      mike->Set(String::NewSymbol("File"), FileObject());
+      mike->Set(String::NewSymbol("System"), SystemObject());
 
+      // Mike's namespace
+      global->Set(String::NewSymbol("$mike"), mike);
+
+      // Require funciton
+      Handle<FunctionTemplate> tpl = FunctionTemplate::New(require, External::New((void*)window));
+      mike->Set(String::NewSymbol("require"), tpl->GetFunction());
+      
       // Load path
       Handle<Array> loadpath(Array::New());
       loadpath->Set(0, String::New(MIKE_LIBDIR));
       global->Set(String::NewSymbol("$LOAD_PATH"), loadpath);
-
-      // Require funciton
-      Handle<FunctionTemplate> tpl = FunctionTemplate::New(require, External::New((void*)window));
-      global->Set(String::NewSymbol("require"), tpl->GetFunction());
     }
   }
 }

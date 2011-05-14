@@ -1,11 +1,8 @@
 # The core module provides basic stuff like `require`, `print`, `puts`
 # methods, common exception classes, etc.
 
-# Original `require` function from C implementation.
-_require = @require
-
 # Placeholder for already loaded modules.
-_loaded_modules = {}
+loadedModules = {}
 
 # This error is raised when given module can't be loaded using
 # `require` function.
@@ -19,7 +16,7 @@ class LoadError extends Error
 
 # Writes given args to stdout.
 @print = (texts...) ->
-  Stdout.write text.toString() for text in texts
+  $mike.Stdout.write(text.toString()) for text in texts
 
 # Writes given args to stdout line `print`, but with newline
 # at the end.
@@ -29,6 +26,6 @@ class LoadError extends Error
 # Extended version of `require` function. This one caches already
 # loaded modules.
 @require = (module) ->
-  unless typeof(_loaded_modules[module]) != 'undefined'
-    _loaded_modules[module] = _require(module)
-  return _loaded_modules[module]
+  unless typeof(loadedModules[module]) != 'undefined'
+    loadedModules[module] = $mike.require(module)
+  return loadedModules[module]

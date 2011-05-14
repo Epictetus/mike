@@ -1,10 +1,11 @@
 try {
+    sys = require('sys');
     test = require('test');
     assert = require('assert');
 
     var suite = {};
     require('test_file');
-    require('test_system');
+    require('test_sys');
     
     result = test.run(suite);
     puts("\n\n\nOK (" + test.passed + " tests)");
@@ -25,6 +26,6 @@ try {
     puts("\n");
     result;
 } catch (err) {
-    Stderr.write(err+"\n");
+    sys.stderr.write(err+"\n");
     throw(err);
 }

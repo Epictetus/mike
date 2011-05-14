@@ -2,6 +2,7 @@
 # To be clear it just provides methods to read stuff, distinguinsh
 # types and operate paths.
 
+sys = require('sys');
 file = {}
 
 # Default path separator. So far we're supporting only *nix systems
@@ -10,10 +11,10 @@ file.pathSeparator = "/"
 
 # Native functions.
 
-file.read = File.read
-file.exists = File.exists
-file.isDirectory = File.isDirectory
-file.isFile = File.isFile
+file.read = $mike.File.read
+file.exists = $mike.File.exists
+file.isDirectory = $mike.File.isDirectory
+file.isFile = $mike.File.isFile
 
 # Joins few strings into single path to file.
 #
@@ -25,12 +26,12 @@ file.join = (paths...) ->
 
 # Returns absolute path to given file.
 #
-#   System.cwd('/home/foo');
+#   sys.cwd('/home/foo');
 #   file.absolute('../bar/bla'); # => /home/bar/bla
 #
 file.absolute = (path) ->
   result = []
-  parts = file.join(System.pwd(), path).split(file.pathSeparator)
+  parts = file.join(sys.pwd(), path).split(file.pathSeparator)
   for part in parts
     if part == '..'
       result.pop()
