@@ -9,10 +9,12 @@ source_files = \
 	$(testeedir)/glue/file.h \
 	$(testeedir)/glue/system.h \
 	$(testeedir)/glue/stdio.h \
+	$(testeedir)/glue/time.h \
 	$(testeedir)/glue/glue.h \
 	$(testeedir)/glue/file.cc \
 	$(testeedir)/glue/system.cc \
 	$(testeedir)/glue/stdio.cc \
+	$(testeedir)/glue/time.cc \
 	$(testeedir)/glue/glue.cc \
 	$(testeedir)/core/script.h \
 	$(testeedir)/core/context.h \
