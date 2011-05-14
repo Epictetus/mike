@@ -1,6 +1,6 @@
+#include <assert.h>
+#include <unistd.h>
 #include "core/context.h"
-#include "assert.h"
-#include "unistd.h"
 
 using namespace v8;
 using namespace mike;
@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
   HandleScope scope;
   context::Window *window = context::New();
-  Handle<Value> result = window->Evaluate("$LOAD_PATH.push(System.pwd()+'/glue'); require('main');");
+  Handle<Value> result = window->Evaluate("$LOAD_PATH.push(System.pwd()+'/jstest'); require('main');");
   assert(!result.IsEmpty());
   int failures = result->Int32Value();
   delete window;

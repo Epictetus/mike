@@ -116,9 +116,8 @@ AC_CONFIG_FILES(lib/Makefile)
 
 if test x$cppunit = xyes; then
    AC_CONFIG_FILES(test/Makefile)
-   AC_CONFIG_FILES(test/glue/Makefile)
-   AC_CONFIG_FILES(test/core/Makefile)
-   AC_CONFIG_FILES(test/api/Makefile)
+   AC_CONFIG_FILES(test/jstest/Makefile)
+   AC_CONFIG_FILES(test/cctest/Makefile)
 fi
 
 # Generate output. 

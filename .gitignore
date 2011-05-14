@@ -16,17 +16,13 @@
 /test/Makefile
 /test/Makefile.in
 
-/test/glue/*_suite
-/test/glue/Makefile
-/test/glue/Makefile.in
+/test/jstest/*_suite
+/test/jstest/Makefile
+/test/jstest/Makefile.in
 
-/test/api/*_suite
-/test/api/Makefile
-/test/api/Makefile.in
-
-/test/core/*_suite
-/test/core/Makefile
-/test/core/Makefile.in
+/test/cctest/*_suite
+/test/cctest/Makefile
+/test/cctest/Makefile.in
 
 /build-aux
 /build-m4

@@ -1,4 +1,4 @@
-suite = core_suite
+suite = cc_suite
 testeedir = $(srcdir)/../../src
 v8dir = $(srcdir)/../../deps/v8
 mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
@@ -20,7 +20,6 @@ source_files = \
 	$(testeedir)/core/context.cc
 
 test_files = \
-	test_script.cc \
 	test_context.cc \
 	main.cc
 
@@ -31,9 +30,9 @@ cxx_includes = \
 ld_libs = \
 	$(v8dir)/libv8.a
 
-core_suite_SOURCES = $(source_files) $(test_files)
-core_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
-core_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
+cc_suite_SOURCES = $(source_files) $(test_files)
+cc_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
+cc_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
 
 check_PROGRAMS = $(suite)
 noinst_PROGRAMS = $(suite)

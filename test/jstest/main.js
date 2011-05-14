@@ -7,13 +7,13 @@ try {
     require('test_system');
     
     result = test.run(suite);
-    puts("\n\nOK (" + test.passed + " suites)");
+    puts("\n\n\nOK (" + test.passed + " tests)");
 
     if (result > 0) {
 	var i, len;
 	var failures = test.failures;
 
-	puts("FAILED (" + result + " suites)\n");
+	puts("FAILED (" + result + " tests)\n");
 	
 	for (i = 0; i < result; i++) {
 	    var failure = failures[i]; 

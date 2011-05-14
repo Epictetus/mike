@@ -1,4 +1,4 @@
-suite = glue_suite
+suite = js_suite
 testeedir = $(srcdir)/../../src
 v8dir = $(srcdir)/../../deps/v8
 mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
@@ -19,11 +19,6 @@ source_files = \
 	$(testeedir)/core/script.cc \
 	$(testeedir)/core/context.cc
 
-test_files = \
-	test_system.cc \
-	test_stdio.cc \
-	main.cc
-
 cxx_includes = \
 	-I$(v8dir)/include \
 	-I$(testeedir)
@@ -31,9 +26,9 @@ cxx_includes = \
 ld_libs = \
 	$(v8dir)/libv8.a
 
-glue_suite_SOURCES = $(source_files) $(test_files)
-glue_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
-glue_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
+js_suite_SOURCES = $(source_files) main.cc
+js_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
+js_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
 
 check_PROGRAMS = $(suite)
 noinst_PROGRAMS = $(suite)

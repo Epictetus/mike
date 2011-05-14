@@ -14,13 +14,11 @@ class WindowContextTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(WindowContextTest);
   CPPUNIT_TEST(creatingAndEnteringContextTest);
   CPPUNIT_TEST(evaluateTest);
-  CPPUNIT_TEST(lastExecutedScriptTest);
   CPPUNIT_TEST(loadPathTest);
   CPPUNIT_TEST_SUITE_END();
 protected:
   void creatingAndEnteringContextTest();
   void evaluateTest();
-  void lastExecutedScriptTest();
   void loadPathTest();
 };
 
@@ -28,6 +26,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(WindowContextTest);
 
 void WindowContextTest::creatingAndEnteringContextTest()
 {
+  HandleScope scope;
   ASSERT(!Context::InContext());
   context::Window *window = context::New();
   ASSERT(Context::InContext());
@@ -36,26 +35,17 @@ void WindowContextTest::creatingAndEnteringContextTest()
 
 void WindowContextTest::evaluateTest()
 {
-  context::Window *window = context::New();
-  script::Info* info = window->Evaluate("var a=1; a;");
-  ASSERT(info->result->Int32Value() == 1);
-  ASSERT(info->name == "<eval>");
-  ASSERT(info->source == "var a=1; a;");
-  delete window;
-}
-
-void WindowContextTest::lastExecutedScriptTest()
-{
   HandleScope scope;
   context::Window *window = context::New();
-  script::Info *info = window->Evaluate("var a=1; a;");
-  ASSERT(window->LastExecutedScript() == info);
+  Handle<Value> result = window->Evaluate("var a=1; a;");
+  ASSERT(!result.IsEmpty());
+  ASSERT(result->Int32Value() == 1);
   delete window;
 }
 
 void WindowContextTest::loadPathTest()
 {
-  HandleScope scope; 
+  HandleScope scope;
   context::Window *window = context::New();
   ASSERT(window->LoadPath()->IsArray());
   delete window;

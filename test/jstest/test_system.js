@@ -12,7 +12,7 @@ suite.testSystem.testPwd = function() {
 
 suite.testSystem.testCwd = function() {
     assert.ok(!System.cwd('not-exists'));
-    assert.ok(System.cwd('glue'));
-    assert.ok(System.pwd().match(/test\/glue$/));
+    assert.ok(System.cwd('jstest'));
+    assert.ok(System.pwd().match(/test\/jstest$/));
     System.cwd('..');
 }
