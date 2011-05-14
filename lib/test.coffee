@@ -22,13 +22,13 @@ test.passed = 0
 #
 #   suite.testFoobar.testFoo = function() {
 #     assert.ok("foo");
-#   });
+#   };
 #   suite.testFoobar.testBar = function() {
 #     assert.equal("bar", "bar");
-#   });
+#   };
 #   suite.testSomethingElse = function() {
 #     assert.equal("something", "something");
-#   });
+#   };
 #
 #   test.run(suite);
 #

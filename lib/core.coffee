@@ -25,6 +25,6 @@ class LoadError extends Error
 # Extended version of `require` function. This one caches already
 # loaded modules.
 @require = (module) ->
-  unless typeof(loadedModules[module]) != 'undefined'
+  if typeof(loadedModules[module]) == 'undefined'
     loadedModules[module] = $mike.require(module)
   return loadedModules[module]
