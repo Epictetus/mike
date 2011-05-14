@@ -52,10 +52,10 @@ Modules:
     System
       [c] pwd()
       [c] cwd(dir)
-    Stdout
-      [c] write(text)
-    Stderr
-      [c] write(text)
+      [c] system(cmd)
+      [c] stdout.write(text)
+      [c] stderr.write(text)
+      [ ] sleep(miliseconds)
     Thread
       [ ] spawn()
       [ ] kill(id)
@@ -69,8 +69,6 @@ Modules:
       [j] strictEqual(actual, expected, message)
       [j] notStrictEqual(actual, expected, message)
       [j] throws(block, errorclass, message)
-    OS
-      [ ] sleep(miliseconds)
     Socket
       [ ] open(ip, port)
       [ ] write(data)
