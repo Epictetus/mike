@@ -1,7 +1,10 @@
 suite.testFile = {};
 
+System.system('touch /tmp/test-file');
+System.system('mkdir -p /tmp/test-dir');
+
 suite.testFile.testExists = function() {
-    assert.ok(File.exists('/tmp/test-exists'));
+    assert.ok(File.exists('/tmp/test-dir'));
     assert.ok(!File.exists('/tmp/test-not-exists'));
 };
 
@@ -16,6 +19,7 @@ suite.testFile.testIsFile = function() {
 }
 
 suite.testFile.testRead = function() {
+    System.system('echo "foobar" > /tmp/test-file');
     assert.equal(File.read("/tmp/test-file"), "foobar\n");
     assert.equal(File.read("/tmp/test-notexists"), null);
 }

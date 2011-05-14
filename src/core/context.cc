@@ -1,9 +1,9 @@
 #include <sys/stat.h>
+#include <unistd.h>
+#include <stdio.h>
 #include "core/context.h"
 #include "glue/glue.h"
 #include "glue/file.h"
-#include "unistd.h"
-#include "stdio.h"
 
 namespace mike {
   namespace context
@@ -67,16 +67,6 @@ namespace mike {
     Handle<Array> Window::LoadPath()
     {
       return (Handle<Array>)Array::Cast(*context->Global()->Get(String::NewSymbol("$LOAD_PATH")));
-    }
-
-    /*
-     * Enters into v8 context if necessary. If context is already entered it
-     * does nothing. 
-     *
-     */
-    void Window::EnterContext()
-    {
-      
     }
 
     /*

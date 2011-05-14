@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/param.h>
 #include <string>
 #include "glue/system.h"
@@ -38,7 +39,23 @@ namespace mike {
 	    return True();
 	  } 
 	}
-	return False();
+	return Undefined();
+      }
+
+      /*
+       * Executes given system command.
+       *
+       *   System.system('mkdir -p /tmp/foo');
+       *
+       */
+      Handle<Value> system(const Arguments &args)
+      {
+	if (args.Length() == 1) {
+	  String::Utf8Value cmd(args[0]->ToString());
+	  int exitcode = ::system(*cmd);
+	  return Integer::New(exitcode);
+	}
+	return Undefined();
       }
     }
     
@@ -48,6 +65,7 @@ namespace mike {
 
       systemobj->Set(String::NewSymbol("pwd"), FunctionTemplate::New(system::pwd)->GetFunction());
       systemobj->Set(String::NewSymbol("cwd"), FunctionTemplate::New(system::cwd)->GetFunction());
+      systemobj->Set(String::NewSymbol("system"), FunctionTemplate::New(system::system)->GetFunction());
 
       return systemobj;
     }
