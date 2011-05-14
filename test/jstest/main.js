@@ -3,9 +3,10 @@ try {
     test = require('test');
     assert = require('assert');
 
-    var suite = {};
-    require('test_file');
-    require('test_sys');
+    var suite = {
+	testFile: require('test_file'),
+	testSys: require('test_sys')
+    };
     
     result = test.run(suite);
     puts("\n\n\nOK (" + test.passed + " tests)");
