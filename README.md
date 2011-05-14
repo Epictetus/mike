@@ -41,9 +41,7 @@ Modules:
       [c] isFile(path)
       [c] isDirectory(path)
       [j] join(path)
-      [ ] absolute(path)
-      [ ] directory(path)
-      [ ] base(path)
+      [j] absolute(path)
     HttpClient
       [ ] open(method, url, async, user, password)
       [ ] send(body)

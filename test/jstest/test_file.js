@@ -28,3 +28,10 @@ suite.testFile.testRead = function() {
 suite.testFile.testJoin = function() {
     assert.equal(file.join("foo", "bar/bla", "/bla"), "foo/bar/bla/bla");
 }
+
+suite.testFile.testAbsolute = function() {
+    path = System.pwd().split('/')
+    path.pop()
+    path = path.join('/')
+    assert.equal(file.absolute("../foo"), path+"/foo");
+}
