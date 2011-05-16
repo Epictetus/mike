@@ -98,4 +98,5 @@ supports the following elements:
     [ ] history
     [ ] cache
     [ ] cookies
+    [ ] console
     [ ] EventLoop
