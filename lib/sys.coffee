@@ -1,3 +1,5 @@
+# - sys.js -
+#
 # Module contains basic functions for interaction with system.
 
 sys = {}

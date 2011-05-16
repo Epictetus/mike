@@ -1,3 +1,5 @@
+# - test.js -
+#
 # The "test" module provides a "run" method that runs unit tests
 # and catalogs their results. The "run" method must return the total
 # number of failures, suitable for use as a process exit status code.

@@ -1,3 +1,5 @@
+# - file.js -
+#
 # This module provides very basic methods for files manipulation.
 # To be clear it just provides methods to read stuff, distinguinsh
 # types and operate paths.

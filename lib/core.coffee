@@ -1,3 +1,5 @@
+# - core.js -
+#
 # The core module provides basic stuff like `require`, `print`, `puts`
 # methods, common exception classes, etc.
 
