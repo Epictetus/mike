@@ -19,9 +19,9 @@ class AssertionError extends Error
 
   toString: ->
     if @message
-      [@name+":", @message].join(" ")
+      "#{@name}: #{@message}"
     else
-      [@name+":", @expected+"", @operator, @actual+""].join(" ")
+      "#{@name}: #{@expected} #{@operator} #{@actual}"
 
 assert.AssertionError = AssertionError
 

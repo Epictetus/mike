@@ -11,7 +11,7 @@ class LoadError extends Error
     @name = "LoadError"
     @module = module
   toString: ->
-    [@name, ": no such module to load -- ", @module].join("")
+    "#{@name} : no such module to load -- #{@module}"
 
 # Writes given args to stdout.
 @print = (texts...) ->
