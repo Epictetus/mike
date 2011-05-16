@@ -2,7 +2,7 @@
 # To be clear it just provides methods to read stuff, distinguinsh
 # types and operate paths.
 
-sys = require('sys');
+sys = require('sys')
 file = {}
 
 # Default path separator. So far we're supporting only *nix systems

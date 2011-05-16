@@ -2,7 +2,7 @@
 # when particular conditions are not met. The assert module must conform
 # to the following interface.
 
-assert = {};
+assert = {}
 
 # The `AssertionError` should be used to inform about all failed assertions.
 class AssertionError extends Error
@@ -23,7 +23,7 @@ class AssertionError extends Error
     else
       [@name+":", @expected+"", @operator, @actual+""].join(" ")
 
-assert.AssertionError = AssertionError;
+assert.AssertionError = AssertionError
 
 # All of the following functions must throw an AssertionError
 # when a corresponding condition is not met, with a message that
