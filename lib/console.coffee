@@ -44,7 +44,7 @@ logFormatted = (args, level) ->
     out = $mike.Stdout
   else
     out = $mike.Stderr
-  out.write([level, ": ", formatString(args), "\n"].join(''))
+  out.write "#{level}: #{formatString(args)}\n"
 
 
 class Console
@@ -107,7 +107,7 @@ class Console
     notImplemented("Console#dirxml")
 
   # Tests that an expression is true. If not, logs a message and throws an exception.
-  assert: (expression, objetcts...) ->
+  assert: (expression, objects...) ->
     notImplemented("Console#assert")
 
   # Logs a message to and opens a nested block to indent all future messages sent.
@@ -148,4 +148,4 @@ class Console
   count: (title) ->
     notImplemented("Console#count")
 
-return new Console();
+return new Console()
