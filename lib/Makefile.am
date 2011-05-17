@@ -3,6 +3,7 @@ javascript_files = \
 	assert.js \
 	file.js \
 	sys.js \
+	console.js \
 	test.js
 
 mikelibdir = $(datarootdir)/mike/site-javascript

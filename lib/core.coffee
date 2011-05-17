@@ -16,13 +16,19 @@ class LoadError extends Error
     "#{@name} : no such module to load -- #{@module}"
 
 # Writes given args to stdout.
-@print = (texts...) ->
-  $mike.Stdout.write(text.toString()) for text in texts
+@print = () ->
+  $mike.Stdout.write(arg.toString()) for arg in arguments
 
 # Writes given args to stdout line `print`, but with newline
 # at the end.
-@puts = (texts...) ->
-  print(texts, "\n")
+@puts = () ->
+  $mike.Stdout.write(arg.toString()) for arg in arguments
+  $mike.Stdout.write("\n")
+
+# Writes given args to stderr, and adds newline at the end.
+@error = () ->
+  $mike.Stderr.write(arg.toString()) for arg in arguments
+  $mike.Stderr.write("\n")
 
 # Extended version of `require` function. This one caches already
 # loaded modules.
@@ -30,3 +36,8 @@ class LoadError extends Error
   if typeof(loadedModules[module]) == 'undefined'
     loadedModules[module] = $mike.require(module)
   return loadedModules[module]
+
+# This method should be used to inform user that called method is not
+# implemented in mike.
+@notImplemented = (what) ->
+  @error(what + ' not implemented.')

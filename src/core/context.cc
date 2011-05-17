@@ -93,11 +93,15 @@ namespace mike {
       
       if (try_catch.HasCaught()) {
 	// error...
+	String::Utf8Value ex(try_catch.Exception());
+	printf("ERROR: %s in %s:%d\n", *ex, fname.c_str(), try_catch.Message()->GetLineNumber());
       } else {
 	Handle<Value> result = script->Run();
 
 	if (try_catch.HasCaught()) {
 	  // error...
+	  String::Utf8Value ex(try_catch.Exception());
+	  printf("ERROR: %s in %s:%d\n", *ex, fname.c_str(), try_catch.Message()->GetLineNumber());
 	} else {
 	  return result;
 	}

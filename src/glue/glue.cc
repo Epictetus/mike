@@ -40,13 +40,13 @@ namespace mike {
       mike->Set(String::NewSymbol("Stderr"), StderrObject());
       mike->Set(String::NewSymbol("File"), FileObject());
       mike->Set(String::NewSymbol("System"), SystemObject());
-
-      // Mike's namespace
-      global->Set(String::NewSymbol("$mike"), mike);
-
+ 
       // Require funciton
       Handle<FunctionTemplate> tpl = FunctionTemplate::New(require, External::New((void*)window));
       mike->Set(String::NewSymbol("require"), tpl->GetFunction());
+
+      // Registering Mike's namespace
+      global->Set(String::NewSymbol("$mike"), mike);
       
       // Load path
       Handle<Array> loadpath(Array::New());
