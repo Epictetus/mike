@@ -17,13 +17,13 @@ var redirectStreams = function(block) {
 	block();
     } catch(e) {
 	error = e;
-    }
-    
-    $mike.Stdout.write = stdout_write;
-    $mike.Stderr.write = stderr_write;
+    } finally {
+	$mike.Stdout.write = stdout_write;
+	$mike.Stderr.write = stderr_write;
 
-    if (error !== null) {
-	throw(error)
+	if (error !== null) {
+	    throw(error)
+	}
     }
 }
 
