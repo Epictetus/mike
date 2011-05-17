@@ -105,5 +105,5 @@ supports the following elements:
     [ ] history
     [ ] cache
     [ ] cookies
-    [ ] console
+    [j] console
     [ ] EventLoop
