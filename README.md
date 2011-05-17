@@ -42,6 +42,13 @@ Modules:
       [c] isDirectory(path)
       [j] join(path)
       [j] absolute(path)
+    Console
+      [j] log()
+      [j] debug()
+      [j] info()
+      [j] warn()
+      [j] error()
+      [j] trace()
     HttpClient
       [ ] open(method, url, async, user, password)
       [ ] send(body)
