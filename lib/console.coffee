@@ -7,11 +7,45 @@
 # available default instance of a logger or a wrapper on `print`. Message
 # representation and implementation is up to the platform provider.
 
-logFormatted: (args, level) ->
-  return 0
+# Just represents object as string.
+# TODO: In the future we can implement something more useful, like inspect...
+toString = (object) ->
+  try
+    object+''
+  catch e
+    null
 
-notImplemented: (method) ->
-  puts("NotImplemented: Console#" + method)
+# Basic formatting regexp.
+formatRegexp = /%[sdj]/g
+
+# Prepares given arguments for append to logs. Implementation partially borrowed
+# from node.js.
+formatString = (format) ->
+  if typeof format isnt 'string'
+    objects = []
+    objects.push(toString(object)) for object in arguments
+    return objects.join('')
+  i = 1
+  str = String(f).replace formatRegexp, (x) ->
+    switch x
+      when '%s' then return String(arguments[i++])
+      when '%d' then return Number(arguments[i++])
+      when '%j' then return JSON.stringify(arguments[i++])
+      else
+        return x
+  while (i < arguments.length)
+    obj = arguments[i++]
+    str += ' '+toString(obj)
+  return str
+
+# Logs formated arguments for given level.
+logFormatted = (args, level) ->
+  if level == 'DEBUG' or level == 'INFO'
+    out = $mike.Stdout
+  else
+    out = $mike.Stderr
+  out.write([level, ": ", formatString(args), "\n"].join(''))
+
 
 class Console
   # Logs a message to with visual "log" representation allowing user to distinguish
@@ -51,17 +85,67 @@ class Console
   # be different there for it's up to platform, some may provide full stack trace
   # like the functions on the stack, as well as the values that were passed as
   # arguments to each function. While others may log just a module require graph.
+  #
+  # This implementation has been borrowed from node.js.
   trace: () ->
-    notImplemented('trace')
+    e = new Error()
+    e.name = 'Trace'
+    e.message = label or ''
+    Error.captureStackTrace(e, arguments.callee)
+    error(e.stack)
 
   # Logs a static / interactive listing of all properties of the object.
-  dir: () ->
-    notImplemented('dir')
+  dir: (object) ->
+    notImplemented("Console#dir")
 
   # Logs the XML source tree of an HTML or XML element. Even though there is no
   # CommonJS standards for XML, HTML yet most likely there will be one at some
   # point. In order to keep compatibility with well known console from browsers,
   # platform should implement this and may decide to default for a log or dir
   # described above.
-  dirxml: () ->
-    notImplemented('dirxml')
+  dirxml: (node) ->
+    notImplemented("Console#dirxml")
+
+  # Tests that an expression is true. If not, logs a message and throws an exception.
+  assert: (expression, objetcts...) ->
+    notImplemented("Console#assert")
+
+  # Logs a message to and opens a nested block to indent all future messages sent.
+  # Call require("console").groupEnd() to close the block. Representation of block
+  # is up to the platform, it can be an interactive block or just a set of indented
+  # sub messages.
+  group: (objects...) ->
+    notImplemented("Console#group")
+
+  # Closes the most recently opened block created by a call to require("console").group()
+  # or require("console").groupCollapsed()
+  groupEnd: () ->
+    notImplemented("Console#groupEnd")
+
+  # Creates a new timer under the given name. Call require("console").timeEnd(name)
+  # with the same name to stop the timer and log the time elapsed.
+  time: (name) ->
+    notImplemented("Console#time")
+
+  # Stops a timer created by a call to require("console").time(name) and logs the
+  # time elapsed.
+  timeEnd: (name) ->
+    notImplemented("Console#timeEnd")
+
+  # Turns on profiler. The optional argument title would contain the text to be
+  # logged in the header of the profile report. Data included in a report generated
+  # by a profiler is up to platform.
+  profile: (title) ->
+    notImplemented("Console#profile")
+
+  # Turns off profiler and logs its report.
+  profileEnd: () ->
+    notImplemented("Console#profileEnd")
+
+  # Writes the number of times that the line of code where count was called was
+  # executed. The optional argument title will print a message in addition to
+  # the number of the count.
+  count: (title) ->
+    notImplemented("Console#count")
+
+return new Console();
