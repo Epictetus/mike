@@ -20,31 +20,35 @@ formatRegexp = /%[sdj]/g
 
 # Prepares given arguments for append to logs. Implementation partially borrowed
 # from node.js.
-formatString = (format) ->
+formatString = (args) ->
+  format = args[0]
   if typeof format isnt 'string'
     objects = []
     objects.push(toString(object)) for object in arguments
     return objects.join('')
   i = 1
-  str = String(f).replace formatRegexp, (x) ->
+  str = String(format).replace formatRegexp, (x) ->
     switch x
-      when '%s' then return String(arguments[i++])
-      when '%d' then return Number(arguments[i++])
+      when '%s' then return String(args[i++])
+      when '%d' then return Number(args[i++])
       when '%j' then return JSON.stringify(arguments[i++])
       else
         return x
-  while (i < arguments.length)
-    obj = arguments[i++]
+  while (i < args.length)
+    obj = args[i++]
     str += ' '+toString(obj)
   return str
 
 # Logs formated arguments for given level.
-logFormatted = (args, level) ->
-  if level == 'DEBUG' or level == 'INFO'
-    out = $mike.Stdout
-  else
+logFormatted = (level, args) ->
+  if level == 'ERROR' or level == 'WARNING'
     out = $mike.Stderr
-  out.write([level, ": ", formatString(args), "\n"].join(''))
+  else
+    out = $mike.Stdout
+  if level?
+    out.write([level, ": ", formatString(args), "\n"].join(''))
+  else
+    out.write([formatString(args), "\n"].join(''))
 
 
 class Console
@@ -58,27 +62,27 @@ class Console
   #   require("console").log("The %s jumped over %d tall buildings", animal, count);
   #
   log: () ->
-    logFormatted(arguments)
+    logFormatted(null, arguments)
 
   # Logs a message, with a visual "debug" representation. Optionally includes an
   # info of a caller (file, line where it was called from).
   debug: () ->
-    logFormatted(arguments, 'DEBUG')
+    logFormatted('DEBUG', arguments)
 
   # Logs a message with the visual "info" representation. Optionally includes an
   # info of a caller (file, line where it was called from).
   info: () ->
-    logFormatted(arguments, 'INFO')
+    logFormatted('INFO', arguments)
 
   # Logs a message with the visual "warning" representation. Optionally includes an
   # info of a caller (file, line where it was called from).
   warn: () ->
-    logFormatted(arguments, 'WARNING')
+    logFormatted('WARNING', arguments)
 
   # Logs a message with the visual "error" representation. Optionally includes an
   # info of a caller (file, line where it was called from).
   error: (obj) ->
-    logFormatted(arguments, 'ERROR')
+    logFormatted('ERROR', arguments)
 
   # Logs a static / interactive stack trace of JavaScript execution at the point
   # where it is called. Details that platform is able to provide is most likely will
