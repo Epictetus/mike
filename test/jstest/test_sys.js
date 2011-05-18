@@ -1,5 +1,4 @@
 sys = require('sys');
-file = require('file');
 
 tests = {};
 

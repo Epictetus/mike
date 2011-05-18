@@ -1,7 +1,7 @@
 javascript_files = \
 	core.js \
 	assert.js \
-	file.js \
+	fs.js \
 	sys.js \
 	console.js \
 	test.js

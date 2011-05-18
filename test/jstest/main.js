@@ -4,7 +4,7 @@ try {
     assert = require('assert');
 
     var suite = {
-	testFile: require('test_file'),
+	testFile: require('test_fs'),
 	testSys: require('test_sys'),
 	testConsole: require('test_console')
     };

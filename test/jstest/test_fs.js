@@ -1,5 +1,5 @@
 sys = require('sys');
-file = require('file');
+file = require('fs');
 
 tests = {};
 
