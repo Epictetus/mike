@@ -49,23 +49,16 @@ Modules:
       [j] warn()
       [j] error()
       [j] trace()
-    HttpClient
-      [ ] open(method, url, async, user, password)
-      [ ] send(body)
-      [ ] setRequestHeader(name, header)
-      [ ] getResponseHeader(name)
-      [ ] getAllResponseHeaders()
-      [ ] abort()
+    CURL
+      [ ] perform(url, options)
     System
       [c] pwd()
       [c] cwd(dir)
       [c] system(cmd)
       [c] stdout.write(text)
       [c] stderr.write(text)
-      [ ] sleep(miliseconds)
     Thread
-      [ ] spawn()
-      [ ] kill(id)
+      [ ] spawn(fn)
       [ ] pid()
     Test
       [j] run(suites...)
@@ -84,7 +77,7 @@ Modules:
 
 Global functions:
 
-    [c] require(module) 
+    [c] require(module)
     [j] print(text...)
     [j] puts(text...)
 
