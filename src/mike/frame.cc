@@ -34,9 +34,9 @@ namespace mike
 
   // Content manipulation.
   
-  void Frame::Go(string url)
+  void Frame::Go(string url, string method/*="GET"*/, list<string> headers/*=()*/, string postData/*=""*/)
   {
-    pPage page = new Page(this, url);
+    pPage page = new Page(this, url, method, headers, postData);
     history->Push(page);
   }
 

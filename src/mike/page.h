@@ -14,18 +14,25 @@ namespace mike
 
   typedef Frame* pFrame;
   typedef Page* pPage;
+  typedef http::Request* pHttpRequest;
+  typedef http::Response* pHttpResponse;
   
   class Page
   {
   private:
     string url;
     pFrame frame;
+    pHttpRequest request;
+    pHttpResponse response;
   public:
-    Page(pFrame f, string url);
+    Page(pFrame f, string url, string method="GET", list<string> headers=list<string>(), string postData="");
     ~Page();
     string Url();
     void Load();
     void Reload();
+    bool Loaded();
+    pHttpRequest Request();
+    pHttpResponse Response();
   };
 }
 

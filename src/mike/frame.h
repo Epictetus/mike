@@ -33,7 +33,7 @@ namespace mike
     pFrame Parent();
     pWindow Window();
     pHistory History();
-    void Go(string url);
+    void Go(string url, string method="GET", list<string> headers=list<string>(), string postData="");
     void Go(int distance);
     void GoBack();
     void GoForward();
