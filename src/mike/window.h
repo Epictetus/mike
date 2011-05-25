@@ -43,7 +43,7 @@ namespace mike
     int Width();
     int Height();
     
-    void Browse(string url);
+    void Browse(string url, string method="GET", list<string> headers=list<string>(), string postData="");
 
     void Resize(int w, int h);
     void ResizeX(int w);

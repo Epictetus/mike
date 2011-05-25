@@ -1,15 +1,6 @@
 # Test suite name.
 SUITE = ccsuite
 
-# HTTP Parser sources and includes paths.
-HTTPPARSER_SOURCES_DIR = $(srcdir)/../../deps/http-parser
-HTTPPARSER_INCLUDES_DIR = $(HTTPPARSER_SOURCES_DIR)
-
-# HTTP Parser sources.
-HTTPPARSER_FILES = \
-	$(HTTPPARSER_SOURCES_DIR)/http_parser.h \
-	$(HTTPPARSER_SOURCES_DIR)/http_parser.c
-
 # Path to tested sources and includes.
 TESTEE_SOURCES_DIR = $(srcdir)/../../src
 TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
@@ -46,12 +37,10 @@ TEST_FILES = \
 
 # Test suite setting and compiler flags.
 ccsuite_SOURCES = \
-	$(HTTPPARSER_FILES) \
 	$(TESTEE_FILES) \
 	$(TEST_FILES)
 
 ccsuite_CPPFLAGS = \
-	-I$(HTTPPARSER_INCLUDES_DIR) \
 	-I$(TESTEE_INCLUDES_DIR)
 
 ccsuite_LDFLAGS = -lcppunit

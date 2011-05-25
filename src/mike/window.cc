@@ -5,8 +5,9 @@
 
 namespace mike
 {
-  // Window options.
-  
+  /**
+   * WindowOptions constructor.
+   */
   WindowOptions::WindowOptions()
     : javaEnabled(true),
       cookieEnabled(true),
@@ -17,36 +18,57 @@ namespace mike
   {
   }
 
-  // Browser window stuff.
-  
+  /**
+   * Window constructor. Creates window with specified options. See the
+   * <code>WindowOptions</code> struct to get know what opts are available. 
+   *
+   * @param opts: window options
+   */
   Window::Window(WindowOptions opts)
   {
     options = new WindowOptions(opts);
     frame = new Frame(this, NULL);
   }
 
+  /**
+   * Window destructor.
+   */
   Window::~Window()
   {
     delete frame;
   }
 
-  // Accessors to window options.
-  
+  /**
+   * Returns <code>true</code> when this window allows for JavaScript code
+   * execution.
+   */
   bool Window::IsJavaEnabled()
   {
     return options->javaEnabled;
   }
 
+  /**
+   * Returns <code>true</code> when this window allows for storing cookies.
+   */
   bool Window::IsCookieEnabled()
   {
     return options->cookieEnabled;
   }
 
+  /**
+   * Returns window (user) language. This language may be used in headers
+   * for page requests.
+   */
   string Window::Language()
   {
     return options->language;
   }
-  
+
+  /**
+   * Returns simulated user agent string, based on current operating system,
+   * architecture and mike's version. User agent can simulate Friefox or Chrome,
+   * but can't simulate architecture, operating system etc. 
+   */
   string Window::UserAgent()
   {
     char *agentFmt = (char*)options->userAgentTpl.c_str();
@@ -55,36 +77,70 @@ namespace mike
     return string(agent);
   }
 
+  /**
+   * Returns configured window width.
+   */
   int Window::Width()
   {
     return options->windowWidth;
   }
 
+  /**
+   * Returns configure window height.
+   */
   int Window::Height()
   {
     return options->windowHeight;
   }
 
-  // Browsing...
-
-  void Window::Browse(string url)
+  /**
+   * Generates request based on specified options and loads page to browser's main
+   * frame. Here your'e able to specify request method (only GET and POST are supported),
+   * custom headers, and post fields data. Here's the simplest example:
+   *
+   *   mike::WindowOptions opts;
+   *   mike::pWindow window = new mike::Window(opts);
+   *   window->Browse("http://www.mypage.com");
+   *
+   * TODO: support for multipart requests
+   *
+   * @param url: address of visited website
+   * @param method: request method
+   * @param headers: list with request headers
+   * @param postData: post fields data
+   */
+  void Window::Browse(string url, string method/*="GET"*/, list<string> headers/*=()*/, string postData/*=""*/)
   {
-    frame->Go(url);
+    frame->Go(url, method, headers, postData);
   }
 
-  // Window manipulation...
-
+  /**
+   * Changes window size to specified values.
+   *
+   * @param w: new width
+   * @param h: new height
+   */
   void Window::Resize(int w, int h)
   {
     ResizeX(w);
     ResizeY(h);
   }
 
+  /**
+   * Resizes window horizontaly. 
+   *
+   * @param w: new width
+   */
   void Window::ResizeX(int w)
   {
     options->windowWidth = w;
   }
 
+  /**
+   * Resizes window verticaly.
+   *
+   * @param h: new height
+   */
   void Window::ResizeY(int h)
   {
     options->windowHeight = h;
