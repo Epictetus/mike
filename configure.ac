@@ -12,48 +12,27 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_LANG_CPLUSPLUS
 
-# Check architecture (for v8), and initialize automake.
+# Extra arguments for v8.
 
-AM_CONDITIONAL(CPU_IS_X64, [test `uname -m` = x86_64])
+AC_ARG_WITH([v8],
+	AC_HELP_STRING([--with-v8=<path>], [Path to V8's lib directory.]),
+	v8_dir=$withval, v8_dir=/usr/local)
 
-if test "$CPU_IS_X64" = 0; then
-   V8_ARCH=ia32
-else
-   V8_ARCH=x64
-fi
+LDFLAGS="-L$v8_dir/lib $LDFLAGS"
+CPPFLAGS="-I$v8_dir/include $CPPFLAGS"
 
-# Additional v8 settings.
+AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
+AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
 
-V8_DIR=deps/v8
-V8_MODE=release
-V8_SNAPSHOT=off
-V8_LIBRARY=static
-V8_CCFLAGS="-fPIC -fno-builtin-memcpy"
-
-AC_SUBST([V8_DIR])
-AC_SUBST([V8_ARCH])
-AC_SUBST([V8_MODE])
-AC_SUBST([V8_SNAPSHOT])
-AC_SUBST([V8_LIBRARY])
-AC_SUBST([V8_CCFLAGS])
+AC_SUBST([LIBV8])
 
 # Init Automage with following options. 
 
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 
-# Check for scons (required to compile v8)
+# Check for programs.
 
 AC_CHECK_PROGS([FIND], [find], [:])
-AC_CHECK_PROGS([SCONS], [scons], [:])
-AC_CHECK_PROGS([COFFEE], [coffee], [:])
-
-if test "$SCONS" = :; then
-   AC_MSG_ERROR([this package needs scons.])
-fi
-
-if test "$COFFEE" = :; then
-   AC_MSG_ERROR([this package needs coffee.])
-fi
 
 # Check for CppUnit. 
 
@@ -72,14 +51,6 @@ AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 AC_CHECK_LIB([pthread], [main], [LIBPTHREAD=-lpthread], [AC_MSG_ERROR(this package requires pthread.)])
 AC_CHECK_LIB([curl], [main], [LIBCURL=-lcurl], [AC_MSG_ERROR(this package requires curl.)])
-AC_CHECK_LIB([pcre], [main], [LIBPCRE=-lpcre], [AC_MSG_ERROR(this package requires pcre.)])
-
-LIBV8=-lv8
-
-AC_SUBST([LIBV8])
-AC_SUBST([LIBCURL])
-AC_SUBST([LIBPCRE])
-AC_SUBST([LIBPTHREAD])
 
 # Check for headers. 
 
@@ -96,7 +67,7 @@ MIKE_LIB_NAME=mike
 MIKE_LIB_VERSION=0.0.1 # update version no. in src/mike.h after version bump
 MIKE_LIB_VERSION_INFO=0:0:0
 MIKE_LIB_RELEASE=1
-MIKE_LIBS="$LIBPCRE $LIBCURL $LIBPTHREAD"
+MIKE_LIBS="$LIBV8 $LIBCURL $LIBPTHREAD"
 
 AC_SUBST([MIKE_LIB_NAME])
 AC_SUBST([MIKE_LIB_VERSION])
@@ -104,9 +75,10 @@ AC_SUBST([MIKE_LIB_VERSION_INFO])
 AC_SUBST([MIKE_LIB_RELEASE])
 AC_SUBST([MIKE_LIBS])
 
-# Define mike's std lib dir.
+# Update linker and compiler flags.
 
-AC_DEFINE([MIKE_LIBDIR], [DATADIR + "/mike/site-javascript"], [Mike's lib directory.])
+CPPFLAGS="-fPIC $CPPFLAGS"
+LDFLAGS="$MIKE_LIBS $LDFLAGS"
 
 # Specify makefiles. 
 

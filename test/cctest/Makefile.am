@@ -1,40 +1,43 @@
-suite = cc_suite
-testeedir = $(srcdir)/../../src
-v8dir = $(srcdir)/../../deps/v8
-mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
+# Test suite name.
+SUITE = ccsuite
 
-source_files = \
-	$(testeedir)/test/helpers.h \
-	$(testeedir)/test/helpers.cc \
-	$(testeedir)/glue/file.h \
-	$(testeedir)/glue/system.h \
-	$(testeedir)/glue/stdio.h \
-	$(testeedir)/glue/time.h \
-	$(testeedir)/glue/glue.h \
-	$(testeedir)/glue/file.cc \
-	$(testeedir)/glue/system.cc \
-	$(testeedir)/glue/stdio.cc \
-	$(testeedir)/glue/time.cc \
-	$(testeedir)/glue/glue.cc \
-	$(testeedir)/core/script.h \
-	$(testeedir)/core/context.h \
-	$(testeedir)/core/script.cc \
-	$(testeedir)/core/context.cc
+# Path to tested sources and includes.
+TESTEE_SOURCES_DIR = $(srcdir)/../../src
+TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
 
-test_files = \
-	test_context.cc \
+# List of sources to compile and test.
+TESTEE_FILES = \
+	$(TESTEE_SOURCES_DIR)/mike/utils/http.h \
+	$(TESTEE_SOURCES_DIR)/mike/utils/http.cc \
+	$(TESTEE_SOURCES_DIR)/mike/utils/fs.h \
+	$(TESTEE_SOURCES_DIR)/mike/utils/fs.cc \
+	$(TESTEE_SOURCES_DIR)/mike/utils/test.h \
+	$(TESTEE_SOURCES_DIR)/mike/utils/test.cc \
+	$(TESTEE_SOURCES_DIR)/mike/config.h \
+	$(TESTEE_SOURCES_DIR)/mike/window.h \
+	$(TESTEE_SOURCES_DIR)/mike/window.cc \
+	$(TESTEE_SOURCES_DIR)/mike/page.h \
+	$(TESTEE_SOURCES_DIR)/mike/page.cc \
+	$(TESTEE_SOURCES_DIR)/mike/frame.h \
+	$(TESTEE_SOURCES_DIR)/mike/frame.cc \
+	$(TESTEE_SOURCES_DIR)/mike/history.h \
+	$(TESTEE_SOURCES_DIR)/mike/history.cc \
+	$(TESTEE_SOURCES_DIR)/mike/navigator.h \
+	$(TESTEE_SOURCES_DIR)/mike/navigator.cc
+
+# List of test files.
+TEST_FILES = \
+	test_utils_fs.cc \
+	test_utils_test.cc \
+	test_utils_http.cc \
+	test_window.cc \
 	main.cc
 
-cxx_includes = \
-	-I$(v8dir)/include \
-	-I$(testeedir)
+# Test suite setting and compiler flags.
+ccsuite_SOURCES = $(TESTEE_FILES) $(TEST_FILES)
+ccsuite_CXXFLAGS = -I$(TESTEE_INCLUDES_DIR)
+ccsuite_LDFLAGS = -lcppunit
 
-ld_libs = \
-	$(v8dir)/libv8.a
-
-cc_suite_SOURCES = $(source_files) $(test_files)
-cc_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
-cc_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
-
-check_PROGRAMS = $(suite)
-noinst_PROGRAMS = $(suite)
+# Register this test suite. 
+check_PROGRAMS = $(SUITE)
+noinst_PROGRAMS = $(SUITE)

@@ -1,36 +1,37 @@
-suite = js_suite
-testeedir = $(srcdir)/../../src
-v8dir = $(srcdir)/../../deps/v8
-mikelibdir = -DMIKE_LIBDIR="\"`pwd`/../../lib\""
+# Test suite name.
+SUITE = jssuite
 
-source_files = \
-	$(testeedir)/test/helpers.h \
-	$(testeedir)/test/helpers.cc \
-	$(testeedir)/glue/file.h \
-	$(testeedir)/glue/system.h \
-	$(testeedir)/glue/stdio.h \
-	$(testeedir)/glue/time.h \
-	$(testeedir)/glue/glue.h \
-	$(testeedir)/glue/file.cc \
-	$(testeedir)/glue/system.cc \
-	$(testeedir)/glue/stdio.cc \
-	$(testeedir)/glue/time.cc \
-	$(testeedir)/glue/glue.cc \
-	$(testeedir)/core/script.h \
-	$(testeedir)/core/context.h \
-	$(testeedir)/core/script.cc \
-	$(testeedir)/core/context.cc
+# Path to tested sources and includes.
+TESTEE_SOURCES_DIR = $(srcdir)/../../src
+TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
 
-cxx_includes = \
-	-I$(v8dir)/include \
-	-I$(testeedir)
+# List of sources to compile and test.
+TESTEE_FILES = \
+	$(TESTEE_SOURCES_DIR)/mike/utils/fs.h \
+	$(TESTEE_SOURCES_DIR)/mike/utils/fs.cc \
+	$(TESTEE_SOURCES_DIR)/mike/utils/test.h \
+	$(TESTEE_SOURCES_DIR)/mike/utils/test.cc \
+	$(TESTEE_SOURCES_DIR)/mike/config.h \
+	$(TESTEE_SOURCES_DIR)/mike/window.h \
+	$(TESTEE_SOURCES_DIR)/mike/window.cc \
+	$(TESTEE_SOURCES_DIR)/mike/page.h \
+	$(TESTEE_SOURCES_DIR)/mike/page.cc \
+	$(TESTEE_SOURCES_DIR)/mike/frame.h \
+	$(TESTEE_SOURCES_DIR)/mike/frame.cc \
+	$(TESTEE_SOURCES_DIR)/mike/history.h \
+	$(TESTEE_SOURCES_DIR)/mike/history.cc \
+	$(TESTEE_SOURCES_DIR)/mike/navigator.h \
+	$(TESTEE_SOURCES_DIR)/mike/navigator.cc
 
-ld_libs = \
-	$(v8dir)/libv8.a
+# List of test files.
+TEST_FILES = \
+	main.cc
 
-js_suite_SOURCES = $(source_files) main.cc
-js_suite_CXXFLAGS = $(cxx_includes) $(mikelibdir) -fPIC
-js_suite_LDFLAGS = $(ld_libs) -lcppunit -lpthread
+# Test suite setting and compiler flags.
+jssuite_SOURCES = $(TESTEE_FILES) $(TEST_FILES)
+jssuite_CXXFLAGS = -I$(TESTEE_INCLUDES_DIR)
+jssuite_LDFLAGS = -lcppunit
 
-check_PROGRAMS = $(suite)
-noinst_PROGRAMS = $(suite)
+# Register this test suite. 
+check_PROGRAMS = $(SUITE)
+noinst_PROGRAMS = $(SUITE)

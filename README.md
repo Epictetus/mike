@@ -28,75 +28,55 @@ You have to download and install exactly version 1.4.9, and replace
 
     sudo ln -sf /usr/local/bin/m4 /usr/bin/gm4
 
-## Standard library
-
-Internal standard library provided by mike is minimal as much as possible.
-It provides the following stuff:
-
-Modules:
-
-    File
-      [c] read(path, modeloptions)
-      [c] exists(path)
-      [c] isFile(path)
-      [c] isDirectory(path)
-      [j] join(path)
-      [j] absolute(path)
-    Console
-      [j] log()
-      [j] debug()
-      [j] info()
-      [j] warn()
-      [j] error()
-      [j] trace()
-    CURL
-      [ ] perform(url, options)
-    System
-      [c] pwd()
-      [c] cwd(dir)
-      [c] system(cmd)
-      [c] stdout.write(text)
-      [c] stderr.write(text)
-    Thread
-      [ ] spawn(fn)
-      [ ] pid()
-    Test
-      [j] run(suites...)
-    Assert
-      [j] ok(guard, message)
-      [j] equal(actual, expected, message)
-      [j] notEqual(actual, expected, message)
-      [j] strictEqual(actual, expected, message)
-      [j] notStrictEqual(actual, expected, message)
-      [j] throws(block, errorclass, message)
-    Socket
-      [ ] open(ip, port)
-      [ ] write(data)
-      [ ] read()
-      [ ] close()
-
-Global functions:
-
-    [c] require(module)
-    [j] print(text...)
-    [j] puts(text...)
-
-Constants:
-
-    $LOAD_PATH
-
 ## Browser implementation
 
-Mike's embedded browser is mostly written in javascript (coffee), and so far
-supports the following elements:
+    * Window
+      -> IsCookieEnabled
+      -> IsJavaEnabled
+      -> Language
+      -> UserAgent
+      -> Width
+      -> Height
+      -> Browse(url, options)
+      -> Resize(w, h)
+      -> ResizeX(w)
+      -> ResizeY(h)
 
-    [ ] XMLHttpRequest
-    [ ] WebSocket
-    [ ] DOM
-    [ ] window
-    [ ] document
-    [ ] history
-    [ ] cache
-    [ ] cookies
-    [j] console
-    [ ] EventLoop
+    * Frame
+      -> Parent
+      -> Window
+      -> History
+      -> Go(distance)
+      -> Go(url, options)
+
+    * Page
+      -> Url
+      -> Load
+      -> Reload
+
+    * HistoryContainer
+      -> Length
+      -> Current();
+      -> Push(page)
+      -> Go(distance)
+
+## Javascript objects
+    
+    * History
+      -> Length
+      -> Back
+      -> Forward
+      -> Go(distance)
+
+    * Navigator
+      -> AppName
+      -> AppVersion
+      -> UserAgent
+      -> Platform
+      -> AppCodeName
+      -> Product
+      -> Vendor
+      -> Language
+      -> OnLine
+      -> JavaEnabled
+      -> CookieEnabled
