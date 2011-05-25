@@ -16,11 +16,11 @@
 /test/Makefile
 /test/Makefile.in
 
-/test/jstest/*_suite
+/test/jstest/*suite
 /test/jstest/Makefile
 /test/jstest/Makefile.in
 
-/test/cctest/*_suite
+/test/cctest/*suite
 /test/cctest/Makefile
 /test/cctest/Makefile.in
 
