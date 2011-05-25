@@ -1,13 +1,32 @@
+#include <string>
+#include <algorithm>
 #include "mike/utils/http.h"
+#include "mike/utils/string.h"
 
 namespace mike {
   namespace http {
     namespace
-    {
+    {      
       size_t CurlWriter(char *data, size_t size, size_t nmemb, string *wdata)
       {
 	if (wdata == NULL) return 0;
 	wdata->append(data, size*nmemb);
+	return size*nmemb;
+      }
+
+      size_t CurlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
+      {
+	if (wdata == NULL) return 0;
+	string header = string((char*)ptr);
+	int split = header.find(':');
+
+	if (split >= 0) {
+	  string key = rtrim(rtrim(trim((char*)header.substr(0, split).c_str()),'\n'),'\r');
+	  string value = rtrim(rtrim(trim((char*)header.substr(split+1).c_str()),'\n'),'\r');
+	  HttpHeaderMap *headers = (HttpHeaderMap*)wdata;
+	  (*headers)[key] = value;
+	}
+	
 	return size*nmemb;
       }
     }
@@ -39,7 +58,8 @@ namespace mike {
 	curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1L); 
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriter);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &curlBuffer);
-	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, &curlHeaderBuffer);
+	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, (void*)&curlResponseHeaders);
+	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &CurlHeaderHandler);
       }
     }
 
@@ -69,7 +89,7 @@ namespace mike {
 
 	if (curl_easy_perform(curl) == CURLE_OK) {
 	  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &curlResponseCode);
-	  return new Response(curlResponseCode, curlBuffer, curlHeaderBuffer);
+	  return new Response(curlResponseCode, curlBuffer, curlResponseHeaders);
 	}
       }
 
@@ -88,15 +108,16 @@ namespace mike {
 
     // Response...
 
-    Response::Response(long code, string body, string headers)
+    Response::Response(long code, string body, HttpHeaderMap header)
       : code(code),
 	body(body),
-	headers(headers)
+	headers(header)
     {
     }
 
     Response::~Response()
     {
+      headers.clear();
     }
 
     long Response::Code()
@@ -109,9 +130,9 @@ namespace mike {
       return body;
     }
 
-    string Response::RawHeaders()
+    string Response::GetHeader(string key)
     {
-      return headers;
+      return headers[key];
     }
   }
 }

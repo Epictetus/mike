@@ -2,6 +2,7 @@
 #define _MIKE_UTILS_HTTP_H_
 
 #include <string>
+#include <map>
 #include <curl/curl.h>
 
 using namespace std;
@@ -16,7 +17,8 @@ namespace mike
     typedef Request* pRequest;
     typedef Response* pResponse;
     typedef struct curl_slist* CURLheaders;
-
+    typedef map<string,string> HttpHeaderMap;
+    
     class Request
     {
     private:
@@ -28,6 +30,7 @@ namespace mike
       string curlBuffer;
       string curlHeaderBuffer;
       long curlResponseCode;
+      HttpHeaderMap curlResponseHeaders;
       char curlErrorBuffer[CURL_ERROR_SIZE];
     public:
       static pRequest GET(string url);
@@ -46,13 +49,14 @@ namespace mike
     private:
       long code;
       string body;
-      string headers;
+      string rawHeaders;
+      HttpHeaderMap headers;
     public:
-      Response(long code, string body, string headers);
+      Response(long code, string body, HttpHeaderMap headers);
       virtual ~Response();
       long Code();
       string Body();
-      string RawHeaders();
+      string GetHeader(string key);
     };
   }
 }

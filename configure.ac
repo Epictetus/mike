@@ -10,6 +10,7 @@ AC_CONFIG_SRCDIR([src/])
 
 AC_PROG_CXX
 AC_PROG_LIBTOOL
+AM_PROG_CC_C_O
 AC_LANG_CPLUSPLUS
 
 # Extra arguments for v8.

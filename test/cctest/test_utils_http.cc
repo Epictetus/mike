@@ -45,7 +45,7 @@ void MikeUtilsHttpTest::simpleGetTest()
   http::Response *res = req->Perform();
   CPPUNIT_ASSERT(res != NULL);
   CPPUNIT_ASSERT(res->Code() == 200);
-  CPPUNIT_ASSERT(res->RawHeaders() != ""); // TODO: pending
+  CPPUNIT_ASSERT(res->GetHeader("Content-Type") == "text/html;charset=utf-8");
   CPPUNIT_ASSERT(res->Body() != "Kukuryku!\n");
   delete req;
   delete res;
