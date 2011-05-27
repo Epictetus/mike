@@ -8,11 +8,22 @@
 using namespace std;
 using namespace mike;
 
+#define CPPUNIT_ASSERT_THROW(expr, errT)		\
+  try {							\
+    expr;						\
+    CPPUNIT_ASSERT(false);				\
+  } catch (errT err) {					\
+    CPPUNIT_ASSERT(true);				\
+  }
+
 class MikeWindowTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikeWindowTest);
   CPPUNIT_TEST(optionsTest);
   CPPUNIT_TEST(resizeTest);
+  CPPUNIT_TEST(aboutBlankTest);
+  CPPUNIT_TEST(simpleBrowsingTest);
+  CPPUNIT_TEST(browsingInvalidPageTest);
   CPPUNIT_TEST_SUITE_END();
 private:
   Window *window;
@@ -22,6 +33,9 @@ public:
 protected:
   void optionsTest();
   void resizeTest();
+  void aboutBlankTest();
+  void simpleBrowsingTest();
+  void browsingInvalidPageTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeWindowTest);
@@ -57,4 +71,27 @@ void MikeWindowTest::resizeTest()
   window->Resize(800, 600);
   CPPUNIT_ASSERT(window->Width() == 800);
   CPPUNIT_ASSERT(window->Height() == 600);
+}
+
+void MikeWindowTest::aboutBlankTest()
+{
+  CPPUNIT_ASSERT(!window->IsReady());
+  CPPUNIT_ASSERT(window->Url() == "about:blank");
+  CPPUNIT_ASSERT_THROW(window->Content(), FrameNotReadyError);
+}
+
+void MikeWindowTest::simpleBrowsingTest()
+{
+  window->Browse("http://localhost:4567/simple.html");
+  CPPUNIT_ASSERT(window->IsReady());
+  CPPUNIT_ASSERT(window->Url() == "http://localhost:4567/simple.html");
+  CPPUNIT_ASSERT(window->Content() == "<html><body>Simple!</body></html>");
+}
+
+void MikeWindowTest::browsingInvalidPageTest()
+{
+  window->Browse("http://domain-not-exists-foo-bar.com/noooo.html");
+  CPPUNIT_ASSERT(!window->IsReady());
+  CPPUNIT_ASSERT(window->Url() == "http://domain-not-exists-foo-bar.com/noooo.html");
+  CPPUNIT_ASSERT_THROW(window->Content(), PageNotLoadedError);
 }

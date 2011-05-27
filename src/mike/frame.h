@@ -19,6 +19,12 @@ namespace mike
   typedef Frame* pFrame;
   typedef History* pHistory; 
   typedef list<pFrame> FrameList;
+
+  class FrameNotReadyError
+  {
+  public:
+    const char *ShowReason() const { return "Frame not ready"; }
+  };
   
   class Frame
   {
@@ -33,6 +39,9 @@ namespace mike
     pFrame Parent();
     pWindow Window();
     pHistory History();
+    bool IsReady();
+    string Url();
+    string Content();
     void Go(string url, string method="GET", list<string> headers=list<string>(), string postData="");
     void Go(int distance);
     void GoBack();

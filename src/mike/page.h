@@ -16,6 +16,12 @@ namespace mike
   typedef Page* pPage;
   typedef http::Request* pHttpRequest;
   typedef http::Response* pHttpResponse;
+
+  class PageNotLoadedError
+  {
+  public:
+    const char *ShowReason() const { return "Page not loaded"; }
+  };
   
   class Page
   {
@@ -30,7 +36,8 @@ namespace mike
     string Url();
     void Load();
     void Reload();
-    bool Loaded();
+    bool IsLoaded();
+    string Body();
     pHttpRequest Request();
     pHttpResponse Response();
   };

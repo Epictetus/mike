@@ -115,6 +115,30 @@ namespace mike
   }
 
   /**
+   * Returns <code>true</code> when page (and all frames) has been properly loaded. 
+   */
+  bool Window::IsReady()
+  {
+    return frame->IsReady();
+  }
+
+  /**
+   * Returns url address of currently browsed page.
+   */
+  string Window::Url()
+  {
+    return frame->Url();
+  }
+
+  /**
+   * Returns contents of current website if loaded. If not, throws error.
+   */
+  string Window::Content()
+  {
+    return frame->Content();
+  }
+  
+  /**
    * Changes window size to specified values.
    *
    * @param w: new width

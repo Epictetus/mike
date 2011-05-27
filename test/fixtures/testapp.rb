@@ -8,6 +8,10 @@ get "/simple" do
   "Kukuryku!"
 end
 
+get "/simple.html" do
+  "<html><body>Simple!</body></html>"
+end
+
 post "/simple" do
   "mike: #{params[:mike]}; foo: #{params[:foo]};"
 end

@@ -4,6 +4,7 @@
 namespace mike
 {
   History::History()
+    : current(NULL)
   {
   }
   

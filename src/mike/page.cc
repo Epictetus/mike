@@ -40,9 +40,9 @@ namespace mike
     response = request->Perform();
   }
 
-  bool Page::Loaded()
+  bool Page::IsLoaded()
   {
-    response != NULL;
+    return response != NULL;
   }
 
   pHttpResponse Page::Response()
@@ -53,5 +53,14 @@ namespace mike
   pHttpRequest Page::Request()
   {
     return request;
+  }
+
+  string Page::Body()
+  {
+    if (IsLoaded()) {
+      return Response()->Body();
+    } else {
+      throw PageNotLoadedError();
+    }
   }
 }
