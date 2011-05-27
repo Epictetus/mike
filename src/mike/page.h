@@ -1,6 +1,8 @@
 #ifndef _MIKE_PAGE_H_
 #define _MIKE_PAGE_H_
 
+#include <libxml/tree.h>
+
 #include <string>
 #include "mike/frame.h"
 #include "mike/utils/http.h"

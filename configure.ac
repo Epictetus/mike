@@ -16,7 +16,7 @@ AC_LANG_CPLUSPLUS
 # Extra arguments for v8.
 
 AC_ARG_WITH([v8],
-	AC_HELP_STRING([--with-v8=<path>], [Path to V8's lib directory.]),
+	AC_HELP_STRING([--with-v8=<path>], [Path to V8's directory.]),
 	v8_dir=$withval, v8_dir=/usr/local)
 
 LDFLAGS="-L$v8_dir/lib $LDFLAGS"
@@ -26,6 +26,19 @@ AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.
 AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
 
 AC_SUBST([LIBV8])
+
+# Checking for libxml2.
+
+AC_ARG_WITH([xml2],
+	AC_HELP_STRING([--with-xml2=<path>], [Path to libXML2's include dir.]),
+	xml2_include=$withval, xml2_include=/usr/include/libxml2)
+
+CPPFLAGS="-I$xml2_include $CPPFLAGS"
+	
+AC_CHECK_LIB([xml2], [main], [LIBXML2=-lxml2], [AC_MSG_ERROR(this package requires xml2.)])
+AC_CHECK_HEADER([libxml/tree.h], [], [AC_MSG_ERROR(this package requires libxml/tree.h)])
+
+AC_SUBST([LIBXML2])
 
 # Init Automage with following options. 
 
@@ -52,7 +65,6 @@ AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 AC_CHECK_LIB([pthread], [main], [LIBPTHREAD=-lpthread], [AC_MSG_ERROR(this package requires pthread.)])
 AC_CHECK_LIB([curl], [main], [LIBCURL=-lcurl], [AC_MSG_ERROR(this package requires curl.)])
-AC_CHECK_LIB([xml2], [main], [LIBXML2=-lxml2], [AC_MSG_ERROR(this package requires xml2.)])
 
 # Check for headers. 
 
