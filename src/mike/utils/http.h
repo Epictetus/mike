@@ -57,6 +57,9 @@ namespace mike
       long Code();
       string Body();
       string GetHeader(string key);
+      bool IsHTML();
+      bool IsXML();
+      string ContentType();
     };
   }
 }

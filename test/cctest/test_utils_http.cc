@@ -16,6 +16,7 @@ class MikeUtilsHttpTest : public CppUnit::TestFixture
   CPPUNIT_TEST(errorResponseCodeTest);
   CPPUNIT_TEST(followRedirectsTest);
   CPPUNIT_TEST(simplePostTest);
+  CPPUNIT_TEST(contentTypeTest);
   CPPUNIT_TEST_SUITE_END();
 protected:
   void initAttributesTest();
@@ -24,6 +25,7 @@ protected:
   void errorResponseCodeTest();
   void followRedirectsTest();
   void simplePostTest();
+  void contentTypeTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeUtilsHttpTest);
@@ -93,6 +95,16 @@ void MikeUtilsHttpTest::simplePostTest()
   CPPUNIT_ASSERT(res != NULL);
   CPPUNIT_ASSERT(res->Code() == 200);
   CPPUNIT_ASSERT(res->Body() == "mike: kukuryku; foo: bar;");
+  delete res;
+  delete req;
+}
+
+void MikeUtilsHttpTest::contentTypeTest()
+{
+  http::Request *req = http::Request::GET("http://localhost:4567/simple");
+  http::Response *res = req->Perform();
+  CPPUNIT_ASSERT(res->ContentType() == "text/html");
+  CPPUNIT_ASSERT(res->IsHTML());
   delete res;
   delete req;
 }

@@ -132,7 +132,32 @@ namespace mike {
 
     string Response::GetHeader(string key)
     {
-      return headers[key];
+      HttpHeaderMap::iterator header = headers.find(key);
+      return header != headers.end() ? (*header).second : "";
+    }
+
+    bool Response::IsHTML()
+    {
+      return ContentType() == "text/html" ||
+             ContentType() == "application/xhtml+xml";
+    }
+
+    bool Response::IsXML()
+    {
+      return ContentType() == "application/xml" ||
+             ContentType() == "text/xml";
+    }
+
+    string Response::ContentType()
+    {
+      string type = GetHeader("Content-Type");
+
+      if (type == "") {
+	"text/html";
+      } else {
+	int split = type.find(";");
+	return split > 0 ? type.substr(0, split) : type;
+      }
     }
   }
 }
