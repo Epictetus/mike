@@ -52,6 +52,7 @@ AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 AC_CHECK_LIB([pthread], [main], [LIBPTHREAD=-lpthread], [AC_MSG_ERROR(this package requires pthread.)])
 AC_CHECK_LIB([curl], [main], [LIBCURL=-lcurl], [AC_MSG_ERROR(this package requires curl.)])
+AC_CHECK_LIB([xml2], [main], [LIBXML2=-lxml2], [AC_MSG_ERROR(this package requires xml2.)])
 
 # Check for headers. 
 
@@ -68,7 +69,7 @@ MIKE_LIB_NAME=mike
 MIKE_LIB_VERSION=0.0.1 # update version no. in src/mike.h after version bump
 MIKE_LIB_VERSION_INFO=0:0:0
 MIKE_LIB_RELEASE=1
-MIKE_LIBS="$LIBV8 $LIBCURL $LIBPTHREAD"
+MIKE_LIBS="$LIBV8 $LIBCURL $LIBXML2 $LIBPTHREAD"
 
 AC_SUBST([MIKE_LIB_NAME])
 AC_SUBST([MIKE_LIB_VERSION])
