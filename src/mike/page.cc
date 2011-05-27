@@ -22,7 +22,7 @@ namespace mike
   {
     if (request != NULL) delete request;
     if (response != NULL) delete response;
-    xmlFreeDoc(doc);
+    if (doc != NULL) xmlFreeDoc(doc);
   }
 
   string Page::Url()
