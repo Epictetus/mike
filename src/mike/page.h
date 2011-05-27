@@ -2,6 +2,7 @@
 #define _MIKE_PAGE_H_
 
 #include <libxml/tree.h>
+#include <libxml/HTMLparser.h>
 
 #include <string>
 #include "mike/frame.h"
@@ -32,6 +33,7 @@ namespace mike
     pFrame frame;
     pHttpRequest request;
     pHttpResponse response;
+    xmlDocPtr doc;
   public:
     Page(pFrame f, string url, string method="GET", list<string> headers=list<string>(), string postData="");
     ~Page();
@@ -42,6 +44,7 @@ namespace mike
     string Body();
     pHttpRequest Request();
     pHttpResponse Response();
+    xmlDocPtr Document();
   };
 }
 
