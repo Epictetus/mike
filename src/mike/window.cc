@@ -9,12 +9,12 @@ namespace mike
    * WindowOptions constructor.
    */
   WindowOptions::WindowOptions()
-    : javaEnabled(true),
-      cookieEnabled(true),
-      language("en-US"),
-      userAgentTpl(UA_CHROME11),
-      windowWidth(1280),
-      windowHeight(1024)
+    : javaEnabled(true)
+    , cookieEnabled(true)
+    , language("en-US")
+    , userAgentTpl(UA_CHROME11)
+    , windowWidth(1280)
+    , windowHeight(1024)
   {
   }
 

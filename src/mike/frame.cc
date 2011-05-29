@@ -6,8 +6,8 @@ namespace mike
   // Browser window frame.
   
   Frame::Frame(pWindow window, pFrame parent/*=NULL*/)
-    : window(window),
-      parent(parent)
+    : window(window)
+    , parent(parent)
   {
     history = new mike::History();
   }

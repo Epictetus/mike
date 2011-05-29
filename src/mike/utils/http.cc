@@ -42,8 +42,8 @@ namespace mike {
     }
     
     Request::Request(string url, string method)
-      : url(url),
-	method(method)
+      : url(url)
+      , method(method)
     {
       curl = curl_easy_init();
       curlHeaders = NULL;
@@ -109,9 +109,9 @@ namespace mike {
     // Response...
 
     Response::Response(long code, string body, HttpHeaderMap header)
-      : code(code),
-	body(body),
-	headers(header)
+      : code(code)
+      , body(body)
+      , headers(header)
     {
     }
 

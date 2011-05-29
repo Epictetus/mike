@@ -4,9 +4,9 @@
 namespace mike
 {
   Page::Page(pFrame f, string url, string method/*="GET"*/, list<string> headers/*=()*/, string postData/*=""*/)
-    : frame(f),
-      url(url),
-      doc(NULL)
+    : frame(f)
+    , url(url)
+    , doc(NULL)
   {
     request = new http::Request(url, method);
     request->SetData(postData);
