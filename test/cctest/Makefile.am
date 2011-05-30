@@ -23,9 +23,7 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/mike/frame.h \
 	$(TESTEE_SOURCES_DIR)/mike/frame.cc \
 	$(TESTEE_SOURCES_DIR)/mike/history.h \
-	$(TESTEE_SOURCES_DIR)/mike/history.cc \
-	$(TESTEE_SOURCES_DIR)/mike/navigator.h \
-	$(TESTEE_SOURCES_DIR)/mike/navigator.cc
+	$(TESTEE_SOURCES_DIR)/mike/history.cc
 
 # List of test files.
 TEST_FILES = \
@@ -33,6 +31,7 @@ TEST_FILES = \
 	test_utils_test.cc \
 	test_utils_http.cc \
 	test_window.cc \
+	test_page.cc \
 	main.cc
 
 # Test suite setting and compiler flags.

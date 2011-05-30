@@ -37,7 +37,10 @@ You have to download and install exactly version 1.4.9, and replace
       -> UserAgent
       -> Width
       -> Height
-      -> Browse(url, options)
+      -> Browse(url, method, headers, postData)
+      -> IsReady
+      -> Url
+      -> Content
       -> Resize(w, h)
       -> ResizeX(w)
       -> ResizeY(h)
@@ -46,37 +49,28 @@ You have to download and install exactly version 1.4.9, and replace
       -> Parent
       -> Window
       -> History
+      -> IsReady
+      -> Url
+      -> Content
       -> Go(distance)
-      -> Go(url, options)
-
+      -> Go(url, method, headers, postData)
+      -> GoBack
+      -> GoForward
+      
     * Page
       -> Url
       -> Load
       -> Reload
+      -> IsLoaded
+      -> Body
+      -> Request
+      -> Response
+      -> Document
 
-    * HistoryContainer
-      -> Length
-      -> Current();
-      -> Push(page)
-      -> Go(distance)
-
-## Javascript objects
-    
     * History
       -> Length
+      -> Current
+      -> Push(page)
+      -> Go(distance)
       -> Back
       -> Forward
-      -> Go(distance)
-
-    * Navigator
-      -> AppName
-      -> AppVersion
-      -> UserAgent
-      -> Platform
-      -> AppCodeName
-      -> Product
-      -> Vendor
-      -> Language
-      -> OnLine
-      -> JavaEnabled
-      -> CookieEnabled

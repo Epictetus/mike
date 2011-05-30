@@ -2,7 +2,10 @@
 #define _MIKE_PAGE_H_
 
 #include <libxml/tree.h>
+#include <libxml/parser.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 
 #include <string>
 #include "mike/frame.h"
@@ -29,7 +32,6 @@ namespace mike
   class Page
   {
   private:
-    string url;
     pFrame frame;
     pHttpRequest request;
     pHttpResponse response;

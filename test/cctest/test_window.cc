@@ -2,19 +2,12 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <string.h>
 
+#include "mike/utils/test.h"
 #include "mike/config.h"
 #include "mike/window.h"
 
 using namespace std;
 using namespace mike;
-
-#define CPPUNIT_ASSERT_THROW(expr, errT)		\
-  try {							\
-    expr;						\
-    CPPUNIT_ASSERT(false);				\
-  } catch (errT err) {					\
-    CPPUNIT_ASSERT(true);				\
-  }
 
 class MikeWindowTest : public CppUnit::TestFixture
 {
