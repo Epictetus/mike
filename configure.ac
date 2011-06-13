@@ -25,7 +25,7 @@ CPPFLAGS="-I$v8_dir/include $CPPFLAGS"
 AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
 AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
 
-AC_SUBST([LIBV8])
+AC_SUBST([LIVB8])
 
 # Checking for libxml2.
 
@@ -98,7 +98,6 @@ LDFLAGS="$MIKE_LIBS $LDFLAGS"
 
 AC_CONFIG_FILES(Makefile)
 AC_CONFIG_FILES(src/Makefile)
-AC_CONFIG_FILES(lib/Makefile)
 
 if test x$cppunit = xyes; then
    AC_CONFIG_FILES(test/Makefile)

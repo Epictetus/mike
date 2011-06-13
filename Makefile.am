@@ -1,4 +1,4 @@
-SUBDIRS = lib src
+SUBDIRS = src
 
 if HAVE_CPPUNIT 
    SUBDIRS += test
