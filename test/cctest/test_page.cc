@@ -15,12 +15,14 @@ class MikePageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(bodyWhilePageNotLoadedTest);
   CPPUNIT_TEST(loadTest);
   CPPUNIT_TEST(htmlDocumentTest);
+  CPPUNIT_TEST(xmlDocumentTest);
   CPPUNIT_TEST_SUITE_END();
 protected:
   void createTest();
   void bodyWhilePageNotLoadedTest();
   void loadTest();
   void htmlDocumentTest();
+  void xmlDocumentTest();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikePageTest);
@@ -58,5 +60,17 @@ void MikePageTest::htmlDocumentTest()
   ASSERT(page->IsLoaded());
   ASSERT_EQUAL(page->Body(), "<html><body>Simple!</body></html>");
   ASSERT_NOT_NULL(page->Document());
+  ASSERT(page->IsHTMLDocument());
+  delete page;
+}
+
+void MikePageTest::xmlDocumentTest()
+{
+  Page *page = new Page(NULL, "http://localhost:4567/simple.xml");
+  page->Load();
+  ASSERT(page->IsLoaded());
+  ASSERT_EQUAL(page->Body(), "<?xml version=\"1.0\"?><root>Simple!</root>");
+  ASSERT_NOT_NULL(page->Document());
+  ASSERT(page->IsXMLDocument());
   delete page;
 }

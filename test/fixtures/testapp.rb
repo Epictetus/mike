@@ -12,6 +12,11 @@ get "/simple.html" do
   "<html><body>Simple!</body></html>"
 end
 
+get "/simple.xml" do
+  content_type 'application/xml'
+  "<?xml version=\"1.0\"?><root>Simple!</root>"
+end
+
 post "/simple" do
   "mike: #{params[:mike]}; foo: #{params[:foo]};"
 end

@@ -43,6 +43,8 @@ namespace mike
     void Load();
     void Reload();
     bool IsLoaded();
+    bool IsXMLDocument();
+    bool IsHTMLDocument();
     string Body();
     pHttpRequest Request();
     pHttpResponse Response();

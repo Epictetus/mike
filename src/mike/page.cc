@@ -56,6 +56,23 @@ namespace mike
     }
   }
 
+  bool Page::IsXMLDocument()
+  {
+    return response->IsXML();
+  }
+
+  bool Page::IsHTMLDocument()
+  {
+    return response->IsHTML();
+  }
+
+  /*
+  bool Page::IsAttachment()
+  {
+    return response->IsAttachment();
+  }
+  */
+  
   bool Page::IsLoaded()
   {
     return response != NULL;
