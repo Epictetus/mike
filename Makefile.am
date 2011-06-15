@@ -13,6 +13,7 @@ stop-dummy-app:
 
 start-dummy-app: tmp-dir stop-dummy-app
 	@echo "Starting dummy web application"
-	ruby test/fixtures/dummy_app.rb &>/dev/null & echo $$! >tmp/dummy_app.pid; sleep 1
+	nohup ruby test/fixtures/dummy_app.rb &>tmp/dummy_app.log & echo $$! >tmp/dummy_app.pid
+	sleep 1
 
 test: start-dummy-app check
