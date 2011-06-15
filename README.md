@@ -19,6 +19,15 @@ Development dependencies:
     $ apt-get install cppunit ruby
     $ gem install sinatra # used by dummy web app for testing
 
+### Preparation
+
+We're using few external dependencies as git submodules so you have to do few extra steps
+after first time clone:
+
+    $ git clone git://github.com/nu7hatch/mike.git && cd mike
+    $ git submodule init
+    $ git submodule update
+
 ### Building V8
 
 If you don't have installed v8 in your system then you can use development version
