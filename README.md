@@ -2,16 +2,8 @@
 
 Dependencies first:
 
-    apt-get install scons
-    apt-get install libpcre
-    apt-get install libcurl
-    apt-get install libpthread
+    apt-get install scons libpcre libcurl libpthread
     apt-get install cppunit # only if you want to run tests
-
-CoffeeScript compiler, eg:
-
-    apt-get install nodejs
-    npm install coffee-script
 
 Building and testing:
   
