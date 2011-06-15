@@ -1,23 +1,25 @@
-# Mike - The Headless Browser (under development)
+# Mike - The Headless Browser
+
+This project is under development!
 
 Mike is fully functional, extremaly fast web browser for testing purposes. Mike provides
 JavaScript support powered by awesome V8 engine from Google.
 
-## Building (development)
+## Building development environment
+
+Obviously first you have to install dependencies (replace `apt-get install` with your
+package manager's command).
 
 Runtime dependencies:
 
-* scons
-* libpcre
-* libcurl
-* libpthread
+    $ apt-get install scons libpcre libcurl libpthread
 
-Development dependencies
+Development dependencies:
     
-* cppunit
-* ruby
+    $ apt-get install cppunit ruby
+    $ gem install sinatra # used by dummy web app for testing
 
-### V8
+### Building V8
 
 If you don't have installed v8 in your system then you can use development version
 bundled in `deps/v8`. First you have to compile it:
@@ -25,13 +27,12 @@ bundled in `deps/v8`. First you have to compile it:
     $ cd deps/v8 && make
     $ cd ../../
     
-Now you can go to building mike. Mike uses autotools, so first you have to reconfigure
-your local copy:
+### Compilation and testing
+
+Mike uses autotools, so first you have to reconfigure your local copy:
   
     $ autoreconf -i
     $ ./configure --with-v8=/absolute/path/to/v8/dir
-
-### Configuration & compilation
     
 The `--with-v8` flag is obsolete if you have V8 installed with `/usr/local` prefix.
 Otherwise you have to specify full path to your V8 build. From now on you can use almost
