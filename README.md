@@ -1,68 +1,55 @@
-# Building Mike
+# Mike - The Headless Browser (under development)
 
-Dependencies first:
+Mike is fully functional, extremaly fast web browser for testing purposes. Mike provides
+JavaScript support powered by awesome V8 engine from Google.
 
-    apt-get install scons libpcre libcurl libpthread
-    apt-get install cppunit # only if you want to run tests
+## Building (development)
 
-Building and testing:
+Runtime dependencies:
+
+* scons
+* libpcre
+* libcurl
+* libpthread
+
+Development dependencies
+    
+* cppunit
+* ruby
+
+### V8
+
+If you don't have installed v8 in your system then you can use development version
+bundled in `deps/v8`. First you have to compile it:
+
+    $ cd deps/v8 && make
+    $ cd ../../
+    
+Now you can go to building mike. Mike uses autotools, so first you have to reconfigure
+your local copy:
   
-    autoreconf -i
-    ./configure
-    make
-    make check # runs tests suite
+    $ autoreconf -i
+    $ ./configure --with-v8=/absolute/path/to/v8/dir
 
-## OSX Quirks
+### Configuration & compilation
+    
+The `--with-v8` flag is obsolete if you have V8 installed with `/usr/local` prefix.
+Otherwise you have to specify full path to your V8 build. From now on you can use almost
+standard set of make's targets:
+    
+    $ make
+    $ make test
+    $ make clean
 
-On Macs you need to play a little bit with your version of GNU m4.
-You have to download and install exactly version 1.4.9, and replace
-`gm4` binary if exists: 
+Note: we're using `make test` instead of `make check` because running test suites
+requires few extra dependencies to run befor actual tests execution.
+    
+### OSX Quirks
+
+If youre a Mac user, you'll be probably very happy that you can play a little bit more
+with some extra stuff to build Mike in development mode. If you're encountering problems
+with your version of GNU m4, then you have to download and install exactly version 1.4.9,
+and replace `gm4` binary (if exists): 
 
     sudo ln -sf /usr/local/bin/m4 /usr/bin/gm4
 
-## Browser implementation
-
-    * Window
-      -> IsCookieEnabled
-      -> IsJavaEnabled
-      -> Language
-      -> UserAgent
-      -> Width
-      -> Height
-      -> Browse(url, method, headers, postData)
-      -> IsReady
-      -> Url
-      -> Content
-      -> Resize(w, h)
-      -> ResizeX(w)
-      -> ResizeY(h)
-
-    * Frame
-      -> Parent
-      -> Window
-      -> History
-      -> IsReady
-      -> Url
-      -> Content
-      -> Go(distance)
-      -> Go(url, method, headers, postData)
-      -> GoBack
-      -> GoForward
-      
-    * Page
-      -> Url
-      -> Load
-      -> Reload
-      -> IsLoaded
-      -> Body
-      -> Request
-      -> Response
-      -> Document
-
-    * History
-      -> Length
-      -> Current
-      -> Push(page)
-      -> Go(distance)
-      -> Back
-      -> Forward
