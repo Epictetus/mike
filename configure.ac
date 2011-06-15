@@ -13,31 +13,6 @@ AC_PROG_LIBTOOL
 AM_PROG_CC_C_O
 AC_LANG_CPLUSPLUS
 
-# Check architecture (for v8).
-
-AM_CONDITIONAL(CPU_IS_X64, [test `uname -m` = x86_64])
-
-if test "$CPU_IS_X64" = 0; then
-   V8_ARCH=ia32
-else
-   V8_ARCH=x64
-fi
-
-# Additional v8 settings.
-
-V8_DIR=deps/v8
-V8_MODE=release
-V8_SNAPSHOT=off
-V8_LIBRARY=static
-V8_CCFLAGS="-fPIC -fno-builtin-memcpy -lpthread"
-
-AC_SUBST([V8_DIR])
-AC_SUBST([V8_ARCH])
-AC_SUBST([V8_MODE])
-AC_SUBST([V8_SNAPSHOT])
-AC_SUBST([V8_LIBRARY])
-AC_SUBST([V8_CCFLAGS])
-
 # Extra arguments for specifying which v8 installation use.
 
 AC_ARG_WITH([v8],
