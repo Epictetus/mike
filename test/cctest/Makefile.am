@@ -13,8 +13,6 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/string.h \
 	$(TESTEE_SOURCES_DIR)/mike/utils/string.cc \
-	$(TESTEE_SOURCES_DIR)/mike/utils/test.h \
-	$(TESTEE_SOURCES_DIR)/mike/utils/test.cc \
 	$(TESTEE_SOURCES_DIR)/mike/config.h \
 	$(TESTEE_SOURCES_DIR)/mike/window.h \
 	$(TESTEE_SOURCES_DIR)/mike/window.cc \
