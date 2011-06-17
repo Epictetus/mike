@@ -28,32 +28,32 @@ after first time clone:
     $ git submodule init
     $ git submodule update
 
-### Building V8
-
-If you don't have installed v8 in your system then you can use development version
-bundled in `deps/v8`. First you have to compile it:
-
-    $ cd deps/v8 && make
-    $ cd ../../
-    
-### Compilation and testing
-
 Mike uses autotools, so first you have to reconfigure your local copy:
   
     $ autoreconf -i
-    $ ./configure --with-v8=/absolute/path/to/v8/dir
+    $ ./configure
+
+If you want to use different installation of V8 engine you can run configure with `--with-v8`
+option:
+
+    $ ./configure --with-v8=/absolute/path/to/v8
+
+### Building V8
+
+If you don't have installed v8 in your system then you can use development version
+bundled in `deps/v8`. Mike provides target to build that local v8 version:
+
+    $ make v8
     
-The `--with-v8` flag is obsolete if you have V8 installed with `/usr/local` prefix.
-Otherwise you have to specify full path to your V8 build. From now on you can use almost
-standard set of make's targets:
-    
+### Compilation and testing
+
+Making and cleaning up goes standard way. Running tests goes with `make test` command instead of
+`make check` because we need to run few extra things before actual tests will start. 
+
     $ make
     $ make test
     $ make clean
 
-Note: we're using `make test` instead of `make check` because running test suites
-requires few extra dependencies to run befor actual tests execution.
-    
 ### OSX Quirks
 
 If youre a Mac user, you'll be probably very happy that you can play a little bit more
