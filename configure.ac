@@ -17,13 +17,27 @@ AC_LANG_CPLUSPLUS
 
 AC_ARG_WITH([v8],
 	AC_HELP_STRING([--with-v8=<path>], [Path to V8's directory.]),
-	v8_dir=$withval, v8_dir=/usr/local)
+	v8dir=$withval, v8dir=[:])
 
-LDFLAGS="-L$v8_dir/lib $LDFLAGS"
-CPPFLAGS="-I$v8_dir/include $CPPFLAGS"
+AC_MSG_CHECKING([for v8 engine])
 
-AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
-AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
+if test x$v8dir = x:; then
+   v8dir=[$(pwd)/deps/v8]
+
+   LDFLAGS="-L$v8dir/lib $LDFLAGS"
+   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
+   LIBV8=-lv8
+
+   AC_MSG_RESULT([$v8dir])
+else
+   LDFLAGS="-L$v8dir/lib $LDFLAGS"
+   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
+
+   AC_MSG_RESULT([$v8dir])
+   
+   AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
+   AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
+fi
 
 AC_SUBST([LIVB8])
 
@@ -52,12 +66,14 @@ AC_CHECK_PROGS([SCONS], [scons], [:])
 # Check for CppUnit. 
 
 AC_CHECK_LIB([cppunit], [main], [cppunit=yes], [cppunit=no])
+AC_MSG_CHECKING([whether unit tests are available])
+
 ifdef([AM_PATH_CPPUNIT], [AM_PATH_CPPUNIT()], [])
 
 if test x$cppunit = xyes; then
-   AC_MSG_RESULT([yes. Unit and Integration tests available])
+   AC_MSG_RESULT([yes])
 else
-   AC_MSG_RESULT([no. Unit and Integration tests disabled])
+   AC_MSG_RESULT([no, unit tests disabled])
 fi
 
 AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
@@ -102,7 +118,6 @@ AC_CONFIG_FILES(src/Makefile)
 
 if test x$cppunit = xyes; then
    AC_CONFIG_FILES(test/Makefile)
-   AC_CONFIG_FILES(test/jstest/Makefile)
    AC_CONFIG_FILES(test/cctest/Makefile)
 fi
 
