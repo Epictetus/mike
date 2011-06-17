@@ -19,13 +19,11 @@ protected:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeUtilsFsTest);
 
-// Function mike::ReadFile() should return NULL when file can't be read
 void MikeUtilsFsTest::cantReadFileTest()
 {
   CPPUNIT_ASSERT(mike::ReadFile("foobar.txt") == NULL);
 }
 
-// Funciton mike::ReadFile() should properly read contents from file
 void MikeUtilsFsTest::readFileTest()
 {
   char *content = mike::ReadFile("./fixtures/dummy.txt");

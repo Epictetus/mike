@@ -7,59 +7,58 @@
 
 using namespace std;
 
-namespace mike
-{
+namespace mike {
   namespace http
   {
     class Request;
     class Response;
     
-    typedef Request* pRequest;
-    typedef Response* pResponse;
-    typedef struct curl_slist* CURLheaders;
+    typedef CURL Curl;
+    typedef struct curl_slist* CurlHeaders;
     typedef map<string,string> HttpHeaderMap;
-    
+      
     class Request
     {
-    private:
-      string url;
-      string method;
-      CURL *curl;
-      CURLheaders curlHeaders;
-      string curlPostData;
-      string curlBuffer;
-      string curlHeaderBuffer;
-      long curlResponseCode;
-      HttpHeaderMap curlResponseHeaders;
-      char curlErrorBuffer[CURL_ERROR_SIZE];
     public:
-      static pRequest GET(string url);
-      static pRequest POST(string url);
+      static Request* GET(string url);
+      static Request* POST(string url);
       Request(string url, string method);
       virtual ~Request();
-      void SetHeader(string header);
-      void SetData(string data);
-      string Url();
-      string Method();
-      pResponse Perform();
+      void setHeader(string header);
+      void setData(string data);
+      string getUrl();
+      string getMethod();
+      Response* getResponse();
+      bool perform();
+      bool isReady();
+    protected:
+      string url_;
+      string method_;
+      Response* response_;
+      Curl* curl_;
+      CurlHeaders curlHeaders_;
+      HttpHeaderMap curlResponseHeaders_;
+      string curlPostData_;
+      string curlBuffer_;
+      string curlHeaderBuffer_;
+      long curlResponseCode_;
+      char curlErrorBuffer_[CURL_ERROR_SIZE];
+      void cleanupResponse();
     };
 
     class Response
     {
-    private:
-      long code;
-      string body;
-      string rawHeaders;
-      HttpHeaderMap headers;
     public:
       Response(long code, string body, HttpHeaderMap headers);
       virtual ~Response();
-      long Code();
-      string Body();
-      string GetHeader(string key);
-      bool IsHTML();
-      bool IsXML();
-      string ContentType();
+      long getCode();
+      string getBody();
+      string getHeader(string key);
+      string getContentType();
+    protected:
+      long code_;
+      string body_;
+      HttpHeaderMap headers_;
     };
   }
 }

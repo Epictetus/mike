@@ -7,14 +7,14 @@ namespace mike {
   namespace http {
     namespace
     {      
-      size_t CurlWriter(char *data, size_t size, size_t nmemb, string *wdata)
+      size_t curlWriteHandler(char *data, size_t size, size_t nmemb, string *wdata)
       {
 	if (wdata == NULL) return 0;
 	wdata->append(data, size*nmemb);
 	return size*nmemb;
       }
 
-      size_t CurlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
+      size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
       {
 	if (wdata == NULL) return 0;
 	string header = string((char*)ptr);
@@ -31,111 +31,136 @@ namespace mike {
       }
     }
     
-    pRequest Request::GET(string url)
+    Request* Request::GET(string url)
     {
       return new Request(url, "GET");
     }
 
-    pRequest Request::POST(string url)
+    Request* Request::POST(string url)
     {
       return new Request(url, "POST");
     }
     
     Request::Request(string url, string method)
-      : url(url)
-      , method(method)
+      : url_(url)
+      , method_(method)
     {
-      curl = curl_easy_init();
-      curlHeaders = NULL;
-      
-      if (curl != NULL) {
-	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlErrorBuffer);
-	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
-	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-	curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1L); 
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriter);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &curlBuffer);
-	curl_easy_setopt(curl, CURLOPT_WRITEHEADER, (void*)&curlResponseHeaders);
-	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &CurlHeaderHandler);
+      curl_ = curl_easy_init();
+      curlHeaders_ = NULL;
+
+      if (curl_ != NULL) {
+	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
+	curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
+	curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl_, CURLOPT_NOPROGRESS, 1L);
+	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 0L);
+	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYHOST, 0L);
+	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L); 
+	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
+	curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &curlBuffer_);
+	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, (void*)&curlResponseHeaders_);
+	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, &curlHeaderHandler);
       }
+
+      response_ = NULL;
     }
 
     Request::~Request()
     {
-      curl_easy_cleanup(curl);
+      curl_easy_cleanup(curl_);
+      cleanupResponse();
     }
 
-    void Request::SetHeader(string header)
+    Response* Request::getResponse()
     {
-      curlHeaders = curl_slist_append(curlHeaders, header.c_str());
+      return response_;
+    }
+    
+    string Request::getUrl()
+    {
+      return url_;
+    }
+    
+    string Request::getMethod()
+    {
+      return method_;
     }
 
-    void Request::SetData(string data)
+    bool Request::isReady()
     {
-      curlPostData = data;
+      return response_ != NULL;
+    }
+    
+    void Request::setHeader(string header)
+    {
+      curlHeaders_ = curl_slist_append(curlHeaders_, header.c_str());
     }
 
-    pResponse Request::Perform()
+    void Request::setData(string data)
     {
-      if (curl != NULL) {
-	if (method == "POST") {
-	  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, curlPostData.c_str());
+      curlPostData_ = data;
+    }
+
+    bool Request::perform()
+    {
+      cleanupResponse();
+      
+      if (curl_ != NULL) {
+	if (method_ == "POST") {
+	  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, curlPostData_.c_str());
 	}
 
-	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlHeaders);
+	curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, curlHeaders_);
 
-	if (curl_easy_perform(curl) == CURLE_OK) {
-	  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &curlResponseCode);
-	  return new Response(curlResponseCode, curlBuffer, curlResponseHeaders);
+	if (curl_easy_perform(curl_) == CURLE_OK) {
+	  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &curlResponseCode_);
+	  response_ = new Response(curlResponseCode_, curlBuffer_, curlResponseHeaders_);
+	  return true;
 	}
       }
 
-      return NULL;
+      return false;
     }
-    
-    string Request::Url()
+
+    void Request::cleanupResponse()
     {
-      return url;
-    }
-    
-    string Request::Method()
-    {
-      return method;
+      if (response_ != NULL) {
+	delete response_;
+	response_ = NULL;
+      }
     }
 
     // Response...
 
     Response::Response(long code, string body, HttpHeaderMap header)
-      : code(code)
-      , body(body)
-      , headers(header)
+      : code_(code)
+      , body_(body)
+      , headers_(header)
     {
     }
 
     Response::~Response()
     {
-      headers.clear();
+      headers_.clear();
     }
 
-    long Response::Code()
+    long Response::getCode()
     {
-      return code;
+      return code_;
     }
 
-    string Response::Body()
+    string Response::getBody()
     {
-      return body;
+      return body_;
     }
 
-    string Response::GetHeader(string key)
+    string Response::getHeader(string key)
     {
-      HttpHeaderMap::iterator header = headers.find(key);
-      return header != headers.end() ? (*header).second : "";
+      HttpHeaderMap::iterator header = headers_.find(key);
+      return header != headers_.end() ? (*header).second : "";
     }
 
+    /*
     bool Response::IsHTML()
     {
       return ContentType() == "text/html" ||
@@ -147,10 +172,11 @@ namespace mike {
       return ContentType() == "application/xml" ||
              ContentType() == "text/xml";
     }
-
-    string Response::ContentType()
+    */
+    
+    string Response::getContentType()
     {
-      string type = GetHeader("Content-Type");
+      string type = getHeader("Content-Type");
 
       if (type == "") {
 	"text/html";

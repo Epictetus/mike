@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$ARCH" != "" ]; then
+    echo $ARCH
+    exit 0
+fi
+
 arch=`uname -m`
 
 if [ "$arch" == "x86_64" ]; then
