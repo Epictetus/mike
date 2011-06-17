@@ -2,7 +2,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <string.h>
 
-#include "mike/utils/test.h"
+#include "mike/utils/test_macros.h"
 #include "mike/config.h"
 #include "mike/window.h"
 

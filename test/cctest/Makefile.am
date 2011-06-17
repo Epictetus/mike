@@ -7,6 +7,7 @@ TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
 
 # List of sources to compile and test.
 TESTEE_FILES = \
+	$(TESTEE_SOURCES_DIR)/mike/utils/test_macros.h \
 	$(TESTEE_SOURCES_DIR)/mike/utils/http.h \
 	$(TESTEE_SOURCES_DIR)/mike/utils/http.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.h \
@@ -26,7 +27,6 @@ TESTEE_FILES = \
 # List of test files.
 TEST_FILES = \
 	test_utils_fs.cc \
-	test_utils_test.cc \
 	test_utils_http.cc \
 	test_window.cc \
 	test_page.cc \

@@ -23,15 +23,18 @@ CPPUNIT_TEST_SUITE_REGISTRATION(MikeUtilsStringTest);
 
 void MikeUtilsStringTest::strltrimTest()
 {
-  CPPUNIT_ASSERT(string(strrtrim("foobar   ")) == "foobar")
+  char *testee = "foobar   ";
+  CPPUNIT_ASSERT(string(strrtrim(testee)) == "foobar");
 }
 
 void MikeUtilsStringTest::strrtrimTest()
 {
-  CPPUNIT_ASSERT(string(strrtrim("   foobar")) == "foobar")
+  char *testee = "    foobar";
+  CPPUNIT_ASSERT(string(strrtrim(testee)) == "foobar");
 }
 
 void MikeUtilsStringTest::strtrimTest()
 {
-  CPPUNIT_ASSERT(string(strtrim("   foobar   ")) == "foobar")
+  char *testee = "   foobar   ";
+  CPPUNIT_ASSERT(string(strtrim(testee)) == "foobar");
 }

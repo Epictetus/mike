@@ -1,2 +1,2 @@
-SUBDIRS = jstest cctest
-TESTS = jstest/jssuite cctest/ccsuite
+SUBDIRS = cctest
+TESTS = cctest/ccsuite
