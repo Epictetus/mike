@@ -55,6 +55,8 @@ namespace mike {
       string getBody();
       string getHeader(string key);
       string getContentType();
+      bool isXml();
+      bool isHtml();
     protected:
       long code_;
       string body_;

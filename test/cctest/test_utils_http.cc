@@ -19,6 +19,8 @@ class MikeUtilsHttpTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testFollowRedirects);
   CPPUNIT_TEST(testSimplePost);
   CPPUNIT_TEST(testContentType);
+  CPPUNIT_TEST(testIsHtmlMethod);
+  CPPUNIT_TEST(testIsXmlMethod);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -43,6 +45,7 @@ protected:
   {
     http::Request *req = http::Request::GET("http://localhost:4567/simple");
     ASSERT(req->perform());
+    ASSERT(req->isReady());
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getHeader("Content-Type"), "text/html;charset=utf-8");
     ASSERT_EQUAL(req->getResponse()->getContentType(), "text/html");
@@ -93,6 +96,22 @@ protected:
     http::Request *req = http::Request::GET("http://localhost:4567/simple");
     ASSERT(req->perform());
     ASSERT_EQUAL(req->getResponse()->getContentType(), "text/html");
+    delete req;
+  }
+
+  void testIsHtmlMethod()
+  {
+    http::Request *req = http::Request::GET("http://localhost:4567/simple");
+    ASSERT(req->perform());
+    ASSERT(req->getResponse()->isHtml());
+    delete req;
+  }
+
+  void testIsXmlMethod()
+  {
+    http::Request *req = http::Request::GET("http://localhost:4567/simple.xml");
+    ASSERT(req->perform());
+    ASSERT(req->getResponse()->isXml());
     delete req;
   }
 };

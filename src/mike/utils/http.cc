@@ -160,20 +160,22 @@ namespace mike {
       return header != headers_.end() ? (*header).second : "";
     }
 
-    /*
-    bool Response::IsHTML()
+    bool Response::isHtml()
     {
-      return ContentType() == "text/html" ||
-             ContentType() == "application/xhtml+xml";
+      bool result;
+      result = result || (getContentType() == "text/html");
+      result = result || (getContentType() == "application/xhtml+xml");
+      return result;
     }
 
-    bool Response::IsXML()
+    bool Response::isXml()
     {
-      return ContentType() == "application/xml" ||
-             ContentType() == "text/xml";
+      bool result;
+      result = result || (getContentType() == "application/xml");
+      result = result || (getContentType() == "text/xml");
+      return result;
     }
-    */
-    
+
     string Response::getContentType()
     {
       string type = getHeader("Content-Type");
