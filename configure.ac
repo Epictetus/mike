@@ -24,14 +24,14 @@ AC_MSG_CHECKING([for v8 engine])
 if test x$v8dir = x:; then
    v8dir=[$(pwd)/deps/v8]
 
-   LDFLAGS="-L$v8dir/lib $LDFLAGS"
-   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
-   LIBV8=-lv8
+#   LDFLAGS="-L$v8dir/lib $LDFLAGS"
+#   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
+#   LIBV8=-lv8
 
    AC_MSG_RESULT([$v8dir])
 else
-   LDFLAGS="-L$v8dir/lib $LDFLAGS"
-   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
+#   LDFLAGS="-L$v8dir/lib $LDFLAGS"
+#   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
 
    AC_MSG_RESULT([$v8dir])
    
@@ -65,10 +65,10 @@ AC_CHECK_PROGS([SCONS], [scons], [:])
 
 # Check for CppUnit. 
 
+ifdef([AM_PATH_CPPUNIT], [AM_PATH_CPPUNIT()], [])
+
 AC_CHECK_LIB([cppunit], [main], [cppunit=yes], [cppunit=no])
 AC_MSG_CHECKING([whether unit tests are available])
-
-ifdef([AM_PATH_CPPUNIT], [AM_PATH_CPPUNIT()], [])
 
 if test x$cppunit = xyes; then
    AC_MSG_RESULT([yes])
@@ -118,7 +118,6 @@ AC_CONFIG_FILES(src/Makefile)
 
 if test x$cppunit = xyes; then
    AC_CONFIG_FILES(test/Makefile)
-   AC_CONFIG_FILES(test/cctest/Makefile)
 fi
 
 # Generate output. 

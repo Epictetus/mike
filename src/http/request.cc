@@ -1,42 +1,40 @@
-#include <string>
 #include <algorithm>
-#include "mike/utils/http.h"
-#include "mike/utils/string.h"
+#include "http/request.h"
 
 namespace mike {
   namespace http {
     namespace
-    {      
+    {
       size_t curlWriteHandler(char *data, size_t size, size_t nmemb, string *wdata)
       {
-	if (wdata == NULL) return 0;
+	if (wdata == NULL) {
+	  return 0;
+	}
+      
 	wdata->append(data, size*nmemb);
 	return size*nmemb;
       }
 
       size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
       {
-	if (wdata == NULL) return 0;
-	string header = string((char*)ptr);
-	int split = header.find(':');
-
-	if (split >= 0) {
-	  string key = rtrim(rtrim(trim((char*)header.substr(0, split).c_str()),'\n'),'\r');
-	  string value = rtrim(rtrim(trim((char*)header.substr(split+1).c_str()),'\n'),'\r');
-	  HttpHeaderMap *headers = (HttpHeaderMap*)wdata;
-	  (*headers)[key] = value;
+	if (wdata == NULL) {
+	  return 0;
 	}
+
+	string line = string((char*)ptr);
+	Headers* headers = (Headers*)wdata;
+	headers->parseAndAppend(line);
 	
 	return size*nmemb;
       }
     }
-    
-    Request* Request::GET(string url)
+
+    Request* Request::Get(string url)
     {
       return new Request(url, "GET");
     }
 
-    Request* Request::POST(string url)
+    Request* Request::Post(string url)
     {
       return new Request(url, "POST");
     }
@@ -47,7 +45,7 @@ namespace mike {
     {
       curl_ = curl_easy_init();
       curlHeaders_ = NULL;
-
+    
       if (curl_ != NULL) {
 	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
 	curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
@@ -58,7 +56,7 @@ namespace mike {
 	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L); 
 	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
 	curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &curlBuffer_);
-	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, (void*)&curlResponseHeaders_);
+	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, (void*)&responseHeaders_);
 	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, &curlHeaderHandler);
       }
 
@@ -95,7 +93,7 @@ namespace mike {
     {
       curlHeaders_ = curl_slist_append(curlHeaders_, header.c_str());
     }
-
+  
     void Request::setData(string data)
     {
       curlPostData_ = data;
@@ -104,89 +102,32 @@ namespace mike {
     bool Request::perform()
     {
       cleanupResponse();
-      
+    
       if (curl_ != NULL) {
 	if (method_ == "POST") {
 	  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, curlPostData_.c_str());
 	}
-
+      
 	curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, curlHeaders_);
-
+	
 	if (curl_easy_perform(curl_) == CURLE_OK) {
 	  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &curlResponseCode_);
-	  response_ = new Response(curlResponseCode_, curlBuffer_, curlResponseHeaders_);
+	  response_ = new Response(curlResponseCode_, curlBuffer_, responseHeaders_.toMap());
 	  return true;
 	}
       }
-
+    
       return false;
     }
 
     void Request::cleanupResponse()
     {
+      responseHeaders_.clear();
+
       if (response_ != NULL) {
 	delete response_;
 	response_ = NULL;
       }
     }
-
-    // Response...
-
-    Response::Response(long code, string body, HttpHeaderMap header)
-      : code_(code)
-      , body_(body)
-      , headers_(header)
-    {
-    }
-
-    Response::~Response()
-    {
-      headers_.clear();
-    }
-
-    long Response::getCode()
-    {
-      return code_;
-    }
-
-    string Response::getBody()
-    {
-      return body_;
-    }
-
-    string Response::getHeader(string key)
-    {
-      HttpHeaderMap::iterator header = headers_.find(key);
-      return header != headers_.end() ? (*header).second : "";
-    }
-
-    string Response::getContentType()
-    {
-      string type = getHeader("Content-Type");
-
-      if (type == "") {
-	"text/html";
-      } else {
-	int split = type.find(";");
-	return split > 0 ? type.substr(0, split) : type;
-      }
-    }
-
-    bool Response::isHtml()
-    {
-      bool result;
-      result = result || (getContentType() == "text/html");
-      result = result || (getContentType() == "application/xhtml+xml");
-      return result;
-    }
-
-    bool Response::isXml()
-    {
-      bool result;
-      result = result || (getContentType() == "application/xml");
-      result = result || (getContentType() == "text/xml");
-      return result;
-    }
-
   }
 }
