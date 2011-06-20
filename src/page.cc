@@ -56,7 +56,7 @@ namespace mike
 
   bool Page::isXml()
   {
-    return type_ == XML_PAGE;
+    return (type_ == XML_PAGE || type_ == HTML_PAGE);
   }
 
   bool Page::isHtml()

@@ -85,7 +85,7 @@ namespace mike
     bool isText();
 
     /**
-     * Returns <code>true</code> when current page is an XML page.
+     * Returns <code>true</code> when current page is an XML or HTML page.
      *
      */
     bool isXml();
@@ -103,7 +103,7 @@ namespace mike
     bool isBinary();
 
     /**
-     * If current page is an XML document then returns <code>XmlPage</code>
+     * If current page is an XML (or HTML) document then returns <code>XmlPage</code>
      * object, otherwise <code>NULL</code> will be returned.
      *
      */

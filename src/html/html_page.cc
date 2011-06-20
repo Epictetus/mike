@@ -7,4 +7,19 @@ namespace mike
   {
     type_ = HTML_PAGE;
   }
+
+  XmlElementSet* HtmlPage::getElementsByCss(string selector)
+  {
+    
+  }
+
+  XmlElementSet* HtmlPage::getElementsByClassName(string klass)
+  {
+    
+  }
+  
+  XmlElement* HtmlPage::getElementById(string id)
+  {
+    
+  }
 }

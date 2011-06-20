@@ -16,6 +16,10 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/http/headers.cc \
 	$(TESTEE_SOURCES_DIR)/page.h \
 	$(TESTEE_SOURCES_DIR)/page.cc \
+	$(TESTEE_SOURCES_DIR)/xml/xml_element.h \
+	$(TESTEE_SOURCES_DIR)/xml/xml_element.cc \
+	$(TESTEE_SOURCES_DIR)/xml/xml_element_set.h \
+	$(TESTEE_SOURCES_DIR)/xml/xml_element_set.cc \
 	$(TESTEE_SOURCES_DIR)/xml/xml_page.h \
 	$(TESTEE_SOURCES_DIR)/xml/xml_page.cc \
 	$(TESTEE_SOURCES_DIR)/html/html_page.h \

@@ -18,6 +18,38 @@ namespace mike
      *
      */
     explicit HtmlPage(Request* request);
+
+    /**
+     * Works similar to <code>getElementsByXpath</code> method, only uses CSS selectors to
+     * find elements.
+     *
+     * <code>
+     *   XmlElementSet* items = page->getElementsByXpath("ul#items li");
+     * </code>
+     *
+     */
+    XmlElementSet* getElementsByCss(string selector);
+
+    /**
+     * Returns set of all elements having given class name.
+     *
+     * <code>
+     *   XmlElementSet* tags = page->getElementsByClassName("tag");
+     * </code>
+     *
+     */
+    XmlElementSet* getElementsByClassName(string klass);
+
+    /**
+     * Returns first found element with given ID. If no elements found then <code>NULL</code>
+     * will be returned. 
+     *
+     * <code>
+     *   XmlElement* header = page->getElementById("header");
+     * </code>
+     *
+     */
+    XmlElement* getElementById(string id);
   };
 }
 
