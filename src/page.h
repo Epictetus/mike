@@ -115,6 +115,12 @@ namespace mike
      *
      */
     HtmlPage* toHtmlPage();
+
+    /**
+     * Returns <code>true</code> when page has been properly loaded.
+     *
+     */
+    bool isLoaded();
     
     /**
      * Performs request to this page once again and reloads everything.

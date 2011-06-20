@@ -12,6 +12,7 @@ class MikePageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikePageTest);
   CPPUNIT_TEST(testBuildHtml);
+  CPPUNIT_TEST(testBuildWhenInvalid);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -20,9 +21,18 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/simple");
     Page* page = Page::Build(request);
+    ASSERT(page->isLoaded());
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple");
     ASSERT(page->isHtml());
     ASSERT(page->toHtmlPage());
+    delete page;
+  }
+
+  void testBuildWhenInvalid()
+  {
+    http::Request* request = http::Request::Get("http://thiswebsiteforsure/not/exists");
+    Page* page = Page::Build(request);
+    ASSERT_NULL(page);
     delete page;
   }
 };

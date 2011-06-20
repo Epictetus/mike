@@ -8,7 +8,7 @@ namespace mike
   {
     if (request->perform()) {
       Response* response = request->getResponse();
-      
+
       if (response->isHtml()) {
 	return new HtmlPage(request);
       } else if (response->isXml()) {
@@ -79,6 +79,11 @@ namespace mike
     return isHtml() ? (HtmlPage*)this : NULL;
   }
 
+  bool Page::isLoaded()
+  {
+    return (request_ && request_->isReady());
+  }
+  
   void Page::reload()
   {
     if (request_ != NULL) {

@@ -17,6 +17,7 @@
 #define ASSERT_NOT(x) ASSERT(!x)
 #define ASSERT_EQUAL(x,y) ASSERT(x == y)
 #define ASSERT_NOT_EQUAL(x,y) ASSERT(x != y)
+#define ASSERT_NULL(x) ASSERT_EQUAL(x, NULL)
 #define ASSERT_NOT_NULL(x) ASSERT_NOT_EQUAL(x, NULL)
 #define ASSERT_STR_EQUAL(x,y) ASSERT_EQUAL(string(x),string(y))
 #define ASSERT_STR_NOT_EQUAL(x,y) ASSERT_NOT_EQUAL(string(x),string(y))
