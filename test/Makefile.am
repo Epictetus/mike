@@ -28,6 +28,7 @@ TEST_FILES = \
 	TestHttp.cc \
 	TestPage.cc \
 	TestXmlPage.cc \
+	TestHtmlPage.cc \
 	Main.cc
 
 # Test suite setting and compiler flags.

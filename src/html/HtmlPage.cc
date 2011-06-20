@@ -20,6 +20,13 @@ namespace mike
   
   XmlElement* HtmlPage::getElementById(string id)
   {
-    
+    vector<XmlElement*> elems = getElementsByXpath("//*[@id='" + id + "'][1]");
+    return elems.empty() ? NULL : elems[0];
+  }
+
+  void HtmlPage::parseDocument()
+  {
+    xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
+    doc_ = htmlParseDoc(body, NULL);
   }
 }

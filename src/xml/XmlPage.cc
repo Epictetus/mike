@@ -62,12 +62,16 @@ namespace mike {
     if (isLoaded()) {
       cleanupDocument();
       registerErrorHandler();
-
-      xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
-      doc_ = xmlParseDoc(body);
+      parseDocument();
     }
   }
 
+  void XmlPage::parseDocument()
+  {
+    xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
+    doc_ = xmlParseDoc(body);
+  }
+  
   void XmlPage::cleanupDocument()
   {
     if (doc_ != NULL) {

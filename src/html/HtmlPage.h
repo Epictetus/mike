@@ -1,6 +1,7 @@
 #ifndef _MIKE_HTML_PAGE_H_
 #define _MIKE_HTML_PAGE_H_
 
+#include <libxml/HTMLparser.h>
 #include <string>
 #include <vector>
 #include "xml/XmlPage.h"
@@ -51,6 +52,15 @@ namespace mike
      *
      */
     XmlElement* getElementById(string id);
+
+  protected:
+    /**
+     * @overriden
+     *
+     */
+    virtual void parseDocument();
+
+    htmlDocPtr doc_;
   };
 }
 

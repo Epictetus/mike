@@ -61,6 +61,13 @@ namespace mike
      *
      */
     virtual void prepareDocument();
+
+    /**
+     * Runs libxml parser on current page content and creates libxml document,
+     * appropriate for page type (XML or HTML).
+     *
+     */
+    virtual void parseDocument();
     
     /**
      * Cleans up document object if necessary.

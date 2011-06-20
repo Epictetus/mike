@@ -22,6 +22,10 @@ get "/xpath.xml" do
   "<?xml version=\"1.0\"?><root><elems><elem load='yes'>First</elem><elem>Second</elem><elem load='yes'>Third</elem></elems></root>"
 end
 
+get "/xpath.html" do
+  "<html><body><ul id='elems'><li class='load'>First</li><li>Second</li><li class='load'>Third</li></ul></body></html>"
+end
+
 post "/simple" do
   "mike: #{params[:mike]}; foo: #{params[:foo]};"
 end
