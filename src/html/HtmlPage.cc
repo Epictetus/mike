@@ -15,7 +15,8 @@ namespace mike
 
   vector<XmlElement*> HtmlPage::getElementsByClassName(string klass)
   {
-    
+    // XXX: i think it has to be done more complex...
+    return getElementsByXpath("//*[contains(concat(' ', @class, ' '), ' " + klass + " ')]");
   }
   
   XmlElement* HtmlPage::getElementById(string id)

@@ -23,7 +23,7 @@ get "/xpath.xml" do
 end
 
 get "/xpath.html" do
-  "<html><body><ul id='elems'><li class='load'>First</li><li>Second</li><li class='load'>Third</li></ul></body></html>"
+  "<html><body><ul id='elems'><li class='load foo'>First</li><li>Second</li><li class='load'>Third</li></ul></body></html>"
 end
 
 post "/simple" do
