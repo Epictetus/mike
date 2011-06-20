@@ -1,5 +1,6 @@
 #include "page.h"
 #include "xml/xml_page.h"
+#include "html/html_page.h"
 
 namespace mike
 {
@@ -9,7 +10,7 @@ namespace mike
       Response* response = request->getResponse();
       
       if (response->isHtml()) {
-	//return new HtmlPage(request);
+	return new HtmlPage(request);
       } else if (response->isXml()) {
 	return new XmlPage(request);
       } else if (response->isText()) {
@@ -70,13 +71,14 @@ namespace mike
 
   XmlPage* Page::toXmlPage()
   {
-    if (isXml()) {
-      return (XmlPage*)this;
-    } else {
-      return NULL;
-    }
+    return isXml() ? (XmlPage*)this : NULL;
   }
-  
+
+  HtmlPage* Page::toHtmlPage()
+  {
+    return isHtml() ? (HtmlPage*)this : NULL;
+  }
+
   void Page::reload()
   {
     if (request_ != NULL) {

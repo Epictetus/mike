@@ -18,6 +18,8 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/page.cc \
 	$(TESTEE_SOURCES_DIR)/xml/xml_page.h \
 	$(TESTEE_SOURCES_DIR)/xml/xml_page.cc \
+	$(TESTEE_SOURCES_DIR)/html/html_page.h \
+	$(TESTEE_SOURCES_DIR)/html/html_page.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.h \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/string.h \

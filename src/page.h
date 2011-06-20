@@ -10,6 +10,7 @@ namespace mike
   using namespace http;
 
   class XmlPage;
+  class HtmlPage;
   
   /**
    * Available page types. 
@@ -107,6 +108,13 @@ namespace mike
      *
      */
     XmlPage* toXmlPage();
+
+    /**
+     * If current page is an HTML document then returns <code>HtmlPage</code>
+     * object, otherwise <code>NULL</code> will be returned.
+     *
+     */
+    HtmlPage* toHtmlPage();
     
     /**
      * Performs request to this page once again and reloads everything.
