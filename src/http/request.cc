@@ -5,14 +5,17 @@ namespace mike {
   namespace http {
     namespace
     {
-      size_t curlWriteHandler(char *data, size_t size, size_t nmemb, string *wdata)
+      size_t curlWriteHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
       {
 	if (wdata == NULL) {
 	  return 0;
 	}
-      
-	wdata->append(data, size*nmemb);
-	return size*nmemb;
+
+	string buf = string((char*)ptr, size * nmemb);
+	stringstream* response = (stringstream*)wdata;
+	response->write(buf.c_str(), (streamsize)buf.size());
+
+	return size * nmemb;
       }
 
       size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
@@ -25,7 +28,7 @@ namespace mike {
 	Headers* headers = (Headers*)wdata;
 	headers->parseAndAppend(line);
 	
-	return size*nmemb;
+	return size * nmemb;
       }
     }
 
@@ -45,22 +48,25 @@ namespace mike {
     {
       curl_ = curl_easy_init();
       curlHeaders_ = NULL;
-    
+      response_ = NULL;
+      
       if (curl_ != NULL) {
-	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
 	curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
-	curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
 	curl_easy_setopt(curl_, CURLOPT_NOPROGRESS, 1L);
+
+	// Auto redirecting and referer discovery
+	curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L);
+
+	// Skip SSL verifications
 	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 0L);
 	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYHOST, 0L);
-	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L); 
-	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
-	curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &curlBuffer_);
-	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, (void*)&responseHeaders_);
-	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, &curlHeaderHandler);
-      }
 
-      response_ = NULL;
+	// Content and headers callbacks
+	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
+	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, curlHeaderHandler);
+      }
     }
 
     Request::~Request()
@@ -102,17 +108,32 @@ namespace mike {
     bool Request::perform()
     {
       cleanupResponse();
-    
+
       if (curl_ != NULL) {
+	// Set custom post data (if applicable)
 	if (method_ == "POST") {
 	  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, curlPostData_.c_str());
 	}
-      
+
+	// Set custom headers
 	curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, curlHeaders_);
-	
+
+	// Assign response headers container
+	Headers headers;
+	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, &headers);
+
+	// Assign response body buffer
+	stringstream* buffer = new stringstream();
+	curl_easy_setopt(curl_, CURLOPT_WRITEDATA, (void*)buffer);
+
 	if (curl_easy_perform(curl_) == CURLE_OK) {
-	  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &curlResponseCode_);
-	  response_ = new Response(curlResponseCode_, curlBuffer_, responseHeaders_.toMap());
+	  // Extract response code
+	  long response_code;
+	  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &response_code);
+
+	  // Generate response
+	  response_ = new Response(response_code, buffer, headers.toMap());
+
 	  return true;
 	}
       }
@@ -122,12 +143,8 @@ namespace mike {
 
     void Request::cleanupResponse()
     {
-      responseHeaders_.clear();
-
-      if (response_ != NULL) {
-	delete response_;
-	response_ = NULL;
-      }
+      delete response_;
+      response_ = NULL;
     }
   }
 }

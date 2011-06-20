@@ -14,6 +14,10 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/http/request.cc \
 	$(TESTEE_SOURCES_DIR)/http/headers.h \
 	$(TESTEE_SOURCES_DIR)/http/headers.cc \
+	$(TESTEE_SOURCES_DIR)/page.h \
+	$(TESTEE_SOURCES_DIR)/page.cc \
+	$(TESTEE_SOURCES_DIR)/xml/xml_page.h \
+	$(TESTEE_SOURCES_DIR)/xml/xml_page.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.h \
 	$(TESTEE_SOURCES_DIR)/mike/utils/fs.cc \
 	$(TESTEE_SOURCES_DIR)/mike/utils/string.h \
@@ -22,6 +26,7 @@ TESTEE_FILES = \
 # List of test files.
 TEST_FILES = \
 	test_http.cc \
+	test_page.cc \
 	main.cc
 
 # Test suite setting and compiler flags.

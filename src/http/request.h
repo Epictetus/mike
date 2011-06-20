@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 #include <curl/curl.h>
 #include "http/response.h"
 #include "http/headers.h"
@@ -110,24 +111,19 @@ namespace mike {
        */
       bool isReady();
       
-    private:
+    protected:
       /**
        * Deletes from memory and cleans up referenced response object.
        *
        */
       void cleanupResponse();
-      
-    protected:
+
       string url_;
       string method_;
       Response* response_;
-      Headers responseHeaders_;
       Curl* curl_;
       CurlHeaders curlHeaders_;
       string curlPostData_;
-      string curlBuffer_;
-      string curlHeaderBuffer_;
-      long curlResponseCode_;
       char curlErrorBuffer_[CURL_ERROR_SIZE];
     };
   }

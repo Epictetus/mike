@@ -47,6 +47,7 @@ protected:
     ASSERT(req->isReady());
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getHeader("Content-Type"), "text/html;charset=utf-8");
+    ASSERT_EQUAL(req->getResponse()->getHeader("No-Such-Header"), "");
     ASSERT_EQUAL(req->getResponse()->getBody(), "Kukuryku!");
     delete req;
   }

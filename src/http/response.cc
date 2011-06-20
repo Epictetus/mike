@@ -3,16 +3,17 @@
 namespace mike {
   namespace http
   {
-    Response::Response(long code, string body, map<string,string> headers)
+    Response::Response(long code, stringstream* content, map<string,string> headers)
       : code_(code)
-      , body_(body)
-      , headers_(headers)
     {
+      headers_ = headers;
+      content_ = content;
     }
 
     Response::~Response()
     {
       headers_.clear();
+      delete content_;
     }
 
     long Response::getCode()
@@ -22,7 +23,12 @@ namespace mike {
 
     string Response::getBody()
     {
-      return body_;
+      return content_->str();
+    }
+
+    stringstream* Response::getContent()
+    {
+      return content_;
     }
 
     string Response::getHeader(string key)
@@ -36,7 +42,7 @@ namespace mike {
       string type = getHeader("Content-Type");
 
       if (type == "") {
-	"text/html";
+	"text/plain";
       } else {
 	int split = type.find(";");
 	return split > 0 ? type.substr(0, split) : type;
@@ -57,6 +63,12 @@ namespace mike {
       result = result || (getContentType() == "application/xml");
       result = result || (getContentType() == "text/xml");
       return result;
+    }
+
+    bool Response::isText()
+    {
+      // TODO: find out something to determine mime type...
+      return true;
     }
   }
 }

@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 
 namespace mike {
   namespace http
@@ -22,7 +23,7 @@ namespace mike {
        * Constructor.
        *
        */
-      Response(long code, string body, map<string,string> headers);
+      Response(long code, stringstream* content, map<string,string> headers);
 
       /**
        * Destructor.
@@ -37,10 +38,16 @@ namespace mike {
       long getCode();
 
       /**
-       * Returns content of requested website.
+       * Returns body of requested website as string.
        *
        */
       string getBody();
+
+      /**
+       * Returns string stream with content of requested website.
+       *
+       */
+      stringstream* getContent();
 
       /**
        * Returns specified response header. Example:
@@ -71,9 +78,15 @@ namespace mike {
        */
       bool isHtml();
 
+      /**
+       * Returns <code>true</code> if requested website is an text document.
+       *
+       */
+      bool isText();
+
     protected:
       long code_;
-      string body_;
+      stringstream* content_;
       map<string,string> headers_;
     };
   }
