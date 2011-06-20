@@ -17,6 +17,11 @@ get "/simple.xml" do
   "<?xml version=\"1.0\"?><root>Simple!</root>"
 end
 
+get "/xpath.xml" do
+  content_type 'application/xml'
+  "<?xml version=\"1.0\"?><root><elems><elem load='yes'>First</elem><elem>Second</elem><elem load='yes'>Third</elem></elems></root>"
+end
+
 post "/simple" do
   "mike: #{params[:mike]}; foo: #{params[:foo]};"
 end

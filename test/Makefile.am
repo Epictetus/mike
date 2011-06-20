@@ -31,6 +31,7 @@ TESTEE_FILES = \
 TEST_FILES = \
 	test_http.cc \
 	test_page.cc \
+	test_xml_page.cc \
 	main.cc
 
 # Test suite setting and compiler flags.

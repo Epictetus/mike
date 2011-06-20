@@ -23,7 +23,30 @@ namespace mike {
 
   vector<XmlElement*> XmlPage::getElementsByXpath(string xpath)
   {
-    
+    vector<XmlElement*> result;
+
+    // Setup XPath stuff and evaluate expression
+    xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
+    xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
+    xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
+
+    // Assign found elements (if any) to results vector.
+    if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
+      xmlNodeSetPtr nodeset = found->nodesetval;
+      XmlElement* elements[nodeset->nodeNr];
+
+      for (int i = 0; i < nodeset->nodeNr; i++) {
+	elements[i] = new XmlElement(nodeset->nodeTab[i]);
+      }
+
+      result.assign(elements, elements + nodeset->nodeNr);
+    }
+
+    // Free XPath stuff. 
+    xmlXPathFreeContext(ctx);
+    xmlXPathFreeObject(found);
+
+    return result;
   }
 
   vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
@@ -34,16 +57,11 @@ namespace mike {
   void XmlPage::prepareDocument()
   {
     cleanupDocument();
-    xmlSetGenericErrorFunc((void*)this, xmlErrorHandler);
+    registerErrorHandler();
 
     if (request_->isReady()) {
-      xmlChar *body = xmlCharStrdup(getResponse()->getBody().c_str());
-
-      if (isHtml()) {
-	doc_ = htmlParseDoc(body, NULL);
-      } else if (isXml()) {
-	doc_ = xmlParseDoc(body);
-      }
+      xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
+      doc_ = xmlParseDoc(body);
     }
   }
 
@@ -53,5 +71,10 @@ namespace mike {
       xmlFreeDoc(doc_);
       doc_ = NULL;
     }
+  }
+
+  void XmlPage::registerErrorHandler()
+  {
+    xmlSetGenericErrorFunc((void*)this, xmlErrorHandler);
   }
 }
