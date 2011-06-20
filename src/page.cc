@@ -6,7 +6,7 @@ namespace mike
 {
   Page* Page::Build(Request* request)
   {
-    if (request->perform()) {
+    if (request && request->perform()) {
       Response* response = request->getResponse();
 
       if (response->isHtml()) {
