@@ -1,14 +1,12 @@
-#ifndef _MIKE_CONFIG_H_
-#define _MIKE_CONFIG_H_
+#ifndef _MIKE_SYSTEM_INFO_H_
+#define _MIKE_SYSTEM_INFO_H_
 
 #include <stdlib.h>
 
 // Mike's settings
-
 #define MIKE_VERSION "0.0.1"
 
 // Detecting CPU architecture
-
 #if defined(__amd64__)
 #define CPU_ARCH "x86_64"
 #elif defined(__i386__)
@@ -28,7 +26,6 @@
 #endif
 
 // Detecting operating system
-
 #if defined(__WIN32__) || defined(__MINGW32__) || defined(__CYGWIN__)
 #define OS_TYPE "Windows"
 #elif defined(__linux__)
@@ -37,4 +34,4 @@
 #define OS_TYPE "Apple"
 #endif
 
-#endif /* _MIKE_CONFIG_H_ */
+#endif /* _MIKE_SYSTEM_INFO_H_ */

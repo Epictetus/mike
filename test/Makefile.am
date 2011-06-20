@@ -8,6 +8,7 @@ TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
 # List of sources to compile and test.
 TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/utils/CppunitMacros.h \
+	$(TESTEE_SOURCES_DIR)/utils/SystemInfo.h \
 	$(TESTEE_SOURCES_DIR)/http/Response.h \
 	$(TESTEE_SOURCES_DIR)/http/Response.cc \
 	$(TESTEE_SOURCES_DIR)/http/Request.h \
