@@ -25,33 +25,36 @@ namespace mike {
   {
     vector<XmlElement*> result;
 
-    // Setup XPath stuff and evaluate expression
-    xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
-    xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
-    xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
+    if (doc_) {
+      // Setup XPath stuff and evaluate expression
+      xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
+      xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
+      xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
 
-    // Assign found elements (if any) to results vector.
-    if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
-      xmlNodeSetPtr nodeset = found->nodesetval;
-      XmlElement* elements[nodeset->nodeNr];
+      // Assign found elements (if any) to results vector.
+      if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
+	xmlNodeSetPtr nodeset = found->nodesetval;
+	XmlElement* elements[nodeset->nodeNr];
+	
+	for (int i = 0; i < nodeset->nodeNr; i++) {
+	  elements[i] = new XmlElement(nodeset->nodeTab[i]);
+	}
 
-      for (int i = 0; i < nodeset->nodeNr; i++) {
-	elements[i] = new XmlElement(nodeset->nodeTab[i]);
+	result.assign(elements, elements + nodeset->nodeNr);
       }
-
-      result.assign(elements, elements + nodeset->nodeNr);
+      
+      // Free XPath stuff. 
+      xmlXPathFreeContext(ctx);
+      xmlXPathFreeObject(found);
     }
-
-    // Free XPath stuff. 
-    xmlXPathFreeContext(ctx);
-    xmlXPathFreeObject(found);
-
+    
     return result;
   }
 
   vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
   {
-    
+    // TODO: do it without using xpath you lazy bastard!!
+    return getElementsByXpath("//" + tag);
   }
 
   void XmlPage::prepareDocument()
