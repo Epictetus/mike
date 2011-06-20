@@ -37,7 +37,7 @@ namespace mike {
 	XmlElement* elements[nodeset->nodeNr];
 	
 	for (int i = 0; i < nodeset->nodeNr; i++) {
-	  elements[i] = new XmlElement(nodeset->nodeTab[i]);
+	  elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
 	}
 
 	result.assign(elements, elements + nodeset->nodeNr);

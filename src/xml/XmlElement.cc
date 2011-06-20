@@ -1,9 +1,11 @@
 #include "xml/XmlElement.h"
+#include "xml/XmlPage.h"
 
 namespace mike
 {
-  XmlElement::XmlElement(xmlNode* node)
+  XmlElement::XmlElement(XmlPage* page, xmlNode* node)
   {
+    page_ = page;
     node_ = node;
   }
 
