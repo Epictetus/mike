@@ -59,10 +59,10 @@ namespace mike {
 
   void XmlPage::prepareDocument()
   {
-    cleanupDocument();
-    registerErrorHandler();
+    if (isLoaded()) {
+      cleanupDocument();
+      registerErrorHandler();
 
-    if (request_->isReady()) {
       xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
       doc_ = xmlParseDoc(body);
     }
