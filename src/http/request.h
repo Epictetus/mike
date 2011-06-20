@@ -55,7 +55,7 @@ namespace mike {
        * Destructor.
        *
        */
-      virtual ~Request();
+      ~Request();
 
       /**
        * This method allows you to set custom HTTP headers for this request, eg:

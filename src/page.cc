@@ -16,7 +16,7 @@ namespace mike
       } else if (response->isText()) {
 	//return new TextPage(request);
       } else {
-	// return new BinaryPage(request);
+	//return new BinaryPage(request);
       }
     }
     

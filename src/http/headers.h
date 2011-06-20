@@ -27,7 +27,7 @@ namespace mike {
        * Destructor.
        *
        */
-      virtual ~Headers();
+      ~Headers();
 
       /**
        * Parses given line and appends extracted header and value to headers map.

@@ -29,7 +29,7 @@ namespace mike {
        * Destructor.
        *
        */
-      virtual ~Response();
+      ~Response();
 
       /**
        * Returns HTTP response code.
