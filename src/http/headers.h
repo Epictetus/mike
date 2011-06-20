@@ -18,18 +18,6 @@ namespace mike {
     {
     public:
       /**
-       * Constructor.
-       *
-       */
-      Headers();
-
-      /**
-       * Destructor.
-       *
-       */
-      ~Headers();
-
-      /**
        * Parses given line and appends extracted header and value to headers map.
        *
        * <code>

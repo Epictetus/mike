@@ -32,14 +32,6 @@ namespace mike {
       }
     }
     
-    Headers::Headers()
-    {
-    }
-
-    Headers::~Headers()
-    {
-    }
-
     void Headers::parseAndAppend(string line)
     {
       int splitter = line.find(':');
