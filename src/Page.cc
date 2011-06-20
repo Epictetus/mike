@@ -1,6 +1,6 @@
-#include "page.h"
-#include "xml/xml_page.h"
-#include "html/html_page.h"
+#include "Page.h"
+#include "xml/XmlPage.h"
+#include "html/HtmlPage.h"
 
 namespace mike
 {

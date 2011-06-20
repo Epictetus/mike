@@ -1,8 +1,8 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "mike/utils/test_macros.h"
-#include "http/request.h"
+#include "utils/CppunitMacros.h"
+#include "http/Request.h"
 
 using namespace std;
 using namespace mike;

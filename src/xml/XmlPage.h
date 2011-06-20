@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "page.h"
-#include "xml/xml_element.h"
+#include "Page.h"
+#include "xml/XmlElement.h"
 
 namespace mike
 {

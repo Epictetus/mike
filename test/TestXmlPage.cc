@@ -2,8 +2,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <string.h>
 
-#include "mike/utils/test_macros.h"
-#include "xml/xml_page.h"
+#include "utils/CppunitMacros.h"
+#include "xml/XmlPage.h"
 
 using namespace std;
 using namespace mike;

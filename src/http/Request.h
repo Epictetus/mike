@@ -5,8 +5,8 @@
 #include <string>
 #include <sstream>
 #include <curl/curl.h>
-#include "http/response.h"
-#include "http/headers.h"
+#include "http/Response.h"
+#include "http/Headers.h"
 
 namespace mike {
   namespace http

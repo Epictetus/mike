@@ -1,4 +1,4 @@
-#include "xml/xml_page.h"
+#include "xml/XmlPage.h"
 
 namespace mike {
   namespace

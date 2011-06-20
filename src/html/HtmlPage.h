@@ -3,8 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "page.h"
-#include "xml/xml_page.h"
+#include "xml/XmlPage.h"
 
 namespace mike
 {

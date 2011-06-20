@@ -1,5 +1,5 @@
-#ifndef _MIKE_TEST_MACROS_H_
-#define _MIKE_TEST_MACROS_H_
+#ifndef _MIKE_CPPUNIT_MACROS_H_
+#define _MIKE_CPPUNIT_MACROS_H_
 
 #ifdef CPPUNIT_ASSERT_THROW
 #undef CPPUNIT_ASSERT_THROW
@@ -23,4 +23,4 @@
 #define ASSERT_STR_NOT_EQUAL(x,y) ASSERT_NOT_EQUAL(string(x),string(y))
 #define ASSERT_THROW(e,t) CPPUNIT_ASSERT_THROW(e,t)
 
-#endif /* _MIKE_TEST_MACROS_H_ */
+#endif /* _MIKE_CPPUNIT_MACROS_H_ */
