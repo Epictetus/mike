@@ -8,12 +8,12 @@ namespace mike
     type_ = HTML_PAGE;
   }
 
-  XmlElementSet* HtmlPage::getElementsByCss(string selector)
+  vector<XmlElement*> HtmlPage::getElementsByCss(string selector)
   {
     
   }
 
-  XmlElementSet* HtmlPage::getElementsByClassName(string klass)
+  vector<XmlElement*> HtmlPage::getElementsByClassName(string klass)
   {
     
   }

@@ -1,6 +1,8 @@
 #ifndef _MIKE_HTML_PAGE_H_
 #define _MIKE_HTML_PAGE_H_
 
+#include <string>
+#include <vector>
 #include "page.h"
 #include "xml/xml_page.h"
 
@@ -24,21 +26,21 @@ namespace mike
      * find elements.
      *
      * <code>
-     *   XmlElementSet* items = page->getElementsByXpath("ul#items li");
+     *   vector<XmlElement*> items = page->getElementsByXpath("ul#items li");
      * </code>
      *
      */
-    XmlElementSet* getElementsByCss(string selector);
+    vector<XmlElement*> getElementsByCss(string selector);
 
     /**
      * Returns set of all elements having given class name.
      *
      * <code>
-     *   XmlElementSet* tags = page->getElementsByClassName("tag");
+     *   vector<XmlElement*> tags = page->getElementsByClassName("tag");
      * </code>
      *
      */
-    XmlElementSet* getElementsByClassName(string klass);
+    vector<XmlElement*> getElementsByClassName(string klass);
 
     /**
      * Returns first found element with given ID. If no elements found then <code>NULL</code>

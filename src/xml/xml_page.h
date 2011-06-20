@@ -6,11 +6,12 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
+
 #include <string>
+#include <vector>
 
 #include "page.h"
 #include "xml/xml_element.h"
-#include "xml/xml_element_set.h"
 
 namespace mike
 {
@@ -38,21 +39,21 @@ namespace mike
      * If no element found then obviously empty set will be returned. 
      *
      * <code>
-     *   XmlElementSet* items = page->getElementsByXpath("//ul[id='items']//li");
+     *   vector<XmlElement*> items = page->getElementsByXpath("//ul[id='items']//li");
      * </code>
      *
      */
-    XmlElementSet* getElementsByXpath(string xpath);
+    vector<XmlElement*> getElementsByXpath(string xpath);
 
     /**
      * Returns set of all elements with given tag name. Example:
      *
      * <code>
-     *   XmlElementSet* images = page->getElementsByTagName('img');
+     *   vector<XmlElement*> images = page->getElementsByTagName('img');
      * </code>
      *
      */
-    XmlElementSet* getElementsByTagName(string tag);
+    vector<XmlElement*> getElementsByTagName(string tag);
     
   protected:
     /**

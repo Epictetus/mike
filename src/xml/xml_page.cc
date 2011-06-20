@@ -21,14 +21,14 @@ namespace mike {
     cleanupDocument();
   }
 
-  XmlElementSet* XmlPage::getElementsByXpath(string xpath)
+  vector<XmlElement*> XmlPage::getElementsByXpath(string xpath)
   {
     
   }
 
-  XmlElementSet* XmlPage::getElementsByTagName(string tag)
+  vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
   {
-
+    
   }
 
   void XmlPage::prepareDocument()

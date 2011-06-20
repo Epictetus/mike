@@ -13,16 +13,9 @@
 /src/glue/glue/Makefile
 /src/glue/glue/Makefile.in
 
+/test/*suite
 /test/Makefile
 /test/Makefile.in
-
-/test/jstest/*suite
-/test/jstest/Makefile
-/test/jstest/Makefile.in
-
-/test/cctest/*suite
-/test/cctest/Makefile
-/test/cctest/Makefile.in
 
 /build-aux
 /build-m4
