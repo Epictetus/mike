@@ -30,7 +30,7 @@ namespace mike
      * </code>
      *
      */
-    vector<XmlElement*> getElementsByCss(string selector);
+    vector<XmlElement*> getElementsByCss(string rule);
 
     /**
      * Returns set of all elements having given class name.

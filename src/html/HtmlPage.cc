@@ -1,3 +1,4 @@
+#include <list>
 #include "html/HtmlPage.h"
 
 namespace mike
@@ -8,9 +9,10 @@ namespace mike
     type_ = HTML_PAGE;
   }
 
-  vector<XmlElement*> HtmlPage::getElementsByCss(string selector)
+  vector<XmlElement*> HtmlPage::getElementsByCss(string rule)
   {
-    
+    // TODO: implement this someday...
+    throw "HtmlPage::getElementsByCss is not implemented yet.";
   }
 
   vector<XmlElement*> HtmlPage::getElementsByClassName(string klass)
