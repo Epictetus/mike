@@ -43,9 +43,10 @@ namespace mike {
 	result.assign(elements, elements + nodeset->nodeNr);
       }
       
-      // Free XPath stuff. 
+      // Free XPath stuff.
       xmlXPathFreeContext(ctx);
       xmlXPathFreeObject(found);
+      xmlFree(cxpath);
     }
     
     return result;
@@ -70,6 +71,7 @@ namespace mike {
   {
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
     doc_ = xmlParseDoc(body);
+    xmlFree(body);
   }
   
   void XmlPage::cleanupDocument()

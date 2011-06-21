@@ -3,7 +3,7 @@
 
 namespace mike
 {
-  XmlElement::XmlElement(XmlPage* page, xmlNode* node)
+  XmlElement::XmlElement(XmlPage* page, xmlNodePtr node)
   {
     page_ = page;
     node_ = node;

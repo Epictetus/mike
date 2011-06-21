@@ -24,7 +24,7 @@ namespace mike
      * Constructor.
      *
      */
-    explicit XmlElement(XmlPage* page, xmlNode* node);
+    explicit XmlElement(XmlPage* page, xmlNodePtr node);
 
     /**
      * Destructor.
@@ -58,7 +58,7 @@ namespace mike
     
   protected:
     XmlPage* page_;
-    xmlNode* node_;
+    xmlNodePtr node_;
     map<string,xmlChar*> attrsCache_;
   };
 }
