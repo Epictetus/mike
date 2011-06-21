@@ -13,6 +13,7 @@ class MikeXmlElementTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(MikeXmlElementTest);
   CPPUNIT_TEST(testGetAttribute);
   CPPUNIT_TEST(testHasAttribute);
+  CPPUNIT_TEST(testGetContent);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -40,6 +41,18 @@ protected:
     ASSERT_NOT_NULL(elem);
     ASSERT(elem->hasAttribute("foo"));
     ASSERT_NOT(elem->hasAttribute("bar"));
+    delete elem;
+    delete page;
+  }
+
+  void testGetContent()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
+    XmlPage* page = Page::Build(request)->toXmlPage();
+    ASSERT(page);
+    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    ASSERT_NOT_NULL(elem);
+    ASSERT_EQUAL(elem->getContent(), "Hello Foo!");
     delete elem;
     delete page;
   }

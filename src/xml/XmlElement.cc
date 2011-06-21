@@ -16,8 +16,6 @@ namespace mike
     }
 
     attrsCache_.clear();
-    
-    // XXX: find out if we need to delete node_ here... 
   }
 
   string XmlElement::getAttribute(string name)
@@ -30,7 +28,7 @@ namespace mike
     if (found != attrsCache_.end()) {
       value = (*found).second;
     } else {
-      if ((value = xmlGetProp(node_, attr_name)) != NULL) {
+      if (node_ && (value = xmlGetProp(node_, attr_name)) != NULL) {
 	xmlFree(attr_name);
 	attrsCache_[name] = value;
       } else {
@@ -49,13 +47,8 @@ namespace mike
     return result;
   }
   
-  string XmlElement::getText()
-  {
-    
-  }
-
   string XmlElement::getContent()
   {
-    
+    return node_ ? (char*)node_->children->content : "";
   }
 }

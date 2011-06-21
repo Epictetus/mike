@@ -46,13 +46,7 @@ namespace mike
     bool hasAttribute(string name);
     
     /**
-     * Returns only text content of this node.
-     *
-     */
-    string getText();
-
-    /**
-     * Returns whole content of this node (inner XML content).
+     * Returns content of all children nodes.
      */
     string getContent();
     
