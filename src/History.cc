@@ -59,6 +59,7 @@ namespace mike
 	  forward_.splice(forward_.begin(), back_, it, back_.end());
 	  current_ = back_.back();
 	  back_.pop_back();
+          reloadCurrent();
 	}
       } else {
 	if ((distance = distance <= forward_.size() ? distance : forward_.size()) != 0) {
@@ -67,10 +68,9 @@ namespace mike
 	  back_.splice(back_.end(), forward_, forward_.begin(), it);
 	  current_ = forward_.front();
 	  forward_.pop_front();
+          reloadCurrent();
 	}
       }
-
-      reloadCurrent();
     }
   }
 
