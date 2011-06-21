@@ -29,6 +29,7 @@ TEST_FILES = \
 	TestHttp.cc \
 	TestPage.cc \
 	TestXmlPage.cc \
+	TestXmlElement.cc \
 	TestHtmlPage.cc \
 	Main.cc
 

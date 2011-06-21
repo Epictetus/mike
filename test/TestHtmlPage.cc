@@ -24,7 +24,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/simple");
     Page* page = Page::Build(request);
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple");
     ASSERT(page->isHtml());
     ASSERT(page->toHtmlPage());
@@ -35,7 +35,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     vector<XmlElement*> elems = page->getElementsByTagName("li");
     ASSERT_EQUAL(elems.size(), 3);
     elems.clear();
@@ -46,7 +46,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     vector<XmlElement*> elems = page->getElementsByXpath("//ul[@id='elems']/li[contains(@class, 'load')]");
     ASSERT_EQUAL(elems.size(), 2);
     elems.clear();
@@ -57,7 +57,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     XmlElement* should_be_found = page->getElementById("elems");
     XmlElement* should_not_be_found = page->getElementById("not-found");
     ASSERT_NOT_NULL(should_be_found);
@@ -71,7 +71,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     vector<XmlElement*> elems_ok = page->getElementsByClassName("load");
     vector<XmlElement*> elems_not_ok = page->getElementsByClassName("loa");
     vector<XmlElement*> elems_not_ok_too = page->getElementsByClassName("load fo");

@@ -4,6 +4,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <string>
+#include <map>
 
 namespace mike
 {
@@ -30,10 +31,29 @@ namespace mike
      *
      */
     virtual ~XmlElement();
+
+    /**
+     * Returns value of specified attribute. If attribute is not defined then
+     * empty string will be returned. 
+     *
+     */
+    string getAttribute(string name);
+
+    /**
+     * Returns only text content of this node.
+     *
+     */
+    string getText();
+
+    /**
+     * Returns whole content of this node (inner XML content).
+     */
+    string getContent();
     
   protected:
     XmlPage* page_;
     xmlNode* node_;
+    map<string,xmlChar*> attrsCache_;
   };
 }
 

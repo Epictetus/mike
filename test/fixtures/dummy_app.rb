@@ -26,6 +26,11 @@ get "/xpath.html" do
   "<html><body><ul id='elems'><li class='load foo'>First</li><li>Second</li><li class='load'>Third</li></ul></body></html>"
 end
 
+get "/xml-elements.xml" do
+  content_type 'application/xml'
+  "<?xml version=\"1.0\"?><root><elem foo='bar'>Hello Foo!</elem></root>"
+end
+
 post "/simple" do
   "mike: #{params[:mike]}; foo: #{params[:foo]};"
 end

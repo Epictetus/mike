@@ -120,13 +120,13 @@ namespace mike
      * Returns <code>true</code> when page has been properly loaded.
      *
      */
-    bool isLoaded();
+    virtual bool isLoaded();
     
     /**
      * Performs request to this page once again and reloads everything.
      *
      */
-    void reload();
+    virtual void reload();
     
   protected:
     http::Request* request_;

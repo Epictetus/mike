@@ -11,22 +11,10 @@ using namespace mike;
 class MikePageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikePageTest);
-  CPPUNIT_TEST(testBuildHtml);
   CPPUNIT_TEST(testBuildWhenInvalid);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
-
-  void testBuildHtml()
-  {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple");
-    Page* page = Page::Build(request);
-    ASSERT(page->isLoaded());
-    ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple");
-    ASSERT(page->isHtml());
-    ASSERT(page->toHtmlPage());
-    delete page;
-  }
 
   void testBuildWhenInvalid()
   {

@@ -19,8 +19,6 @@ namespace mike
 	//return new BinaryPage(request);
       }
     }
-    
-    return NULL;
   }
 
   Page::Page(Request* request, PageType type)
@@ -81,7 +79,7 @@ namespace mike
 
   bool Page::isLoaded()
   {
-    return (request_ && request_->isReady());
+    return (request_ != NULL && request_->isReady());
   }
   
   void Page::reload()
