@@ -40,6 +40,12 @@ namespace mike
     string getAttribute(string name);
 
     /**
+     * Returns <code>true</code> when this node has specified attribute.
+     *
+     */
+    bool hasAttribute(string name);
+    
+    /**
      * Returns only text content of this node.
      *
      */

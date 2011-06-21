@@ -31,6 +31,7 @@ namespace mike
       value = (*found).second;
     } else {
       if ((value = xmlGetProp(node_, attr_name)) != NULL) {
+	xmlFree(attr_name);
 	attrsCache_[name] = value;
       } else {
 	return "";
@@ -40,6 +41,14 @@ namespace mike
     return string((char*)value, xmlStrlen(value));
   }
 
+  bool XmlElement::hasAttribute(string name)
+  {
+    xmlChar* attr_name = xmlCharStrdup(name.c_str());
+    bool result = xmlHasProp(node_, attr_name);
+    xmlFree(attr_name);
+    return result;
+  }
+  
   string XmlElement::getText()
   {
     
