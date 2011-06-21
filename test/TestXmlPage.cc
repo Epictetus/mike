@@ -45,7 +45,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elems.size(), 2);
     elems.clear();
@@ -56,7 +56,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://localhost:4567/simple");
     XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page->isLoaded());
+    ASSERT(page && page->isLoaded());
     vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elems.size(), 0);
     elems.clear();

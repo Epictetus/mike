@@ -20,7 +20,7 @@ protected:
   {
     http::Request* request = http::Request::Get("http://thiswebsiteforsure/not/exists");
     Page* page = Page::Build(request);
-    ASSERT_NULL(page);
+    ASSERT_NOT(page->isLoaded());
     delete page;
   }
 };

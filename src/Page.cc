@@ -7,18 +7,22 @@ namespace mike
   Page* Page::Build(Request* request)
   {
     if (request && request->perform()) {
-      Response* response = request->getResponse();
+      Response* response;
 
-      if (response->isHtml()) {
-	return new HtmlPage(request);
-      } else if (response->isXml()) {
-	return new XmlPage(request);
-      } else if (response->isText()) {
-	//return new TextPage(request);
-      } else {
-	//return new BinaryPage(request);
+      if ((response = request->getResponse()) != NULL) {
+	if (response->isHtml()) {
+	  return new HtmlPage(request);
+	} else if (response->isXml()) {
+	  return new XmlPage(request);
+	} else if (response->isText()) {
+	  //return new TextPage(request);
+	} else {
+	  //return new BinaryPage(request);
+	}
       }
     }
+
+    return new Page(request, UNKNOWN_PAGE);
   }
 
   Page::Page(Request* request, PageType type)
@@ -79,7 +83,7 @@ namespace mike
 
   bool Page::isLoaded()
   {
-    return (request_ != NULL && request_->isReady());
+    return (type_ != UNKNOWN_PAGE && request_ && request_->isReady());
   }
   
   void Page::reload()
