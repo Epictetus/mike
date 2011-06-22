@@ -1,13 +1,37 @@
 #include "http/Response.h"
+#include "utils/Helpers.h"
 
 namespace mike {
-  namespace http
-  {
+  namespace http {
+    namespace
+    {
+      string extractContentType(string mime)
+      {
+	if (mime.empty()) {
+	  return "text/plain";
+	} else {
+	  int split = mime.find(";");
+	  return split > 0 ? mime.substr(0, split) : mime;
+	}
+      }
+
+      bool matchContentType(string mime, string opts[], int numopts)
+      {
+	for (int i = 0; i < numopts; i++) {
+	  if (mime == opts[i]) {
+	    return true;
+	  }
+	}
+
+	return false;
+      }
+    }
+    
     Response::Response(long code, stringstream* content, map<string,string> headers)
       : code_(code)
     {
-      headers_ = headers;
-      content_ = content;
+      headers_  = headers;
+      content_  = content;
     }
 
     Response::~Response()
@@ -39,36 +63,19 @@ namespace mike {
 
     string Response::getContentType()
     {
-      string type = getHeader("Content-Type");
-
-      if (type == "") {
-	"text/plain";
-      } else {
-	int split = type.find(";");
-	return split > 0 ? type.substr(0, split) : type;
-      }
+      return extractContentType(getHeader("Content-Type"));
     }
 
     bool Response::isHtml()
     {
-      bool result;
-      result = result || (getContentType() == "text/html");
-      result = result || (getContentType() == "application/xhtml+xml");
-      return result;
+      string opts[2] = {"text/html", "application/xhtml+xml"};
+      return matchContentType(getContentType(), opts, 2); 
     }
 
     bool Response::isXml()
     {
-      bool result;
-      result = result || (getContentType() == "application/xml");
-      result = result || (getContentType() == "text/xml");
-      return result;
-    }
-
-    bool Response::isText()
-    {
-      // TODO: find out something to determine mime type...
-      return true;
+      string opts[2] = {"application/xml", "text/xml"};
+      return matchContentType(getContentType(), opts, 2); 
     }
   }
 }

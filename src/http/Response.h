@@ -78,12 +78,6 @@ namespace mike {
        */
       bool isHtml();
 
-      /**
-       * Returns <code>true</code> if requested website is an text document.
-       *
-       */
-      bool isText();
-
     protected:
       long code_;
       stringstream* content_;

@@ -54,20 +54,6 @@ AC_CHECK_HEADER([libxml/tree.h], [], [AC_MSG_ERROR(this package requires libxml/
 
 AC_SUBST([LIBXML2])
 
-# Checking for libmagic
-
-AC_ARG_WITH([magic],
-	AC_HELP_STRING([--with-magic=<path>], [Path to libmagic's intall dir.]),
-	magic_dir=$withval, magic_dir=/usr)
-
-CPPFLAGS="-I$magic_dir/include $CPPFLAGS"
-LDFLAGS="-I$magic_dir/lib $CPPFLAGS"
-
-AC_CHECK_LIB([magic], [magic_open], [LIBMAGIC=-lmagic], [AC_MSG_ERROR(this package requires magic.)])
-AC_CHECK_HEADER([magic.h], [], [AC_MSG_ERROR(this package requires magic.h)])
-
-AC_SUBST([LIBMAGIC])
-
 # Init Automage with following options. 
 
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
@@ -115,7 +101,7 @@ MIKE_LIB_NAME=mike
 MIKE_LIB_VERSION=0.0.1 # update version no. in src/mike.h after version bump
 MIKE_LIB_VERSION_INFO=0:0:0
 MIKE_LIB_RELEASE=1
-MIKE_LIBS="$LIBV8 $LIBCURL $LIBXML2 $LIBPTHREAD $LIBMAGIC"
+MIKE_LIBS="$LIBV8 $LIBCURL $LIBXML2 $LIBPTHREAD"
 
 AC_SUBST([MIKE_LIB_NAME])
 AC_SUBST([MIKE_LIB_VERSION])

@@ -14,10 +14,8 @@ namespace mike
 	  return new HtmlPage(request);
 	} else if (response->isXml()) {
 	  return new XmlPage(request);
-	} else if (response->isText()) {
-	  //return new TextPage(request);
 	} else {
-	  //return new BinaryPage(request);
+	  //return new RegularPage(request);
 	}
       }
     }
