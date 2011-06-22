@@ -23,6 +23,8 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/RegularPage.cc \
 	$(TESTEE_SOURCES_DIR)/History.h \
 	$(TESTEE_SOURCES_DIR)/History.cc \
+	$(TESTEE_SOURCES_DIR)/Browser.h \
+	$(TESTEE_SOURCES_DIR)/Browser.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.h \
@@ -39,6 +41,7 @@ TEST_FILES = \
 	TestHtmlPage.cc \
 	TestRegularPage.cc \
 	TestHistory.cc \
+	TestBrowser.cc \
 	Main.cc
 
 # Test suite setting and compiler flags.
