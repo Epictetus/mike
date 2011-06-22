@@ -1,4 +1,5 @@
 #include "Page.h"
+#include "BrowserFrame.h"
 #include "RegularPage.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlPage.h"
@@ -28,6 +29,7 @@ namespace mike
     : type_(type)
   {
     request_ = request;
+    frame_ = NULL;
   }
 
   Page::~Page()
@@ -43,6 +45,11 @@ namespace mike
   Response* Page::getResponse()
   {
     return request_->getResponse();
+  }
+
+  BrowserFrame* Page::getFrame()
+  {
+    return frame_;
   }
 
   string Page::getUrl()
@@ -90,5 +97,11 @@ namespace mike
     if (request_ != NULL) {
       request_->perform();
     }
+  }
+
+  void Page::openInFrame(BrowserFrame* frame)
+  {
+    frame_ = frame;
+    frame_->getHistory()->push(this);
   }
 }

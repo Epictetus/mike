@@ -25,6 +25,10 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/History.cc \
 	$(TESTEE_SOURCES_DIR)/Browser.h \
 	$(TESTEE_SOURCES_DIR)/Browser.cc \
+	$(TESTEE_SOURCES_DIR)/BrowserWindow.h \
+	$(TESTEE_SOURCES_DIR)/BrowserWindow.cc \
+	$(TESTEE_SOURCES_DIR)/BrowserFrame.h \
+	$(TESTEE_SOURCES_DIR)/BrowserFrame.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.h \

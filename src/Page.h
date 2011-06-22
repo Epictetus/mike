@@ -12,6 +12,8 @@ namespace mike
   class RegularPage;
   class XmlPage;
   class HtmlPage;
+
+  class BrowserFrame;
   
   /**
    * Available page types. 
@@ -128,10 +130,23 @@ namespace mike
      *
      */
     virtual void reload();
+
+    /**
+     * Opens specified page in given frame.
+     *
+     */
+    void openInFrame(BrowserFrame* frame);
+
+    /**
+     * Returns frame associated with that page.
+     *
+     */
+    BrowserFrame* getFrame();
     
   protected:
     http::Request* request_;
     PageType type_;
+    BrowserFrame* frame_;
   };
 }
 

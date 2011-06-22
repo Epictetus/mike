@@ -6,7 +6,21 @@
 namespace mike
 {
   using namespace std;
-  
+
+  class BrowserWindow;
+
+  /**
+   * Object of this class represents single, separatelly configured instance of
+   * Mike's browser. Example:
+   *
+   * <code>
+   *   Browser* browser = new Browser("en", "", true, true); // language, custom user agent, cookies, javascript
+   *   BrowserWindow* window = browser->Open("http://www.mypage.com");
+   *   // ...
+   *   delete browser;
+   * </code>
+   *
+   */
   class Browser
   {
   public:
@@ -46,6 +60,21 @@ namespace mike
      */
     bool isCookieEnabled();
 
+    /**
+     * Opens specified url in new virtual window, and returns this window.
+     *
+     * <code>
+     *   BrowserWindow* google = browser->Open("http://www.google.com/");
+     *   if (google->isLoaded()) {
+     *     string content = google->getPage()->getContent();
+     *     // ...
+     *   }
+     *   delete google;
+     * </code>
+     *
+     */
+    BrowserWindow* Open(string url);
+    
   protected:
     bool javaEnabled_;
     bool cookieEnabled_;

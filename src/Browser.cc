@@ -1,5 +1,6 @@
 #include <string.h>
 #include "Browser.h"
+#include "BrowserWindow.h"
 #include "utils/SystemInfo.h"
 
 namespace mike
@@ -41,5 +42,10 @@ namespace mike
   bool Browser::isCookieEnabled()
   {
     return cookieEnabled_;
+  }
+
+  BrowserWindow* Browser::Open(string url)
+  {
+    return new BrowserWindow(this, url);
   }
 }
