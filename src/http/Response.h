@@ -47,7 +47,7 @@ namespace mike {
        * Returns string stream with content of requested website.
        *
        */
-      stringstream* getContent();
+      stringstream* getStream();
 
       /**
        * Returns specified response header. Example:

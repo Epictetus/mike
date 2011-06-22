@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "Page.h"
+#include "RegularPage.h"
 #include "xml/XmlElement.h"
 
 namespace mike
@@ -18,7 +18,7 @@ namespace mike
    * XML page representation. 
    *
    */
-  class XmlPage : public Page
+  class XmlPage : public RegularPage
   {
   public:
     /**

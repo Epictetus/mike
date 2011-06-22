@@ -9,6 +9,7 @@ namespace mike
   using namespace std;
   using namespace http;
 
+  class RegularPage;
   class XmlPage;
   class HtmlPage;
   
@@ -18,10 +19,9 @@ namespace mike
    */
   enum PageType {
     UNKNOWN_PAGE,
-    TEXT_PAGE,
     XML_PAGE,
     HTML_PAGE,
-    BINARY_PAGE
+    REGULAR_PAGE
   };
   
   /**
@@ -79,12 +79,6 @@ namespace mike
     string getUrl();
     
     /**
-     * Returns <code>true</code> when current page is an text page.
-     *
-     */
-    bool isText();
-
-    /**
      * Returns <code>true</code> when current page is an XML or HTML page.
      *
      */
@@ -97,10 +91,10 @@ namespace mike
     bool isHtml();
 
     /**
-     * Returns <code>true</code> when current page is an binary attachment.
+     * Returns <code>true</code> when current page is an regular file.
      *
      */
-    bool isBinary();
+    bool isRegular();
 
     /**
      * If current page is an XML (or HTML) document then returns <code>XmlPage</code>
@@ -115,6 +109,13 @@ namespace mike
      *
      */
     HtmlPage* toHtmlPage();
+
+    /**
+     * If current page is an regular file then returns <code>RegularPage</code> object
+     * representing it, otherwise <code>NULL</code> will be returned.
+     *
+     */
+    RegularPage* toRegularPage();
 
     /**
      * Returns <code>true</code> when page has been properly loaded.

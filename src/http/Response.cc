@@ -50,7 +50,7 @@ namespace mike {
       return content_->str();
     }
 
-    stringstream* Response::getContent()
+    stringstream* Response::getStream()
     {
       return content_;
     }

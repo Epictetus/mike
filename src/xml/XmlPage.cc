@@ -10,9 +10,10 @@ namespace mike {
   }
   
   XmlPage::XmlPage(Request* request)
-    : Page(request, XML_PAGE)
+    : RegularPage(request)
   {
     doc_ = NULL;
+    type_ = XML_PAGE;
     prepareDocument();
   }
 
