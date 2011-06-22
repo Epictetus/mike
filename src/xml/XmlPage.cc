@@ -58,6 +58,12 @@ namespace mike {
     return getElementsByXpath("//" + tag);
   }
 
+  void XmlPage::reload()
+  {
+    Page::reload();
+    prepareDocument();
+  }
+
   void XmlPage::prepareDocument()
   {
     if (isLoaded()) {

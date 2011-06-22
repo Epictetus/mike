@@ -53,6 +53,12 @@ namespace mike
      *
      */
     vector<XmlElement*> getElementsByTagName(string tag);
+
+    /**
+     * @override
+     *
+     */
+    virtual void reload();
     
   protected:
     /**
