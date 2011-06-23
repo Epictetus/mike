@@ -1,5 +1,6 @@
 #include "xml/XmlElement.h"
 #include "xml/XmlPage.h"
+#include "utils/Helpers.h"
 
 namespace mike
 {
@@ -46,9 +47,24 @@ namespace mike
     xmlFree(attr_name);
     return result;
   }
+
+  bool XmlElement::hasAttribute(string name, string value)
+  {
+    return hasAttribute(name) ? (value == getAttribute(name)) : false;
+  }
   
   string XmlElement::getContent()
   {
     return node_ ? (char*)node_->children->content : "";
+  }
+
+  bool XmlElement::hasContent()
+  {
+    return !(string(strstrip(getContent())).empty());
+  }
+
+  bool XmlElement::hasContent(string value)
+  {
+    return (value == getContent());
   }
 }

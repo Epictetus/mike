@@ -40,15 +40,26 @@ namespace mike
     string getAttribute(string name);
 
     /**
-     * Returns <code>true</code> when this node has specified attribute.
+     * Returns <code>true</code> when this node has specified attribute. If second parameter
+     * specified then it checks if given value is the same as value of the checked attribute
+     * (if this attr exists of course).
      *
      */
     bool hasAttribute(string name);
+    bool hasAttribute(string name, string value);
     
     /**
      * Returns content of all children nodes.
      */
     string getContent();
+
+    /**
+     * When called without params then returns <code>true</code> if this elements contains any
+     * content. If params passed then checks if it's the same as content of this element.
+     *
+     */
+    bool hasContent();
+    bool hasContent(string value);
     
   protected:
     XmlPage* page_;
