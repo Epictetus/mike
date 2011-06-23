@@ -20,6 +20,7 @@ class MikeHttpTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testContentType);
   CPPUNIT_TEST(testIsHtmlMethod);
   CPPUNIT_TEST(testIsXmlMethod);
+  CPPUNIT_TEST(testCookies);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -112,6 +113,17 @@ protected:
     ASSERT(req->perform());
     ASSERT(req->getResponse()->isXml());
     delete req;
+  }
+
+  void testCookies()
+  {
+    http::Request *set = http::Request::Get("http://localhost:4567/cookies/set");
+    ASSERT(set->perform());
+    http::Request *show = http::Request::Get("http://localhost:4567/cookies/show");
+    ASSERT(show->perform());
+    ASSERT_EQUAL(show->getResponse()->getBody(), "foo=foobar");
+    delete set;
+    delete show;
   }
 };
 

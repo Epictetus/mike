@@ -3,6 +3,7 @@ require 'sinatra'
 
 set :port, 4567
 set :host, "localhost"
+enable :sessions
 
 get "/simple" do
   "Kukuryku!"
@@ -50,4 +51,14 @@ end
 
 get "/redirected" do
   "Redirected!"
+end
+
+get "/cookies/show" do
+  "foo=#{request.cookies["foo"]}"
+end
+
+get "/cookies/set" do
+  response.set_cookie "foo", "foobar"
+  response.set_cookie "bar", "yeah!"
+  "Want more cooookies!"
 end

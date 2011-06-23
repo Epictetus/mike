@@ -2,11 +2,13 @@
 #define _MIKE_HTTP_REQUEST_H_
 
 #include <map>
+#include <list>
 #include <string>
 #include <sstream>
 #include <curl/curl.h>
 #include "http/Response.h"
 #include "http/Headers.h"
+#include "http/Cookie.h"
 
 namespace mike {
   namespace http
@@ -14,7 +16,7 @@ namespace mike {
     using namespace std;
 
     typedef CURL Curl;
-    typedef struct curl_slist* CurlHeaders;
+    typedef struct curl_slist* CurlList;
 
     /**
      * HTTP request class built at top of CURL library. This class rather will
@@ -78,6 +80,17 @@ namespace mike {
       void setData(string data);
 
       /**
+       * Appends given cookie string to this request headers.
+       *
+       * <code>
+       *   req->setCookie("foo=bar");
+       *   req->perform();
+       * </code>
+       *  
+       */
+      void setCookie(string cookie);
+
+      /**
        * Returns URL for which current request has been created.
        *
        */
@@ -110,7 +123,14 @@ namespace mike {
        *
        */
       bool isReady();
-      
+
+      /**
+       * Returns name of file where cookies should be stored.
+       *
+       *
+       */
+      string getCookieFileName();
+
     protected:
       /**
        * Deletes from memory and cleans up referenced response object.
@@ -118,11 +138,25 @@ namespace mike {
        */
       void cleanupResponse();
 
+      /**
+       * Sets all CURL request options. Returns <code>false</code> when handler can't be
+       * properly configured.
+       *
+       */
+      bool prepareCurl();
+
+      /**
+       * Cleanups CURL handler.
+       *
+       */
+      void cleanupCurl();
+
       string url_;
       string method_;
       Response* response_;
+      map<string,Cookie*> cookies_;
       Curl* curl_;
-      CurlHeaders curlHeaders_;
+      CurlList curlHeaders_;
       string curlPostData_;
       char curlErrorBuffer_[CURL_ERROR_SIZE];
     };

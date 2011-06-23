@@ -15,6 +15,11 @@ namespace mike {
 	}
       }
 
+      list<string> extractCookies(string cookieString)
+      {
+	return list<string>();
+      }
+
       bool matchContentType(string mime, string opts[], int numopts)
       {
 	for (int i = 0; i < numopts; i++) {
@@ -27,15 +32,17 @@ namespace mike {
       }
     }
     
-    Response::Response(long code, stringstream* content, map<string,string> headers)
+    Response::Response(long code, stringstream* content, map<string,string> headers, string content_type)
       : code_(code)
     {
-      headers_  = headers;
-      content_  = content;
+      headers_ = headers;
+      content_ = content;
+      contentType_ = extractContentType(content_type);
     }
 
     Response::~Response()
     {
+      cookies_.clear();
       headers_.clear();
       delete content_;
     }
@@ -61,9 +68,20 @@ namespace mike {
       return header != headers_.end() ? (*header).second : "";
     }
 
+    map<string,Cookie*> Response::getCookies()
+    {
+      return cookies_;
+    }
+    
+    Cookie* Response::getCookie(string key)
+    {
+      map<string,Cookie*>::iterator cookie = cookies_.find(key);
+      return cookie != cookies_.end() ? (*cookie).second : NULL;
+    }
+
     string Response::getContentType()
     {
-      return extractContentType(getHeader("Content-Type"));
+      return contentType_;
     }
 
     bool Response::isHtml()

@@ -46,33 +46,15 @@ namespace mike {
       : url_(url)
       , method_(method)
     {
-      curl_ = curl_easy_init();
       curlHeaders_ = NULL;
       response_ = NULL;
-      
-      if (curl_ != NULL) {
-	curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
-	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
-	curl_easy_setopt(curl_, CURLOPT_NOPROGRESS, 1L);
-
-	// Auto redirecting and referer discovery
-	curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L);
-
-	// Skip SSL verifications
-	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 0L);
-	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYHOST, 0L);
-
-	// Content and headers callbacks
-	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
-	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, curlHeaderHandler);
-      }
     }
 
     Request::~Request()
     {
-      curl_easy_cleanup(curl_);
+      curl_slist_free_all(curlHeaders_);
       cleanupResponse();
+      cookies_.clear();
     }
 
     Response* Request::getResponse()
@@ -105,22 +87,27 @@ namespace mike {
       curlPostData_ = data;
     }
 
+    void Request::setCookie(string cookie)
+    {
+      // TODO: hmm wandering, shall we add users possibility to set cookies from the client?
+      throw "not implemented!";
+    }
+
+    string Request::getCookieFileName()
+    {
+      // TODO: make it configurable!
+      return "/tmp/mike.cookies";
+    }
+
     bool Request::perform()
     {
+      bool result = false;
       cleanupResponse();
-
-      if (curl_ != NULL) {
-	// Set custom post data (if applicable)
-	if (method_ == "POST") {
-	  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, curlPostData_.c_str());
-	}
-
-	// Set custom headers
-	curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, curlHeaders_);
-
+      
+      if (prepareCurl()) {
 	// Assign response headers container
-	Headers headers;
-	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, &headers);
+	Headers response_headers;
+	curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, &response_headers);
 
 	// Assign response body buffer
 	stringstream* buffer = new stringstream();
@@ -131,20 +118,69 @@ namespace mike {
 	  long response_code;
 	  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &response_code);
 
-	  // Generate response
-	  response_ = new Response(response_code, buffer, headers.toMap());
+	  // Extract content type
+	  char* content_type;
+	  curl_easy_getinfo(curl_, CURLINFO_CONTENT_TYPE, &content_type);
 
-	  return true;
+	  // Generate response
+	  response_ = new Response(response_code, buffer, response_headers.toMap(), content_type);
+	  result = true;
 	}
       }
-    
-      return false;
+
+      cleanupCurl();
+      return result;
     }
 
     void Request::cleanupResponse()
     {
       delete response_;
       response_ = NULL;
+    }
+
+    bool Request::prepareCurl()
+    {
+      curl_ = curl_easy_init();
+      
+      if (curl_ != NULL) {
+	curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
+	curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlErrorBuffer_);
+	curl_easy_setopt(curl_, CURLOPT_NOPROGRESS, 1L);
+
+	// Auto redirecting and referer discovery
+	curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl_, CURLOPT_AUTOREFERER, 1L);
+
+	// Skip SSL verifications
+	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 0L);
+	curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYHOST, 0L);
+
+	// Content and headers callbacks
+	curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, curlWriteHandler);
+	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, curlHeaderHandler);
+
+	// Enable cookies
+	curl_easy_setopt(curl_, CURLOPT_COOKIEJAR, getCookieFileName().c_str());
+	curl_easy_setopt(curl_, CURLOPT_COOKIEFILE, getCookieFileName().c_str());
+
+	// Set custom post data (if applicable)
+	if (method_ == "POST") {
+	  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
+	  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, curlPostData_.c_str());
+	}
+
+	// Set custom headers
+	curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, curlHeaders_);
+
+	return true;
+      }
+
+      return false;
+    }
+
+    void Request::cleanupCurl()
+    {
+      curl_easy_cleanup(curl_);
     }
   }
 }

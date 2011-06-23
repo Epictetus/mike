@@ -2,8 +2,10 @@
 #define _MIKE_HTTP_RESPONSE_H_
 
 #include <map>
+#include <list>
 #include <string>
 #include <sstream>
+#include "http/Cookie.h"
 
 namespace mike {
   namespace http
@@ -23,7 +25,7 @@ namespace mike {
        * Constructor.
        *
        */
-      Response(long code, stringstream* content, map<string,string> headers);
+      Response(long code, stringstream* content, map<string,string> headers, string content_type);
 
       /**
        * Destructor.
@@ -61,6 +63,18 @@ namespace mike {
       string getHeader(string key);
 
       /**
+       * Returns list of cookies set for this response.
+       *
+       */
+      map<string,Cookie*> getCookies();
+
+      /**
+       * Returns cookie object for specified key.
+       *
+       */
+      Cookie* getCookie(string key);
+
+      /**
        * Returns content type of requested website extracted from response headers.
        * 
        */
@@ -81,7 +95,10 @@ namespace mike {
     protected:
       long code_;
       stringstream* content_;
+      string contentType_;
       map<string,string> headers_;
+      string cookieString_;
+      map<string,Cookie*> cookies_;
     };
   }
 }
