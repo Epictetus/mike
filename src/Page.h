@@ -13,7 +13,7 @@ namespace mike
   class XmlPage;
   class HtmlPage;
 
-  class BrowserFrame;
+  class Frame;
   
   /**
    * Available page types. 
@@ -135,18 +135,18 @@ namespace mike
      * Opens specified page in given frame.
      *
      */
-    void openInFrame(BrowserFrame* frame);
+    void openInFrame(Frame* frame);
 
     /**
      * Returns frame associated with that page.
      *
      */
-    BrowserFrame* getFrame();
+    Frame* getFrame();
     
   protected:
     http::Request* request_;
     PageType type_;
-    BrowserFrame* frame_;
+    Frame* frame_;
   };
 }
 

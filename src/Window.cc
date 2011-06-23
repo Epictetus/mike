@@ -1,42 +1,42 @@
 #include "http/Request.h"
-#include "BrowserWindow.h"
-#include "BrowserFrame.h"
+#include "Window.h"
+#include "Frame.h"
 #include "Page.h"
 
 namespace mike
 {
-  BrowserWindow::BrowserWindow(Browser* browser, string url)
+  Window::Window(Browser* browser, string url)
   {
     browser_ = browser;
-    BrowserWindow(this, url);
+    Window(this, url);
   }
 
-  BrowserWindow::BrowserWindow(BrowserWindow* parentWindow, string url)
+  Window::Window(Window* parentWindow, string url)
   {
     browser_ = parentWindow->getBrowser();
     parentWindow_ = parentWindow;
-    frame_ = new BrowserFrame(this);
+    frame_ = new Frame(this);
     goTo(url);
   }
 
-  BrowserWindow::~BrowserWindow()
+  Window::~Window()
   {
     delete frame_;
   }
 
-  Browser* BrowserWindow::getBrowser()
+  Browser* Window::getBrowser()
   {
     return browser_;
   }
 
-  BrowserWindow* BrowserWindow::getParentWindow()
+  Window* Window::getParentWindow()
   {
     return parentWindow_;
   }
 
-  BrowserWindow* BrowserWindow::getTopLevelWindow()
+  Window* Window::getTopLevelWindow()
   {
-    BrowserWindow* top = parentWindow_;
+    Window* top = parentWindow_;
 
     while (top != this) {
       top = top->getParentWindow();
@@ -45,22 +45,22 @@ namespace mike
     return top;
   }
 
-  BrowserFrame* BrowserWindow::getFrame()
+  Frame* Window::getFrame()
   {
     return frame_;
   }
 
-  Page* BrowserWindow::getPage()
+  Page* Window::getPage()
   {
     return frame_->getCurrentPage();
   }
 
-  string BrowserWindow::getUrl()
+  string Window::getUrl()
   {
     return frame_->getUrl();
   }
 
-  void BrowserWindow::goTo(string url)
+  void Window::goTo(string url)
   {
     http::Request* request = http::Request::Get(url);
     Page* page = Page::Build(request);

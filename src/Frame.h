@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Browser.h"
-#include "BrowserWindow.h"
+#include "Window.h"
 #include "Page.h"
 #include "History.h"
 
@@ -11,20 +11,20 @@ namespace mike
 {
   using namespace std;
   
-  class BrowserFrame
+  class Frame
   {
   public:
     /**
      * Constructor.
      *
      */
-    explicit BrowserFrame(BrowserWindow* window);
+    explicit Frame(Window* window);
 
     /**
      * Destructor.
      *
      */
-    virtual ~BrowserFrame();
+    virtual ~Frame();
 
     /**
      * Returns url of currently open page. 
@@ -48,10 +48,10 @@ namespace mike
      * Returns window which contains this frame.
      *
      */
-    BrowserWindow* getWindow();
+    Window* getWindow();
     
   protected:
-    BrowserWindow* window_;
+    Window* window_;
     History* history_;
   };
 }

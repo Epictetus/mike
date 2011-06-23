@@ -9,7 +9,7 @@ namespace mike
 {
   using namespace std;
 
-  class BrowserFrame;
+  class Frame;
 
   /**
    * Object of this class represents single window opened within browser instance. Such browser
@@ -17,21 +17,21 @@ namespace mike
    * (eg. simulating popups) and guarrantees session continuation within opened domains. 
    *
    */
-  class BrowserWindow
+  class Window
   {
   public:
     /**
      * Constructors.
      *
      */
-    explicit BrowserWindow(Browser* browser, string url);
-    explicit BrowserWindow(BrowserWindow* parent_window, string url);
+    explicit Window(Browser* browser, string url);
+    explicit Window(Window* parent_window, string url);
 
     /**
      * Destructor.
      *
      */
-    virtual ~BrowserWindow();
+    virtual ~Window();
 
     /**
      * Returns instance of browser within which this window has been created.
@@ -44,20 +44,20 @@ namespace mike
      * will return itself.
      * 
      */
-    BrowserWindow* getParentWindow();
+    Window* getParentWindow();
 
     /**
      * Returns the top level window that contains this one. If this is top level window 
      * then it will return itself.
      *
      */
-    BrowserWindow* getTopLevelWindow();
+    Window* getTopLevelWindow();
 
     /**
      * Returns main frame with content of this window. 
      *
      */
-    BrowserFrame* getFrame();
+    Frame* getFrame();
 
     /**
      * Returns page object which represents page loaded into main frame.  
@@ -78,8 +78,8 @@ namespace mike
     void goTo(string url);
     
   protected:
-    BrowserWindow* parentWindow_;
-    BrowserFrame* frame_;
+    Window* parentWindow_;
+    Frame* frame_;
     Browser* browser_;
   };
 }

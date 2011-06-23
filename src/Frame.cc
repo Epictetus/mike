@@ -1,19 +1,19 @@
-#include "BrowserFrame.h"
+#include "Frame.h"
 
 namespace mike
 {
-  BrowserFrame::BrowserFrame(BrowserWindow* window)
+  Frame::Frame(Window* window)
   {
     window_ = window_;
     history_ = new History();
   }
 
-  BrowserFrame::~BrowserFrame()
+  Frame::~Frame()
   {
     delete history_;
   }
 
-  string BrowserFrame::getUrl()
+  string Frame::getUrl()
   {
     Page* current = history_->getCurrent();
 
@@ -24,17 +24,17 @@ namespace mike
     }
   }
   
-  Page* BrowserFrame::getCurrentPage()
+  Page* Frame::getCurrentPage()
   {
     return history_->getCurrent();
   }
 
-  History* BrowserFrame::getHistory()
+  History* Frame::getHistory()
   {
     return history_;
   }
 
-  BrowserWindow* BrowserFrame::getWindow()
+  Window* Frame::getWindow()
   {
     return window_;
   }

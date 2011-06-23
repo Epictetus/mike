@@ -7,7 +7,7 @@ namespace mike
 {
   using namespace std;
 
-  class BrowserWindow;
+  class Window;
 
   /**
    * Object of this class represents single, separatelly configured instance of
@@ -15,7 +15,7 @@ namespace mike
    *
    * <code>
    *   Browser* browser = new Browser("en", "", true, true); // language, custom user agent, cookies, javascript
-   *   BrowserWindow* window = browser->Open("http://www.mypage.com");
+   *   Window* window = browser->Open("http://www.mypage.com");
    *   // ...
    *   delete browser;
    * </code>
@@ -64,7 +64,7 @@ namespace mike
      * Opens specified url in new virtual window, and returns this window.
      *
      * <code>
-     *   BrowserWindow* google = browser->Open("http://www.google.com/");
+     *   Window* google = browser->Open("http://www.google.com/");
      *   if (google->isLoaded()) {
      *     string content = google->getPage()->getContent();
      *     // ...
@@ -73,7 +73,7 @@ namespace mike
      * </code>
      *
      */
-    BrowserWindow* Open(string url);
+    Window* Open(string url);
     
   protected:
     bool javaEnabled_;

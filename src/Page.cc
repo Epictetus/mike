@@ -1,5 +1,5 @@
 #include "Page.h"
-#include "BrowserFrame.h"
+#include "Frame.h"
 #include "RegularPage.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlPage.h"
@@ -47,7 +47,7 @@ namespace mike
     return request_->getResponse();
   }
 
-  BrowserFrame* Page::getFrame()
+  Frame* Page::getFrame()
   {
     return frame_;
   }
@@ -99,7 +99,7 @@ namespace mike
     }
   }
 
-  void Page::openInFrame(BrowserFrame* frame)
+  void Page::openInFrame(Frame* frame)
   {
     frame_ = frame;
     frame_->getHistory()->push(this);
