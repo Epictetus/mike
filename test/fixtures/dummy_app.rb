@@ -32,6 +32,10 @@ get "/xpath.html" do
   "<html><body><ul id='elems'><li class='load foo'>First</li><li>Second</li><li class='load'>Third</li></ul></body></html>"
 end
 
+get "/anchors.html" do
+  "<html><body><div>I am a link!</div><div>I am a div!</div><a href='#'>I am a link!</a><form><button>I am a button!</button><input type='submit' values='I am a submit!' /></form></body></html>"
+end
+
 get "/xml-elements.xml" do
   content_type 'application/xml'
   "<?xml version=\"1.0\"?><root><elem foo='bar'>Hello Foo!</elem></root>"

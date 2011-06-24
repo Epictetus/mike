@@ -43,6 +43,17 @@ namespace mike
     vector<XmlElement*> getElementsByClassName(string klass);
 
     /**
+     * Returns clicable element matched by it's anchor text/label. Applies only to <code>a</code>,
+     * <code>button</code>, and <code>input[type=submit]</code> elements.
+     *
+     * <code>
+     *   XmlElement* link = page->getElementByAnchor("Click me!");
+     * </code> 
+     *
+     */
+    XmlElement* getElementByAnchor(string content);
+
+    /**
      * Returns first found element with given ID. If no elements found then <code>NULL</code>
      * will be returned. 
      *

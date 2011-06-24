@@ -117,6 +117,7 @@ protected:
 
   void testCookies()
   {
+    // TODO: add session tokens...
     http::Request *set = http::Request::Get("http://localhost:4567/cookies/set");
     ASSERT(set->perform());
     http::Request *show = http::Request::Get("http://localhost:4567/cookies/show");

@@ -14,8 +14,9 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBuild);
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
-  CPPUNIT_TEST(testGetElementsById);
+  CPPUNIT_TEST(testGetElementById);
   CPPUNIT_TEST(testGetElementsByClassName);
+  CPPUNIT_TEST(testGetElementByAnchor);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -53,7 +54,7 @@ protected:
     delete page;
   }
 
-  void testGetElementsById()
+  void testGetElementById()
   {
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
@@ -81,6 +82,26 @@ protected:
     elems_ok.clear();
     elems_not_ok.clear();
     elems_not_ok_too.clear();
+    delete page;
+  }
+
+  void testGetElementByAnchor()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/anchors.html");
+    HtmlPage* page = Page::Build(request)->toHtmlPage();
+    ASSERT(page && page->isLoaded());
+    XmlElement* should_be_found1 = page->getElementByAnchor("I am a link!");
+    XmlElement* should_be_found2 = page->getElementByAnchor("I am a button!");
+    XmlElement* should_be_found3 = page->getElementByAnchor("I am a submit!");
+    XmlElement* should_not_be_found = page->getElementByAnchor("I am a div!");
+    ASSERT_NOT_NULL(should_be_found1);
+    ASSERT_NOT_NULL(should_be_found2);
+    ASSERT_NOT_NULL(should_be_found3);
+    ASSERT_NULL(should_not_be_found);
+    delete should_be_found1;
+    delete should_be_found2;
+    delete should_be_found3;
+    delete should_not_be_found;
     delete page;
   }
 };
