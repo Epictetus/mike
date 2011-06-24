@@ -63,6 +63,11 @@ namespace mike
   void Window::goTo(string url)
   {
     http::Request* request = http::Request::Get(url);
+
+    if (browser_->isCookieEnabled()) {
+      request->enableCookieSession(browser_->getSessionToken());
+    }
+      
     Page* page = Page::Build(request);
     page->openInFrame(frame_);
   }

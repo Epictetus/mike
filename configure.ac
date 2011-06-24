@@ -82,6 +82,7 @@ AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 AC_CHECK_LIB([pthread], [main], [LIBPTHREAD=-lpthread], [AC_MSG_ERROR(this package requires pthread.)])
 AC_CHECK_LIB([curl], [main], [LIBCURL=-lcurl], [AC_MSG_ERROR(this package requires curl.)])
+AC_CHECK_LIB([uuid], [main], [LIBUUID=-luuid], [AC_MSG_ERROR(this package requires uuid.)])
 
 AC_SUBST([LIBPTHREAD])
 AC_SUBST([LIBCURL])
@@ -90,6 +91,7 @@ AC_SUBST([LIBCURL])
 
 AC_CHECK_HEADER([unistd.h], [], [AC_MSG_ERROR(this package requires unistd.h)])
 AC_CHECK_HEADER([sys/param.h], [], [AC_MSG_ERROR(this package requires sys/param.h)])
+AC_CHECK_HEADER([uuid/uuid.h], [], [AC_MSG_ERROR(this package requires uuid/uuid.h)])
 
 # Config header.
 
@@ -101,7 +103,7 @@ MIKE_LIB_NAME=mike
 MIKE_LIB_VERSION=0.0.1 # update version no. in src/mike.h after version bump
 MIKE_LIB_VERSION_INFO=0:0:0
 MIKE_LIB_RELEASE=1
-MIKE_LIBS="$LIBV8 $LIBCURL $LIBXML2 $LIBPTHREAD"
+MIKE_LIBS="$LIBV8 $LIBCURL $LIBXML2 $LIBPTHREAD $LIBUUID"
 
 AC_SUBST([MIKE_LIB_NAME])
 AC_SUBST([MIKE_LIB_VERSION])

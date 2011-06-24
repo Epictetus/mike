@@ -1,4 +1,5 @@
 #include <string.h>
+#include <uuid/uuid.h>
 #include "Browser.h"
 #include "Window.h"
 #include "utils/SystemInfo.h"
@@ -11,6 +12,7 @@ namespace mike
     , cookieEnabled_(cookieEnabled)
     , javaEnabled_(javaEnabled)
   {
+    generateSessionToken();
   }
 
   Browser::~Browser()
@@ -44,8 +46,22 @@ namespace mike
     return cookieEnabled_;
   }
 
+  string Browser::getSessionToken()
+  {
+    return sessionToken_;
+  }
+  
   Window* Browser::Open(string url)
   {
     return new Window(this, url);
+  }
+
+  void Browser::generateSessionToken()
+  {
+    uuid_t token;
+    char parsed[UUID_TOKEN_SIZE];
+    uuid_generate(token);
+    uuid_unparse(token, parsed);
+    sessionToken_ = string(parsed, UUID_TOKEN_SIZE);
   }
 }

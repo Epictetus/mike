@@ -48,6 +48,7 @@ namespace mike {
     {
       curlHeaders_ = NULL;
       response_ = NULL;
+      cookieEnabled_ = false;
     }
 
     Request::~Request()
@@ -95,8 +96,14 @@ namespace mike {
 
     string Request::getCookieFileName()
     {
-      // TODO: make it configurable!
-      return "/tmp/mike.cookies";
+      // TODO: make base path configurable!
+      return "/tmp/mike.cookie." + sessionToken_;
+    }
+
+    void Request::enableCookieSession(string token)
+    {
+      cookieEnabled_ = !token.empty();
+      sessionToken_ = token;
     }
 
     bool Request::perform()
@@ -160,9 +167,11 @@ namespace mike {
 	curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, curlHeaderHandler);
 
 	// Enable cookies
-	curl_easy_setopt(curl_, CURLOPT_COOKIEJAR, getCookieFileName().c_str());
-	curl_easy_setopt(curl_, CURLOPT_COOKIEFILE, getCookieFileName().c_str());
-
+	if (cookieEnabled_ && !sessionToken_.empty()) {
+	  curl_easy_setopt(curl_, CURLOPT_COOKIEJAR, getCookieFileName().c_str());
+	  curl_easy_setopt(curl_, CURLOPT_COOKIEFILE, getCookieFileName().c_str());
+	}
+	
 	// Set custom post data (if applicable)
 	if (method_ == "POST") {
 	  curl_easy_setopt(curl_, CURLOPT_POST, 1L);

@@ -127,10 +127,16 @@ namespace mike {
       /**
        * Returns name of file where cookies should be stored.
        *
-       *
        */
       string getCookieFileName();
 
+      /**
+       * Enables cookies within encapsulated seession. Session is distinguised by given
+       * instance's token.
+       *
+       */
+      void enableCookieSession(string token);
+      
     protected:
       /**
        * Deletes from memory and cleans up referenced response object.
@@ -159,6 +165,8 @@ namespace mike {
       CurlList curlHeaders_;
       string curlPostData_;
       char curlErrorBuffer_[CURL_ERROR_SIZE];
+      string sessionToken_;
+      bool cookieEnabled_;
     };
   }
 }

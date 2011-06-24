@@ -7,6 +7,9 @@
 #define MIKE_VERSION "0.0.1"
 #define MIKE_USER_AGENT "Mozilla/5.0 (Memory; %s %s) Mike/%s (Mike, like Gecko) Mike/1"
 
+// Extra settings
+#define UUID_TOKEN_SIZE 36
+
 // Detecting CPU architecture
 #if defined(__amd64__)
 #define CPU_ARCH "x86_64"

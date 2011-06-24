@@ -1,3 +1,4 @@
+#include <string.h>
 #include "utils/Helpers.h"
 
 namespace mike

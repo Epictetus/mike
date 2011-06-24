@@ -61,6 +61,12 @@ namespace mike
     bool isCookieEnabled();
 
     /**
+     * Returns unique token of this session.
+     *
+     */
+    string getSessionToken();
+
+    /**
      * Opens specified url in new virtual window, and returns this window.
      *
      * <code>
@@ -76,10 +82,17 @@ namespace mike
     Window* Open(string url);
     
   protected:
+    /**
+     * Generates UUID token for current browser instance.
+     *
+     */
+    void generateSessionToken();
+    
     bool javaEnabled_;
     bool cookieEnabled_;
     string language_;
     string customUserAgent_;
+    string sessionToken_;
   };
 }
 
