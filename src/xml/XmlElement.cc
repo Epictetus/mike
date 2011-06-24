@@ -55,7 +55,7 @@ namespace mike
   
   string XmlElement::getContent()
   {
-    return node_ ? (char*)node_->children->content : "";
+    return node_ && node_->children ? (char*)node_->children->content : "";
   }
 
   bool XmlElement::hasContent()
@@ -66,5 +66,10 @@ namespace mike
   bool XmlElement::hasContent(string value)
   {
     return (value == getContent());
+  }
+
+  string XmlElement::getName()
+  {
+    return (char*)node_->name;
   }
 }

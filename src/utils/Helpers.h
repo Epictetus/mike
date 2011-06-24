@@ -12,6 +12,12 @@ namespace mike
    *
    */
   char* strstrip(string value);
+
+  /**
+   * Sanitizes given XPath argument.
+   *
+   */
+  string xpathSanitize(string arg);
 }
 
 #endif /* _MIKE_HELPERS_H_ */

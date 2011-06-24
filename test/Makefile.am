@@ -48,6 +48,7 @@ TEST_FILES = \
 	TestRegularPage.cc \
 	TestHistory.cc \
 	TestBrowser.cc \
+	TestUtils.cc \
 	Main.cc
 
 # Test suite setting and compiler flags.

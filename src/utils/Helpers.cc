@@ -26,4 +26,27 @@ namespace mike
     
     return s;
   }
+
+  string xpathSanitize(string arg)
+  {
+    char find[3] = { '&', '"', '\'' };
+    string replace[3] = { "&amp;", "&quot;", "\\'" };
+
+    for (int i = 0; i < 3; i++) {
+      string right = arg;
+      int split = 0;
+      
+      arg = "";
+      
+      while ((split = right.find(find[i])) > 0) {
+	arg += right.substr(0, split);
+	arg += replace[i];
+	right = right.substr(split+1);
+      }
+
+      arg += right;
+    }
+
+    return arg;
+  }
 }

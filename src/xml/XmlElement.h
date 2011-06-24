@@ -60,6 +60,12 @@ namespace mike
      */
     bool hasContent();
     bool hasContent(string value);
+
+    /**
+     * Returns element's tag name.
+     *
+     */
+    string getName();
     
   protected:
     XmlPage* page_;

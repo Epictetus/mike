@@ -1,3 +1,4 @@
+#include <string.h>
 #include "xml/XmlPage.h"
 
 namespace mike {
@@ -6,6 +7,18 @@ namespace mike {
     void xmlErrorHandler(void *ctx, const char *msg, ...)
     {
       // so far nothing, just mute errors...
+    }
+
+    void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, vector<XmlElement*>* elems)
+    {
+      while (node) {
+	if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
+	  elems->push_back(new XmlElement(page, node));
+	}
+	
+	getElementsByTagNameIter(page, tag, node->children, elems);
+	node = node->next;
+      }
     }
   }
   
@@ -55,8 +68,13 @@ namespace mike {
 
   vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
   {
-    // TODO: do it without using xpath you lazy bastard!!
-    return getElementsByXpath("//" + tag);
+    vector<XmlElement*> elems;
+      
+    if (doc_ && !tag.empty()) {
+      getElementsByTagNameIter(this, tag, doc_->children, &elems);
+    }
+
+    return elems;
   }
 
   void XmlPage::reload()

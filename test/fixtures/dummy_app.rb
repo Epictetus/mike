@@ -33,7 +33,7 @@ get "/xpath.html" do
 end
 
 get "/anchors.html" do
-  "<html><body><div>I am a link!</div><div>I am a div!</div><a href='#'>I am a link!</a><form><button>I am a button!</button><input type='submit' values='I am a submit!' /></form></body></html>"
+  "<html><body><div>I am a link!</div><div>I am a div!</div><a href='#'>I am a link!</a><form><button>I am a button!</button><input type='submit' value='I am a submit!' /></form></body></html>"
 end
 
 get "/xml-elements.xml" do

@@ -95,8 +95,11 @@ protected:
     XmlElement* should_be_found3 = page->getElementByAnchor("I am a submit!");
     XmlElement* should_not_be_found = page->getElementByAnchor("I am a div!");
     ASSERT_NOT_NULL(should_be_found1);
+    ASSERT_EQUAL(should_be_found1->getName(), "a");
     ASSERT_NOT_NULL(should_be_found2);
+    ASSERT_EQUAL(should_be_found2->getName(), "button");
     ASSERT_NOT_NULL(should_be_found3);
+    ASSERT_EQUAL(should_be_found3->getName(), "input");
     ASSERT_NULL(should_not_be_found);
     delete should_be_found1;
     delete should_be_found2;

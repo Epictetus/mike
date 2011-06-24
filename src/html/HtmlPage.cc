@@ -1,5 +1,6 @@
 #include <list>
 #include "html/HtmlPage.h"
+#include "utils/Helpers.h"
 
 namespace mike {
   namespace
@@ -30,25 +31,28 @@ namespace mike {
 
   vector<XmlElement*> HtmlPage::getElementsByClassName(string klass)
   {
-    // XXX: i think it has to be done more complex...
+    klass = xpathSanitize(klass);
     return getElementsByXpath("//*[contains(concat(' ', @class, ' '), ' " + klass + " ')]");
   }
 
   XmlElement* HtmlPage::getElementByAnchor(string content)
   {
-    // XXX: sanitize content param!!!
-    string match[3] = {
+    content = xpathSanitize(content);
+    
+    string parts[3] = {
       "//a[.='" + content + "']",
       "//button[.='" + content + "']",
-      "//input[@type='submit' or @type='reset' and @value='" + content + "']"
+      "//input[(@type='submit' or @type='reset') and @value='" + content + "']"
     };
 
-    vector<XmlElement*> elems = getElementsByXpath(match[0] + "|" + match[1] + "|" + match[2]);
+    string xpath = parts[0] + "|" + parts[1] + "|" + parts[2];
+    vector<XmlElement*> elems = getElementsByXpath(xpath);
     return getFirstAndDropOthers(&elems);
   }
   
   XmlElement* HtmlPage::getElementById(string id)
   {
+    id = xpathSanitize(id);
     vector<XmlElement*> elems = getElementsByXpath("//*[@id='" + id + "'][1]");
     return getFirstAndDropOthers(&elems);
   }
