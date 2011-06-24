@@ -5,7 +5,6 @@
 #include <list>
 #include <string>
 #include <sstream>
-#include "http/Cookie.h"
 
 namespace mike {
   namespace http
@@ -63,18 +62,6 @@ namespace mike {
       string getHeader(string key);
 
       /**
-       * Returns list of cookies set for this response.
-       *
-       */
-      map<string,Cookie*> getCookies();
-
-      /**
-       * Returns cookie object for specified key.
-       *
-       */
-      Cookie* getCookie(string key);
-
-      /**
        * Returns content type of requested website extracted from response headers.
        * 
        */
@@ -97,8 +84,6 @@ namespace mike {
       stringstream* content_;
       string contentType_;
       map<string,string> headers_;
-      string cookieString_;
-      map<string,Cookie*> cookies_;
     };
   }
 }

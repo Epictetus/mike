@@ -42,7 +42,6 @@ namespace mike {
 
     Response::~Response()
     {
-      cookies_.clear();
       headers_.clear();
       delete content_;
     }
@@ -66,17 +65,6 @@ namespace mike {
     {
       map<string,string>::iterator header = headers_.find(key);
       return header != headers_.end() ? (*header).second : "";
-    }
-
-    map<string,Cookie*> Response::getCookies()
-    {
-      return cookies_;
-    }
-    
-    Cookie* Response::getCookie(string key)
-    {
-      map<string,Cookie*>::iterator cookie = cookies_.find(key);
-      return cookie != cookies_.end() ? (*cookie).second : NULL;
     }
 
     string Response::getContentType()

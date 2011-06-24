@@ -8,7 +8,6 @@
 #include <curl/curl.h>
 #include "http/Response.h"
 #include "http/Headers.h"
-#include "http/Cookie.h"
 
 namespace mike {
   namespace http
@@ -80,17 +79,6 @@ namespace mike {
       void setData(string data);
 
       /**
-       * Appends given cookie string to this request headers.
-       *
-       * <code>
-       *   req->setCookie("foo=bar");
-       *   req->perform();
-       * </code>
-       *  
-       */
-      void setCookie(string cookie);
-
-      /**
        * Returns URL for which current request has been created.
        *
        */
@@ -160,7 +148,6 @@ namespace mike {
       string url_;
       string method_;
       Response* response_;
-      map<string,Cookie*> cookies_;
       Curl* curl_;
       CurlList curlHeaders_;
       string curlPostData_;

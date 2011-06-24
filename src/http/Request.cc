@@ -55,7 +55,6 @@ namespace mike {
     {
       curl_slist_free_all(curlHeaders_);
       cleanupResponse();
-      cookies_.clear();
     }
 
     Response* Request::getResponse()
@@ -86,12 +85,6 @@ namespace mike {
     void Request::setData(string data)
     {
       curlPostData_ = data;
-    }
-
-    void Request::setCookie(string cookie)
-    {
-      // TODO: hmm wandering, shall we add users possibility to set cookies from the client?
-      throw "not implemented!";
     }
 
     string Request::getCookieFileName()

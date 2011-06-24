@@ -17,8 +17,6 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/http/Request.cc \
 	$(TESTEE_SOURCES_DIR)/http/Headers.h \
 	$(TESTEE_SOURCES_DIR)/http/Headers.cc \
-	$(TESTEE_SOURCES_DIR)/http/Cookie.h \
-	$(TESTEE_SOURCES_DIR)/http/Cookie.cc \
 	$(TESTEE_SOURCES_DIR)/Page.h \
 	$(TESTEE_SOURCES_DIR)/Page.cc \
 	$(TESTEE_SOURCES_DIR)/RegularPage.h \
