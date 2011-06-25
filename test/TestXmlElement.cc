@@ -16,6 +16,7 @@ class MikeXmlElementTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetContent);
   CPPUNIT_TEST(testHasContent);
   CPPUNIT_TEST(testGetName);
+  CPPUNIT_TEST(testHasChildren);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -84,6 +85,22 @@ protected:
     ASSERT_NOT_NULL(elem);
     ASSERT_EQUAL(elem->getName(), "elem");
     delete elem;
+    delete page;
+  }
+
+  void testHasChildren()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/anchors.html");
+    XmlPage* page = Page::Build(request)->toXmlPage();
+    ASSERT(page);
+    XmlElement* elem1 = page->getElementsByTagName("a")[0];
+    ASSERT_NOT_NULL(elem1);
+    ASSERT(elem1->hasChildren());
+    XmlElement* elem2 = page->getElementsByTagName("input")[0];
+    ASSERT_NOT_NULL(elem2);
+    ASSERT_NOT(elem2->hasChildren());
+    delete elem1;
+    delete elem2;
     delete page;
   }
 

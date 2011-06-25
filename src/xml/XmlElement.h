@@ -66,6 +66,13 @@ namespace mike
      *
      */
     string getName();
+
+    /**
+     * Returns <code>true</code> when given element contains any children or text. So speaking
+     * more accurately it happens only when current element is self closed.
+     *
+     */
+    bool hasChildren();
     
   protected:
     XmlPage* page_;
