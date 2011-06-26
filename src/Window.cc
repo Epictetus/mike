@@ -2,6 +2,9 @@
 #include "Window.h"
 #include "Frame.h"
 #include "Page.h"
+#include "RegularPage.h"
+#include "xml/XmlPage.h"
+#include "html/HtmlPage.h"
 
 namespace mike
 {
@@ -69,6 +72,11 @@ namespace mike
     }
       
     Page* page = Page::Build(request);
-    page->openInFrame(frame_);
+
+    if (page->isHtml()) {
+      page->toHtmlPage()->openInFrame(frame_);
+    } else {
+      page->openInFrame(frame_);
+    }
   }
 }

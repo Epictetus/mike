@@ -66,3 +66,19 @@ get "/cookies/set" do
   response.set_cookie "bar", "yeah!"
   "Want more cooookies!"
 end
+
+get "/iframes/1.html" do
+  "<html><body>Iframe 1</body></html>"
+end
+
+get "/iframes/2.html" do
+  "<html><body>Iframe 2</body></html>"
+end
+
+get "/iframes.html" do
+  "<html><body><iframe src='/iframes/1.html'></iframe><iframe src='/iframes/2.html' name='foo'></iframe></body></html>"
+end
+
+get "/frameset.html" do
+  "<html><frameset cols='50%,50%'><frame src='/iframes/1.html' /><frame src='/iframes/2.html' name='foo' /></frameset></html>"
+end

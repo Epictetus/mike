@@ -135,7 +135,7 @@ namespace mike
      * Opens specified page in given frame.
      *
      */
-    void openInFrame(Frame* frame);
+    virtual void openInFrame(Frame* frame);
 
     /**
      * Returns frame associated with that page.

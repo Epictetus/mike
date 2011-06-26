@@ -87,7 +87,6 @@ namespace mike {
   {
     if (isLoaded()) {
       cleanupDocument();
-      registerErrorHandler();
       parseDocument();
     }
   }
@@ -95,7 +94,7 @@ namespace mike {
   void XmlPage::parseDocument()
   {
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
-    doc_ = xmlParseDoc(body);
+    doc_ = xmlReadDoc(body, getUrl().c_str(), "utf-8", XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
     xmlFree(body);
   }
   
@@ -105,10 +104,5 @@ namespace mike {
       xmlFreeDoc(doc_);
       doc_ = NULL;
     }
-  }
-
-  void XmlPage::registerErrorHandler()
-  {
-    xmlSetGenericErrorFunc((void*)this, xmlErrorHandler);
   }
 }

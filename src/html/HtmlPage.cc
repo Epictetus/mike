@@ -56,10 +56,40 @@ namespace mike {
     vector<XmlElement*> elems = getElementsByXpath("//*[@id='" + id + "'][1]");
     return getFirstAndDropOthers(&elems);
   }
+  
+  vector<XmlElement*> HtmlPage::getFrames()
+  {
+    return getElementsByXpath("//iframe | //frameset/frame");
+  }
 
   void HtmlPage::parseDocument()
   {
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
     doc_ = htmlParseDoc(body, NULL);
+    xmlFree(body);
+  }
+
+  void HtmlPage::openInFrame(Frame* frame)
+  {
+    Page::openInFrame(frame);
+
+    /*
+    vector<XmlElement*> frames = page->toHtmlPage()->getFrames();
+
+    for (vector<XmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
+      HtmlFrameElement* iframe = (HtmlFrameElement*)(*it);
+
+      if (iframe->isValid()) {
+	http::Request* irequest = http::Request::Get(iframe->getSrc());
+	Page* ipage = Page::Build(irequest);
+
+	if (page->isHtml()) {
+	  page->toHtmlPage()->openInFrame(frame->buildFrame());
+	} else {
+	  page->openInFrame(frame->buildFrame());
+	}
+      }
+    }
+    */
   }
 }

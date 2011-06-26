@@ -1,6 +1,7 @@
 #ifndef _MIKE_BROWSER_FRAME_H_
 #define _MIKE_BROWSER_FRAME_H_
 
+#include <vector>
 #include <string>
 #include "Browser.h"
 #include "Window.h"
@@ -49,10 +50,50 @@ namespace mike
      *
      */
     Window* getWindow();
+
+    /**
+     * Returns name of this frame.
+     *
+     */
+    string getName();
+
+    /**
+     * Sets name of this frame.
+     * 
+     */
+    void setName(string name);
+    
+    /**
+     * Creates new sub frame and returns pointer to it.
+     *
+     */
+    Frame* buildFrame();
+
+    /**
+     * Returns all sub frames from this frame.
+     *
+     */
+    vector<Frame*> getFrames();
+
+    /**
+     * Returns frame from given index. If list of frames doesn't have
+     * such index then <code>NULL</code> will be returned.
+     *
+     */
+    Frame* getFrame(int key);
+
+    /**
+     * Returns frame with specified name. If there is no such frame then
+     * <code>NULL</code> will be returned. 
+     *
+     */
+    Frame* getNamedFrame(string name);
     
   protected:
+    string name_;
     Window* window_;
     History* history_;
+    vector<Frame*> frames_;
   };
 }
 

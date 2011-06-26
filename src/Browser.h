@@ -16,6 +16,7 @@ namespace mike
    * <code>
    *   Browser* browser = new Browser("en", "", true, true); // language, custom user agent, cookies, javascript
    *   Window* window = browser->Open("http://www.mypage.com");
+   *   HtmlPage page = window->getPage()->toHtmlPage();
    *   // ...
    *   delete browser;
    * </code>

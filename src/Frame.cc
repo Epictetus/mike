@@ -11,6 +11,7 @@ namespace mike
   Frame::~Frame()
   {
     delete history_;
+    frames_.clear();
   }
 
   string Frame::getUrl()
@@ -37,5 +38,45 @@ namespace mike
   Window* Frame::getWindow()
   {
     return window_;
+  }
+
+  string Frame::getName()
+  {
+    return name_;
+  }
+
+  void Frame::setName(string name)
+  {
+    name_ = name;
+  }
+  
+  Frame* Frame::buildFrame()
+  {
+    Frame* frame = new Frame(window_);
+    frames_.push_back(frame);
+    return frame;
+  }
+
+  vector<Frame*> Frame::getFrames()
+  {
+    return frames_;
+  }
+
+  Frame* Frame::getFrame(int key)
+  {
+    return (key < frames_.size() ? frames_[key] : NULL);
+  }
+
+  Frame* Frame::getNamedFrame(string name)
+  {
+    for (vector<Frame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
+      string iname = (*it)->getName();
+
+      if (!iname.empty() && name == iname) {
+	return (*it);
+      }
+    }
+
+    return NULL;
   }
 }

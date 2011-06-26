@@ -81,12 +81,6 @@ namespace mike
      */
     virtual void cleanupDocument();
 
-    /**
-     * Registers error handler for libxml parser.
-     *
-     */
-    virtual void registerErrorHandler();
-    
     xmlDocPtr doc_;
   };
 }

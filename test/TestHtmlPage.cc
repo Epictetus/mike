@@ -17,6 +17,8 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetElementById);
   CPPUNIT_TEST(testGetElementsByClassName);
   CPPUNIT_TEST(testGetElementByAnchor);
+  CPPUNIT_TEST(testGetFramesWithIframes);
+  CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -105,6 +107,24 @@ protected:
     delete should_be_found2;
     delete should_be_found3;
     delete should_not_be_found;
+    delete page;
+  }
+
+  void testGetFramesWithIframes()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/iframes.html");
+    HtmlPage* page = Page::Build(request)->toHtmlPage();
+    ASSERT(page && page->isLoaded());
+    ASSERT_EQUAL(page->getFrames().size(), 2);
+    delete page;
+  }
+  
+  void testGetFramesWithFrameset()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/frameset.html");
+    HtmlPage* page = Page::Build(request)->toHtmlPage();
+    ASSERT(page && page->isLoaded());
+    ASSERT_EQUAL(page->getFrames().size(), 2);
     delete page;
   }
 };

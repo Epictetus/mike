@@ -64,6 +64,18 @@ namespace mike
      */
     XmlElement* getElementById(string id);
 
+    /**
+     * Returns all frames and iframes from this document.
+     *
+     */
+    vector<XmlElement*> getFrames();
+    
+    /**
+     * @override
+     *
+     */
+    virtual void openInFrame(Frame* frame);
+    
   protected:
     /**
      * @overriden
