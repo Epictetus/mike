@@ -12,6 +12,8 @@ class MikePageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikePageTest);
   CPPUNIT_TEST(testBuildWhenInvalid);
+  CPPUNIT_TEST(testGetContent);
+  CPPUNIT_TEST(testGetStream);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -23,6 +25,26 @@ protected:
     ASSERT_NOT(page->isLoaded());
     delete page;
   }
+
+  void testGetContent()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/simple.txt");
+    Page* page = Page::Build(request);
+    ASSERT(page && page->isLoaded());
+    ASSERT_EQUAL(page->getContent(), "Simple!");
+    delete page;
+  }
+  
+  void testGetStream()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/simple.txt");
+    Page* page = Page::Build(request);
+    ASSERT(page && page->isLoaded());
+    ASSERT_NOT_NULL(page->getStream());
+    ASSERT_EQUAL(page->getStream()->str(), "Simple!");
+    delete page;
+  }
+
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikePageTest);
