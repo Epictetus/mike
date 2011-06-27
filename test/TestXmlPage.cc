@@ -14,6 +14,7 @@ class MikeXmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBuild);
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
+  CPPUNIT_TEST(testGetElementByXpath);
   CPPUNIT_TEST(testGetElementsByXpathOnInvalidDoc);
   CPPUNIT_TEST_SUITE_END();
 
@@ -52,6 +53,17 @@ protected:
     delete page;
   }
 
+  void testGetElementByXpath()
+  {
+    http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
+    XmlPage* page = Page::Build(request)->toXmlPage();
+    ASSERT(page && page->isLoaded());
+    XmlElement* elem = page->getElementByXpath("//root//elems/elem[@load]");
+    ASSERT_EQUAL(elem->getContent(), "First");
+    delete elem;
+    delete page;
+  }
+  
   void testGetElementsByXpathOnInvalidDoc()
   {
     http::Request* request = http::Request::Get("http://localhost:4567/simple");
