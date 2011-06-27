@@ -11,8 +11,11 @@ namespace mike
   History::~History()
   {
     delete current_;
-    back_.clear();
-    forward_.clear();
+
+    for (list<Page*>::iterator it = back_.begin(); it != back_.end(); it++)
+      delete *it;
+    for (list<Page*>::iterator it = forward_.begin(); it != forward_.end(); it++)
+      delete *it;
   }
 
   Page* History::getCurrent()

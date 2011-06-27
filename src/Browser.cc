@@ -17,8 +17,8 @@ namespace mike
 
   Browser::~Browser()
   {
-    printf("-> browser destroyed\n");
-    windows_.clear();
+    for (vector<Window*>::iterator it = windows_.begin(); it != windows_.end(); it++)
+      delete *it;
   }
 
   string Browser::getLanguage()
@@ -55,9 +55,8 @@ namespace mike
   
   Window* Browser::Open(string url)
   {
-    Window* new_window = new Window(this, url);
-    windows_.push_back(new_window);
-    return new_window;
+    windows_.push_back(new Window(this, url));
+    return windows_.back();
   }
 
   void Browser::generateSessionToken()

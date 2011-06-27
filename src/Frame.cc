@@ -11,7 +11,9 @@ namespace mike
   Frame::~Frame()
   {
     delete history_;
-    frames_.clear();
+
+    for (vector<Frame*>::iterator it = frames_.begin(); it != frames_.end(); it++)
+      delete *it;
   }
 
   string Frame::getUrl()

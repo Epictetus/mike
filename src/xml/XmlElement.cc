@@ -6,19 +6,18 @@ namespace mike
 {
   XmlElement::XmlElement(XmlPage* page, xmlNodePtr node)
   {
+    printf("\n---> XmlElement created!");
+
     page_ = page;
     node_ = node;
   }
 
   XmlElement::~XmlElement()
   {
-    printf("---> XmlElement destroyed\n");
+    printf("\n---> XmlElement destroyed");
       
-    for (map<string,xmlChar*>::iterator it = attrsCache_.begin(); it != attrsCache_.end(); it++) {
+    for (map<string,xmlChar*>::iterator it = attrsCache_.begin(); it != attrsCache_.end(); it++)
       xmlFree((*it).second);
-    }
-
-    attrsCache_.clear();
   }
 
   string XmlElement::getAttribute(string name)

@@ -14,7 +14,6 @@ namespace mike
     parentWindow_ = this;
     frame_ = new Frame(this);
     goTo(url);
-    printf("created: %s\n", getUrl().c_str());
   }
 
   Window::Window(Window* parentWindow, string url)
@@ -23,12 +22,10 @@ namespace mike
     parentWindow_ = parentWindow;
     frame_ = new Frame(this);
     goTo(url);
-    printf("created: %s\n", getUrl().c_str());
   }
 
   Window::~Window()
   {
-    printf("deleted: %s\n", getUrl().c_str());
     delete frame_;
   }
 
