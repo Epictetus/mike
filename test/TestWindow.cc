@@ -156,6 +156,7 @@ protected:
   {
     Browser* browser = new Browser();
     Window* window = browser->Open("http://localhost:4567/simple");
+    ASSERT(window->getPage()->isLoaded());
     ASSERT_EQUAL(window->getContent(), "Kukuryku!");
     delete browser;
   }
