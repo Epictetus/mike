@@ -57,6 +57,16 @@ namespace mike
     return request_->getUrl();
   }
 
+  stringstream* Page::getStream()
+  {
+    return getResponse()->getStream();
+  }
+
+  string Page::getContent()
+  {
+    return getResponse()->getBody();
+  }
+
   bool Page::isXml()
   {
     return (type_ == XML_PAGE || type_ == HTML_PAGE);
@@ -102,6 +112,7 @@ namespace mike
   void Page::openInFrame(Frame* frame)
   {
     frame_ = frame;
+    frame_->cleanup();
     frame_->getHistory()->push(this);
   }
 }

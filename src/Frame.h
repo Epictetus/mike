@@ -28,6 +28,12 @@ namespace mike
     virtual ~Frame();
 
     /**
+     * This method should be called always before opening new page within this frame.
+     *
+     */
+    void cleanup();
+    
+    /**
      * Returns url of currently open page. 
      *
      */
@@ -88,6 +94,12 @@ namespace mike
      *
      */
     Frame* getNamedFrame(string name);
+
+    /**
+     * Returns content of currently opened page.
+     *
+     */
+    string getContent();
     
   protected:
     string name_;

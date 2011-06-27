@@ -10,6 +10,7 @@ namespace mike
   using namespace std;
 
   class Frame;
+  class History;
 
   /**
    * Object of this class represents single window opened within browser instance. Such browser
@@ -54,10 +55,11 @@ namespace mike
     Window* getTopLevelWindow();
 
     /**
-     * Returns main frame with content of this window. 
+     * If no parameters given then returns main frame, otherwise returns subframe from given index.
      *
      */
     Frame* getFrame();
+    Frame* getFrame(int n);
 
     /**
      * Returns page object which represents page loaded into main frame.  
@@ -78,6 +80,30 @@ namespace mike
      */
     string getTitle();
 
+    /**
+     * Proxy to <code>Frame::getNamedFrame</code>.
+     *
+     */
+    Frame* getNamedFrame(string name);
+
+    /**
+     * Proxy to <code>Frame::getFrames</code>.
+     *
+     */
+    vector<Frame*> getFrames();
+
+    /**
+     * Proxy to <code>Frame::getHistory</code>.
+     *
+     */
+    History* getHistory();
+
+    /**
+     * Returns source code of currently opened page. 
+     *
+     */
+    string getContent();
+    
     /**
      * Returns <code>true</code> when there is no page loaded to this window, or
      * <code>about:blank</code> page has been opened. 

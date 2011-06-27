@@ -11,9 +11,15 @@ namespace mike
   Frame::~Frame()
   {
     delete history_;
-
+    cleanup();
+  }
+  
+  void Frame::cleanup()
+  {
     for (vector<Frame*>::iterator it = frames_.begin(); it != frames_.end(); it++)
       delete *it;
+
+    frames_.clear();
   }
 
   string Frame::getUrl()
@@ -80,5 +86,11 @@ namespace mike
     }
 
     return NULL;
+  }
+
+  string Frame::getContent()
+  {
+    Page* current = getCurrentPage();
+    return current ? current->getContent() : "";
   }
 }

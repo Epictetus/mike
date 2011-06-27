@@ -55,6 +55,11 @@ namespace mike
     return frame_;
   }
 
+  Frame* Window::getFrame(int n)
+  {
+    return frame_->getFrame(n);
+  }
+
   Page* Window::getPage()
   {
     return frame_->getCurrentPage();
@@ -63,6 +68,11 @@ namespace mike
   string Window::getUrl()
   {
     return frame_->getUrl();
+  }
+
+  string Window::getContent()
+  {
+    return frame_->getContent();
   }
 
   string Window::getTitle()
@@ -84,6 +94,21 @@ namespace mike
     return "Blank...";
   }
 
+  Frame* Window::getNamedFrame(string name)
+  {
+    return frame_->getNamedFrame(name);
+  }
+
+  vector<Frame*> Window::getFrames()
+  {
+    return frame_->getFrames();
+  }
+
+  History* Window::getHistory()
+  {
+    return frame_->getHistory();
+  }
+  
   bool Window::isBlank()
   {
     return (frame_->getCurrentPage() == NULL);

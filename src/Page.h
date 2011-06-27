@@ -2,6 +2,7 @@
 #define _MIKE_PAGE_H_
 
 #include <string>
+#include <sstream>
 #include "http/Request.h"
 
 namespace mike
@@ -79,7 +80,19 @@ namespace mike
      *
      */
     string getUrl();
-    
+
+    /**
+     * Returns string stream with content of this page;
+     *
+     */
+    stringstream* getStream();
+
+    /**
+     * Returns strinc content of this page.
+     *
+     */
+    string getContent();
+   
     /**
      * Returns <code>true</code> when current page is an XML or HTML page.
      *

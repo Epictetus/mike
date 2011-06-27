@@ -39,7 +39,7 @@ namespace mike
      * If no element found then obviously empty set will be returned. 
      *
      * <code>
-     *   XmlElementSet items = page->getElementsByXpath("//ul[id='items']//li");
+     *   XmlElementSet* items = page->getElementsByXpath("//ul[id='items']//li");
      * </code>
      *
      */
@@ -56,7 +56,7 @@ namespace mike
      * Returns set of all elements with given tag name. Example:
      *
      * <code>
-     *   XmlElementSet images = page->getElementsByTagName('img');
+     *   XmlElementSet* images = page->getElementsByTagName('img');
      * </code>
      *
      */

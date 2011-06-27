@@ -1,6 +1,7 @@
 #include <list>
 #include "html/HtmlPage.h"
 #include "utils/Helpers.h"
+#include "Frame.h"
 
 namespace mike
 {
@@ -57,24 +58,28 @@ namespace mike
   void HtmlPage::openInFrame(Frame* frame)
   {
     Page::openInFrame(frame);
+    XmlElementSet* frames = getFrames();
 
-    /*
-    vector<XmlElement*> frames = page->toHtmlPage()->getFrames();
+    for (vector<XmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
+      XmlElement* iframe = *it;
 
-    for (vector<XmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
-      HtmlFrameElement* iframe = (HtmlFrameElement*)(*it);
-
-      if (iframe->isValid()) {
-	http::Request* irequest = http::Request::Get(iframe->getSrc());
+      if (iframe->hasAttribute("src")) {
+	http::Request* irequest = http::Request::Get(iframe->getAttribute("src"));
 	Page* ipage = Page::Build(irequest);
+	Frame* new_frame = frame_->buildFrame();
 
-	if (page->isHtml()) {
-	  page->toHtmlPage()->openInFrame(frame->buildFrame());
+	if (iframe->hasAttribute("name")) {
+	  new_frame->setName(iframe->getAttribute("name"));
+	}
+	
+	if (ipage->isHtml()) {
+	  ipage->toHtmlPage()->openInFrame(new_frame);
 	} else {
-	  page->openInFrame(frame->buildFrame());
+	  ipage->openInFrame(new_frame);
 	}
       }
     }
-    */
+
+    delete frames;
   }
 }

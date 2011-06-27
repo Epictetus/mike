@@ -25,19 +25,7 @@ namespace mike
      *
      */
     virtual ~RegularPage();
-    
-    /**
-     * Returns string stream with content of this page;
-     *
-     */
-    stringstream* getStream();
 
-    /**
-     * Returns strinc content of this page.
-     *
-     */
-    string getContent();
-    
   };
 }
 
