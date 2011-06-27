@@ -20,6 +20,29 @@ namespace mike {
 	node = node->next;
       }
     }
+
+    xmlXPathObjectPtr findByXPath(xmlDocPtr doc, string xpath)
+    {
+      if (doc) {
+	// Setup XPath stuff and evaluate expression
+	xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
+	xmlXPathContextPtr ctx = xmlXPathNewContext(doc);
+	xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
+
+	// Free XPath stuff
+	xmlXPathFreeContext(ctx);
+	xmlFree(cxpath);
+
+	// Return results if any
+	if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
+	  return found;
+	} else {
+	  xmlXPathFreeObject(found);
+	}
+      }
+      
+      return NULL;
+    }
   }
   
   XmlPage::XmlPage(Request* request)
@@ -37,23 +60,12 @@ namespace mike {
 
   XmlElement* XmlPage::getElementByXpath(string xpath)
   {
+    xmlXPathObjectPtr found = findByXPath(doc_, xpath);
     XmlElement* result = NULL;
-
-    if (doc_) {
-      // Setup XPath stuff and evaluate expression
-      xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
-      xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
-      xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
-
-      // Assign found elements (if any) to results vector.
-      if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
-	result = new XmlElement(this, found->nodesetval->nodeTab[0]);
-      }
-      
-      // Free XPath stuff.
-      xmlXPathFreeContext(ctx);
+    
+    if (found) {
+      result = new XmlElement(this, found->nodesetval->nodeTab[0]);
       xmlXPathFreeObject(found);
-      xmlFree(cxpath);
     }
     
     return result;
@@ -62,31 +74,20 @@ namespace mike {
   XmlElementSet* XmlPage::getElementsByXpath(string xpath)
   {
     XmlElementSet* result = new XmlElementSet();
+    xmlXPathObjectPtr found = findByXPath(doc_, xpath);
 
-    if (doc_) {
-      // Setup XPath stuff and evaluate expression
-      xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
-      xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
-      xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
-
-      // Assign found elements (if any) to results vector.
-      if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
-	xmlNodeSetPtr nodeset = found->nodesetval;
-	XmlElement* elements[nodeset->nodeNr];
+    if (found) {
+      xmlNodeSetPtr nodeset = found->nodesetval;
+      XmlElement* elements[nodeset->nodeNr];
 	
-	for (int i = 0; i < nodeset->nodeNr; i++) {
-	  elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
-	}
-
-	result = new XmlElementSet(elements, nodeset->nodeNr);
+      for (int i = 0; i < nodeset->nodeNr; i++) {
+	elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
       }
       
-      // Free XPath stuff.
-      xmlXPathFreeContext(ctx);
+      result = new XmlElementSet(elements, nodeset->nodeNr);
       xmlXPathFreeObject(found);
-      xmlFree(cxpath);
     }
-    
+      
     return result;
   }
 
