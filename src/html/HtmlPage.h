@@ -26,21 +26,21 @@ namespace mike
      * find elements.
      *
      * <code>
-     *   vector<XmlElement*> items = page->getElementsByXpath("ul#items li");
+     *   XmlElementSet* items = page->getElementsByXpath("ul#items li");
      * </code>
      *
      */
-    vector<XmlElement*> getElementsByCss(string rule);
+    XmlElementSet* getElementsByCss(string rule);
 
     /**
      * Returns set of all elements having given class name.
      *
      * <code>
-     *   vector<XmlElement*> tags = page->getElementsByClassName("tag");
+     *   XmlElementSet* tags = page->getElementsByClassName("tag");
      * </code>
      *
      */
-    vector<XmlElement*> getElementsByClassName(string klass);
+    XmlElementSet* getElementsByClassName(string klass);
 
     /**
      * Returns clicable element matched by it's anchor text/label. Applies only to <code>a</code>,
@@ -68,7 +68,7 @@ namespace mike
      * Returns all frames and iframes from this document.
      *
      */
-    vector<XmlElement*> getFrames();
+    XmlElementSet* getFrames();
     
     /**
      * @override

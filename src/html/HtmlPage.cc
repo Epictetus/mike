@@ -2,34 +2,21 @@
 #include "html/HtmlPage.h"
 #include "utils/Helpers.h"
 
-namespace mike {
-  namespace
-  {
-    XmlElement* getFirstAndDropOthers(vector<XmlElement*> *elems)
-    {
-      if (!elems->empty()) {
-	elems->resize(1);
-	return elems->at(0);
-	return NULL;
-      } else {
-	return NULL;
-      }
-    }
-  }
-  
+namespace mike
+{
   HtmlPage::HtmlPage(Request* request)
     : XmlPage(request)
   {
     type_ = HTML_PAGE;
   }
 
-  vector<XmlElement*> HtmlPage::getElementsByCss(string rule)
+  XmlElementSet* HtmlPage::getElementsByCss(string rule)
   {
     // TODO: implement this someday...
     throw "HtmlPage::getElementsByCss is not implemented yet.";
   }
 
-  vector<XmlElement*> HtmlPage::getElementsByClassName(string klass)
+  XmlElementSet* HtmlPage::getElementsByClassName(string klass)
   {
     klass = xpathSanitize(klass);
     return getElementsByXpath("//*[contains(concat(' ', @class, ' '), ' " + klass + " ')]");
@@ -46,18 +33,16 @@ namespace mike {
     };
 
     string xpath = parts[0] + "|" + parts[1] + "|" + parts[2];
-    vector<XmlElement*> elems = getElementsByXpath(xpath);
-    return getFirstAndDropOthers(&elems);
+    return getElementByXpath(xpath);
   }
   
   XmlElement* HtmlPage::getElementById(string id)
   {
     id = xpathSanitize(id);
-    vector<XmlElement*> elems = getElementsByXpath("//*[@id='" + id + "'][1]");
-    return getFirstAndDropOthers(&elems);
+    return getElementByXpath("//*[@id='" + id + "'][1]");
   }
   
-  vector<XmlElement*> HtmlPage::getFrames()
+  XmlElementSet* HtmlPage::getFrames()
   {
     return getElementsByXpath("//iframe | //frameset/frame");
   }

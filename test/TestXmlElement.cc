@@ -26,12 +26,13 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    XmlElement* elem = (*elems)[0];
     ASSERT_NOT_NULL(elem);
     ASSERT_EQUAL(elem->getAttribute("foo"), "bar");
     ASSERT_EQUAL(elem->getAttribute("foo"), "bar"); // it has to be done twice here, to test attrs cache...
     ASSERT_EQUAL(elem->getAttribute("bar"), "");
-    delete elem;
+    delete elems;
     delete page;
   }
 
@@ -40,13 +41,14 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    XmlElement* elem = (*elems)[0];
     ASSERT_NOT_NULL(elem);
     ASSERT(elem->hasAttribute("foo"));
     ASSERT_NOT(elem->hasAttribute("bar"));
     ASSERT(elem->hasAttribute("foo", "bar"));
     ASSERT_NOT(elem->hasAttribute("foo", "not-like-this"));
-    delete elem;
+    delete elems;
     delete page;
   }
 
@@ -55,10 +57,11 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    XmlElement* elem = (*elems)[0];
     ASSERT_NOT_NULL(elem);
     ASSERT_EQUAL(elem->getContent(), "Hello Foo!");
-    delete elem;
+    delete elems;
     delete page;
   }
 
@@ -67,12 +70,13 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    XmlElement* elem = (*elems)[0];
     ASSERT_NOT_NULL(elem);
     ASSERT(elem->hasContent("Hello Foo!"));
     ASSERT_NOT(elem->hasContent("Not like this!"));
     ASSERT(elem->hasContent());
-    delete elem;
+    delete elems;
     delete page;
   }
 
@@ -81,10 +85,11 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem = page->getElementsByTagName("elem")[0];
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    XmlElement* elem = (*elems)[0];
     ASSERT_NOT_NULL(elem);
     ASSERT_EQUAL(elem->getName(), "elem");
-    delete elem;
+    delete elems;
     delete page;
   }
 
@@ -93,14 +98,16 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/anchors.html");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page);
-    XmlElement* elem1 = page->getElementsByTagName("a")[0];
+    XmlElementSet* elems1 = page->getElementsByTagName("a");
+    XmlElement* elem1 = (*elems1)[0];
     ASSERT_NOT_NULL(elem1);
     ASSERT(elem1->hasChildren());
-    XmlElement* elem2 = page->getElementsByTagName("input")[0];
+    XmlElementSet* elems2 = page->getElementsByTagName("input");
+    XmlElement* elem2 = (*elems2)[0];
     ASSERT_NOT_NULL(elem2);
     ASSERT_NOT(elem2->hasChildren());
-    delete elem1;
-    delete elem2;
+    delete elems1;
+    delete elems2;
     delete page;
   }
 

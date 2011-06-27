@@ -11,6 +11,7 @@
 
 #include "RegularPage.h"
 #include "xml/XmlElement.h"
+#include "xml/XmlElementSet.h"
 
 namespace mike
 {
@@ -38,21 +39,28 @@ namespace mike
      * If no element found then obviously empty set will be returned. 
      *
      * <code>
-     *   vector<XmlElement*> items = page->getElementsByXpath("//ul[id='items']//li");
+     *   XmlElementSet items = page->getElementsByXpath("//ul[id='items']//li");
      * </code>
      *
      */
-    vector<XmlElement*> getElementsByXpath(string xpath);
+    XmlElementSet* getElementsByXpath(string xpath);
+
+    /**
+     * Acts almost the same as <code>getElementsByXpath</code> but returns only first
+     * found element.
+     *
+     */
+    XmlElement* getElementByXpath(string xpath);
 
     /**
      * Returns set of all elements with given tag name. Example:
      *
      * <code>
-     *   vector<XmlElement*> images = page->getElementsByTagName('img');
+     *   XmlElementSet images = page->getElementsByTagName('img');
      * </code>
      *
      */
-    vector<XmlElement*> getElementsByTagName(string tag);
+    XmlElementSet* getElementsByTagName(string tag);
 
     /**
      * @override

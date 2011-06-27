@@ -69,11 +69,11 @@ namespace mike
   {
     if (!isBlank()) {
       if (getPage()->isHtml()) {
-	vector<XmlElement*> elems = getPage()->toHtmlPage()->getElementsByXpath("//html/head/title");
+	XmlElement* title_tag = getPage()->toHtmlPage()->getElementByXpath("//html/head/title");
 
-	if (!elems.empty()) {
-	  string title = elems[0]->getContent();
-	  elems.clear();
+	if (title_tag) {
+	  string title = title_tag->getContent();
+	  delete title_tag;
 	  return title;
 	}
       }

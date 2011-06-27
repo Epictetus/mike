@@ -35,9 +35,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems = page->getElementsByTagName("elem");
-    ASSERT_EQUAL(elems.size(), 3);
-    elems.clear();
+    XmlElementSet* elems = page->getElementsByTagName("elem");
+    ASSERT_EQUAL(elems->size(), 3);
+    delete elems;
     delete page;
   }
   
@@ -46,9 +46,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
-    ASSERT_EQUAL(elems.size(), 2);
-    elems.clear();
+    XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
+    ASSERT_EQUAL(elems->size(), 2);
+    delete elems;
     delete page;
   }
 
@@ -57,9 +57,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/simple");
     XmlPage* page = Page::Build(request)->toXmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
-    ASSERT_EQUAL(elems.size(), 0);
-    elems.clear();
+    XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
+    ASSERT_EQUAL(elems->size(), 0);
+    delete elems;
     delete page;
   }
 };

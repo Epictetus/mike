@@ -39,9 +39,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems = page->getElementsByTagName("li");
-    ASSERT_EQUAL(elems.size(), 3);
-    elems.clear();
+    XmlElementSet* elems = page->getElementsByTagName("li");
+    ASSERT_EQUAL(elems->size(), 3);
+    delete elems;
     delete page;
   }
   
@@ -50,9 +50,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems = page->getElementsByXpath("//ul[@id='elems']/li[contains(@class, 'load')]");
-    ASSERT_EQUAL(elems.size(), 2);
-    elems.clear();
+    XmlElementSet* elems = page->getElementsByXpath("//ul[@id='elems']/li[contains(@class, 'load')]");
+    ASSERT_EQUAL(elems->size(), 2);
+    delete elems;
     delete page;
   }
 
@@ -75,15 +75,15 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/xpath.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
     ASSERT(page && page->isLoaded());
-    vector<XmlElement*> elems_ok = page->getElementsByClassName("load");
-    vector<XmlElement*> elems_not_ok = page->getElementsByClassName("loa");
-    vector<XmlElement*> elems_not_ok_too = page->getElementsByClassName("load fo");
-    ASSERT_EQUAL(elems_ok.size(), 2);
-    ASSERT_EQUAL(elems_not_ok.size(), 0);
-    ASSERT_EQUAL(elems_not_ok_too.size(), 0);
-    elems_ok.clear();
-    elems_not_ok.clear();
-    elems_not_ok_too.clear();
+    XmlElementSet* elems_ok = page->getElementsByClassName("load");
+    XmlElementSet* elems_not_ok = page->getElementsByClassName("loa");
+    XmlElementSet* elems_not_ok_too = page->getElementsByClassName("load fo");
+    ASSERT_EQUAL(elems_ok->size(), 2);
+    ASSERT_EQUAL(elems_not_ok->size(), 0);
+    ASSERT_EQUAL(elems_not_ok_too->size(), 0);
+    delete elems_ok;
+    delete elems_not_ok;
+    delete elems_not_ok_too;
     delete page;
   }
 
@@ -115,7 +115,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/iframes.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
     ASSERT(page && page->isLoaded());
-    ASSERT_EQUAL(page->getFrames().size(), 2);
+    XmlElementSet* frames = page->getFrames();
+    ASSERT_EQUAL(frames->size(), 2);
+    delete frames;
     delete page;
   }
   
@@ -124,7 +126,9 @@ protected:
     http::Request* request = http::Request::Get("http://localhost:4567/frameset.html");
     HtmlPage* page = Page::Build(request)->toHtmlPage();
     ASSERT(page && page->isLoaded());
-    ASSERT_EQUAL(page->getFrames().size(), 2);
+    XmlElementSet* frames = page->getFrames();
+    ASSERT_EQUAL(frames->size(), 2);
+    delete frames;
     delete page;
   }
 };

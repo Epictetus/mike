@@ -9,7 +9,7 @@ namespace mike {
       // so far nothing, just mute errors...
     }
 
-    void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, vector<XmlElement*>* elems)
+    void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, XmlElementSet* elems)
     {
       while (node) {
 	if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
@@ -35,9 +35,33 @@ namespace mike {
     cleanupDocument();
   }
 
-  vector<XmlElement*> XmlPage::getElementsByXpath(string xpath)
+  XmlElement* XmlPage::getElementByXpath(string xpath)
   {
-    vector<XmlElement*> result;
+    XmlElement* result = NULL;
+
+    if (doc_) {
+      // Setup XPath stuff and evaluate expression
+      xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
+      xmlXPathContextPtr ctx = xmlXPathNewContext(doc_);
+      xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
+
+      // Assign found elements (if any) to results vector.
+      if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
+	result = new XmlElement(this, found->nodesetval->nodeTab[0]);
+      }
+      
+      // Free XPath stuff.
+      xmlXPathFreeContext(ctx);
+      xmlXPathFreeObject(found);
+      xmlFree(cxpath);
+    }
+    
+    return result;
+  }
+  
+  XmlElementSet* XmlPage::getElementsByXpath(string xpath)
+  {
+    XmlElementSet* result = new XmlElementSet();
 
     if (doc_) {
       // Setup XPath stuff and evaluate expression
@@ -54,7 +78,7 @@ namespace mike {
 	  elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
 	}
 
-	result.assign(elements, elements + nodeset->nodeNr);
+	result = new XmlElementSet(elements, nodeset->nodeNr);
       }
       
       // Free XPath stuff.
@@ -66,12 +90,12 @@ namespace mike {
     return result;
   }
 
-  vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
+  XmlElementSet* XmlPage::getElementsByTagName(string tag)
   {
-    vector<XmlElement*> elems;
+    XmlElementSet* elems = new XmlElementSet();
       
     if (doc_ && !tag.empty()) {
-      getElementsByTagNameIter(this, tag, doc_->children, &elems);
+      getElementsByTagNameIter(this, tag, doc_->children, elems);
     }
 
     return elems;
