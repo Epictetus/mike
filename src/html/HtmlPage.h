@@ -75,6 +75,12 @@ namespace mike
      *
      */
     virtual void openInFrame(Frame* frame);
+
+    /**
+     * @override
+     *
+     */
+    virtual void reload();
     
   protected:
     /**
@@ -82,6 +88,12 @@ namespace mike
      *
      */
     virtual void parseDocument();
+
+    /**
+     * Loads are iframes and frames contents and opens it in current frame's subframes.
+     *
+     */
+    virtual void loadFrames();
 
     htmlDocPtr doc_;
   };

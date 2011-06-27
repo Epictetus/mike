@@ -104,7 +104,7 @@ namespace mike
   
   void Page::reload()
   {
-    if (request_ != NULL) {
+    if (request_) {
       request_->perform();
     }
   }

@@ -55,31 +55,46 @@ namespace mike
     xmlFree(body);
   }
 
+  void HtmlPage::reload()
+  {
+    Page::reload();
+    loadFrames();
+  }
+  
   void HtmlPage::openInFrame(Frame* frame)
   {
     Page::openInFrame(frame);
-    XmlElementSet* frames = getFrames();
+    loadFrames();
+  }
 
-    for (vector<XmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
-      XmlElement* iframe = *it;
+  void HtmlPage::loadFrames()
+  {
+    if (frame_) {
+      frame_->cleanup();
+      
+      XmlElementSet* frames = getFrames();
 
-      if (iframe->hasAttribute("src")) {
-	http::Request* irequest = http::Request::Get(iframe->getAttribute("src"));
-	Page* ipage = Page::Build(irequest);
-	Frame* new_frame = frame_->buildFrame();
+      for (vector<XmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
+	XmlElement* iframe = *it;
 
-	if (iframe->hasAttribute("name")) {
-	  new_frame->setName(iframe->getAttribute("name"));
-	}
+	if (iframe->hasAttribute("src")) {
+	  http::Request* irequest = http::Request::Get(iframe->getAttribute("src"));
+	  Page* ipage = Page::Build(irequest);
+	  Frame* new_frame = frame_->buildFrame();
+
+	  if (iframe->hasAttribute("name")) {
+	    new_frame->setName(iframe->getAttribute("name"));
+	  }
 	
-	if (ipage->isHtml()) {
-	  ipage->toHtmlPage()->openInFrame(new_frame);
-	} else {
-	  ipage->openInFrame(new_frame);
+	  if (ipage->isHtml()) {
+	    ipage->toHtmlPage()->openInFrame(new_frame);
+	  } else {
+	    ipage->openInFrame(new_frame);
+	  }
 	}
       }
-    }
 
-    delete frames;
+      delete frames;
+    }
   }
 }
