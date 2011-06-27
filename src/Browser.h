@@ -2,6 +2,7 @@
 #define _MIKE_BROWSER_H_
 
 #include <string>
+#include <vector>
 
 namespace mike
 {
@@ -72,11 +73,12 @@ namespace mike
      *
      * <code>
      *   Window* google = browser->Open("http://www.google.com/");
+     *
      *   if (google->isLoaded()) {
+     *     string title = google->getTitle();
      *     string content = google->getPage()->getContent();
      *     // ...
      *   }
-     *   delete google;
      * </code>
      *
      */
@@ -94,6 +96,7 @@ namespace mike
     string language_;
     string customUserAgent_;
     string sessionToken_;
+    vector<Window*> windows_;
   };
 }
 

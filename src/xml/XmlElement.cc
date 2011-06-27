@@ -12,6 +12,8 @@ namespace mike
 
   XmlElement::~XmlElement()
   {
+    printf("---> XmlElement destroyed\n");
+      
     for (map<string,xmlChar*>::iterator it = attrsCache_.begin(); it != attrsCache_.end(); it++) {
       xmlFree((*it).second);
     }

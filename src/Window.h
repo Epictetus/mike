@@ -72,11 +72,25 @@ namespace mike
     string getUrl();
 
     /**
+     * If page is an HTML page then returns its title, otherwise returns full 
+     * URL address of this website.
+     *
+     */
+    string getTitle();
+
+    /**
+     * Returns <code>true</code> when there is no page loaded to this window, or
+     * <code>about:blank</code> page has been opened. 
+     *
+     */
+    bool isBlank();
+    
+    /**
      * Opens specified url and loads it into main frame. 
      *
      */
     void goTo(string url);
-    
+
   protected:
     Window* parentWindow_;
     Frame* frame_;

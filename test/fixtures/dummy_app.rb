@@ -82,3 +82,7 @@ end
 get "/frameset.html" do
   "<html><frameset cols='50%,50%'><frame src='/iframes/1.html' /><frame src='/iframes/2.html' name='foo' /></frameset></html>"
 end
+
+get "/with-title.html" do
+  "<html><head><title>Hello World!</title></head><body>Hello!</body></html>"
+end

@@ -5,13 +5,17 @@
 #include <libxml/parser.h>
 #include <string>
 #include <map>
+#include <memory>
 
 namespace mike
 {
   using namespace std;
 
   class XmlPage;
+  class XmlElement;
 
+  typedef auto_ptr<XmlElement> XmlElementPtr;
+  
   /**
    * This class represents single XML node element. It wraps up libxml2's <code>xmlNode</code>
    * and provides some extra functionalities at top of it.

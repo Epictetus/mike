@@ -11,7 +11,10 @@ namespace mike
   Window::Window(Browser* browser, string url)
   {
     browser_ = browser;
-    Window(this, url);
+    parentWindow_ = this;
+    frame_ = new Frame(this);
+    goTo(url);
+    printf("created: %s\n", getUrl().c_str());
   }
 
   Window::Window(Window* parentWindow, string url)
@@ -20,10 +23,12 @@ namespace mike
     parentWindow_ = parentWindow;
     frame_ = new Frame(this);
     goTo(url);
+    printf("created: %s\n", getUrl().c_str());
   }
 
   Window::~Window()
   {
+    printf("deleted: %s\n", getUrl().c_str());
     delete frame_;
   }
 
@@ -39,11 +44,11 @@ namespace mike
 
   Window* Window::getTopLevelWindow()
   {
-    Window* top = parentWindow_;
+    Window* top = this;
 
-    while (top != this) {
+    while (top != top->getParentWindow()) {
       top = top->getParentWindow();
-    }
+    };
 
     return top;
   }
@@ -63,20 +68,46 @@ namespace mike
     return frame_->getUrl();
   }
 
+  string Window::getTitle()
+  {
+    if (!isBlank()) {
+      if (getPage()->isHtml()) {
+	vector<XmlElement*> elems = getPage()->toHtmlPage()->getElementsByXpath("//html/head/title");
+
+	if (!elems.empty()) {
+	  string title = elems[0]->getContent();
+	  elems.clear();
+	  return title;
+	}
+      }
+      
+      return getUrl();
+    }
+
+    return "Blank...";
+  }
+
+  bool Window::isBlank()
+  {
+    return (frame_->getCurrentPage() == NULL);
+  }
+
   void Window::goTo(string url)
   {
-    http::Request* request = http::Request::Get(url);
-
-    if (browser_->isCookieEnabled()) {
-      request->enableCookieSession(browser_->getSessionToken());
-    }
+    if (!url.empty() && url != "about:blank") {
+      http::Request* request = http::Request::Get(url);
       
-    Page* page = Page::Build(request);
+      if (browser_->isCookieEnabled()) {
+	request->enableCookieSession(browser_->getSessionToken());
+      }
+      
+      Page* page = Page::Build(request);
 
-    if (page->isHtml()) {
-      page->toHtmlPage()->openInFrame(frame_);
-    } else {
-      page->openInFrame(frame_);
+      if (page->isHtml()) {
+	page->toHtmlPage()->openInFrame(frame_);
+      } else {
+	page->openInFrame(frame_);
+      }
     }
   }
 }
