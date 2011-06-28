@@ -7,6 +7,12 @@
 
 namespace mike
 {
+  Page* Page::Open(string url)
+  {
+    http::Request* req = http::Request::Get(url);
+    return Build(req);
+  }
+  
   Page* Page::Build(Request* request)
   {
     if (request && request->perform()) {

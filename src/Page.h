@@ -36,6 +36,8 @@ namespace mike
   class Page
   {
   public:
+    static Page* Open(string url);
+    
     /**
      * Performs given request, and depending on response content type build proper
      * page object for it. Example: 

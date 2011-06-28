@@ -1,10 +1,9 @@
 #include <string.h>
 #include <uuid/uuid.h>
-
 #include "utils/SystemInfo.h"
 #include "Page.h"
 #include "Window.h"
-#include "Browser.h" // class implemented
+#include "Browser.h"
 
 namespace mike
 {
@@ -12,11 +11,12 @@ namespace mike
 
   //============================= LIFECYCLE ====================================
 
-  Browser::Browser(string language/*="en"*/, string userAgent/*=""*/, bool cookieEnabled/*=true*/, bool javaEnabled/*=true*/)
+  Browser::Browser(string language/*="en"*/, string user_agent/*=""*/,
+		   bool cookie_enabled/*=true*/, bool java_enabled/*=true*/)
     : language_(language)
-    , customUserAgent_(userAgent)
-    , cookieEnabled_(cookieEnabled)
-    , javaEnabled_(javaEnabled)
+    , customUserAgent_(user_agent)
+    , cookieEnabled_(cookie_enabled)
+    , javaEnabled_(java_enabled)
   {
     generateSessionToken();
   }
@@ -87,9 +87,13 @@ namespace mike
 
   Page* Browser::open(string url)
   {
-    Window* new_window = new Window(this, url);
-    windows_.push_back(new_window);
-    new_window->getPage();
+    Window* window = new Window(this);
+    windows_.push_back(window);
+
+    Page* page = Page::Open(url);
+    window->setPage(page);
+    
+    return page;
   }
 
   Page* Browser::getPage(string url)

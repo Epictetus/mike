@@ -1,119 +1,144 @@
-#include "http/Request.h"
 #include "Window.h"
+#include "Browser.h"
 #include "Frame.h"
 #include "Page.h"
-#include "RegularPage.h"
-#include "xml/XmlPage.h"
-#include "html/HtmlPage.h"
 
 namespace mike
 {
-  Window::Window(Browser* browser, string url)
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+
+  Window::Window(Browser* browser, int width/*=DEFAULT_WIDTH*/, int height/*=DEFAULT_HEIGHT*/)
   {
+    init(width, height, this);
     browser_ = browser;
-    parentWindow_ = this;
-    frame_ = new Frame(this);
-    goTo(url);
   }
 
-  Window::Window(Window* parentWindow, string url)
+  Window::Window(Window* parent, int width/*=DEFAULT_WIDTH*/, int height/*=DEFAULT_HEIGHT*/)
   {
-    browser_ = parentWindow->getBrowser();
-    parentWindow_ = parentWindow;
-    frame_ = new Frame(this);
-    goTo(url);
+    init(width, height, parent);
+    browser_ = parent_->getBrowser();
   }
 
+  Window::Window(int width, int height)
+  {
+    init(width, height, this);
+  }
+  
   Window::~Window()
   {
     delete frame_;
   }
 
+  //============================= ACCESS     ===================================
+  
   Browser* Window::getBrowser()
   {
     return browser_;
   }
 
+  Window* Window::getParent()
+  {
+    return parent_;
+  }
+
   Window* Window::getParentWindow()
   {
-    return parentWindow_;
+    return getParent();
+  }
+
+  Window* Window::getTopLevel()
+  {
+    Window* top = this;
+    
+    while (top != top->getParent()) {
+      top = top->getParent();
+    }
+    
+    return top;
   }
 
   Window* Window::getTopLevelWindow()
   {
-    Window* top = this;
-
-    while (top != top->getParentWindow()) {
-      top = top->getParentWindow();
-    };
-
-    return top;
+    return getTopLevel();
   }
 
-  Frame* Window::getFrame()
+  void Window::setPage(Page* page)
   {
-    return frame_;
+    frame_->setPage(page);
   }
-
-  Frame* Window::getFrame(int n)
-  {
-    return frame_->getFrame(n);
-  }
-
+  
   Page* Window::getPage()
   {
-    return frame_->getCurrentPage();
+    return frame_->getPage();
   }
 
   string Window::getUrl()
   {
-    return frame_->getUrl();
+    return isBlank() ? "about:blank" : getPage()->getUrl();
   }
 
-  string Window::getContent()
-  {
-    return frame_->getContent();
-  }
-
-  string Window::getTitle()
-  {
-    if (!isBlank()) {
-      if (getPage()->isHtml()) {
-	XmlElement* title_tag = getPage()->toHtmlPage()->getElementByXpath("//html/head/title");
-
-	if (title_tag) {
-	  string title = title_tag->getContent();
-	  delete title_tag;
-	  return title;
-	}
-      }
-      
-      return getUrl();
-    }
-
-    return "Blank...";
-  }
-
-  Frame* Window::getNamedFrame(string name)
-  {
-    return frame_->getNamedFrame(name);
-  }
-
-  vector<Frame*> Window::getFrames()
-  {
-    return frame_->getFrames();
-  }
-
-  History* Window::getHistory()
-  {
-    return frame_->getHistory();
-  }
-  
   bool Window::isBlank()
   {
-    return (frame_->getCurrentPage() == NULL);
+    return getPage() == NULL;
   }
 
+  void Window::setWidth(int w)
+  {
+    resizeX(w);
+  }
+
+  int Window::getWidth()
+  {
+    return width_;
+  }
+
+  void Window::setHeight(int h)
+  {
+    resizeY(h);
+  }
+
+  int Window::getHeight()
+  {
+    return height_;
+  }
+  
+  //============================= OPERATIONS ===================================
+  
+  void Window::close()
+  {
+    browser_->closeWindow(this);
+  }
+
+  void Window::resizeX(int w)
+  {
+    resize(w, height_);
+  }
+
+  void Window::resizeY(int h)
+  {
+    resize(width_, h);
+  }
+
+  void Window::resize(int w, int h)
+  {
+    // TODO: fire onresize event here.
+    width_  = w;
+    height_ = h;
+  }
+  
+  /////////////////////////////// PROTECTED  ///////////////////////////////////
+  
+  void Window::init(int width, int height, Window* parent)
+  {
+    width_  = width;
+    height_ = height;
+    parent_ = parent;
+    frame_  = new Frame(this);
+  }
+
+  /*
   void Window::goTo(string url)
   {
     if (!url.empty() && url != "about:blank") {
@@ -132,4 +157,5 @@ namespace mike
       }
     }
   }
+  */
 }

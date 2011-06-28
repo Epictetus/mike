@@ -39,11 +39,13 @@ namespace mike
      */
     string getUrl();
 
+    void setPage(Page* page);
+    
     /**
      * Returns currentlu open page instance. 
      *
      */
-    Page* getCurrentPage();
+    Page* getPage();
 
     /**
      * Retuns history container for this frame.

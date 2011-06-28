@@ -69,6 +69,8 @@ namespace mike
      *
      */
     XmlElementSet* getFrames();
+
+    string getTitle();
     
     /**
      * @override

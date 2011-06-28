@@ -32,8 +32,13 @@ namespace mike
       return "";
     }
   }
+
+  void Frame::setPage(Page* page)
+  {
+    history_->push(page);
+  }
   
-  Page* Frame::getCurrentPage()
+  Page* Frame::getPage()
   {
     return history_->getCurrent();
   }
@@ -90,7 +95,7 @@ namespace mike
 
   string Frame::getContent()
   {
-    Page* current = getCurrentPage();
+    Page* current = getPage();
     return current ? current->getContent() : "";
   }
 }

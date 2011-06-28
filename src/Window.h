@@ -3,125 +3,149 @@
 
 #include <string>
 #include <vector>
-#include "Browser.h"
-#include "Page.h"
 
 namespace mike
 {
   using namespace std;
 
   class Frame;
-  class History;
-
+  class Browser;
+  class Page;
+  
   /**
-   * Object of this class represents single window opened within browser instance. Such browser
-   * window contains main frame with loaded specified page. Window can belong to other windows
-   * (eg. simulating popups) and guarrantees session continuation within opened domains. 
+   * Represents single window opened within browser instance. Window can be related with
+   * browser directly or through parent window (eg. for popup simulation). Objects of this
+   * class shouldn't be actually created directly, mainly they are kind of anchors which
+   * controlls everything under the hood.
    *
+   * \code
+   *   Window* window = new Window(browser, 1280, 1024);
+   *   window->setPage(Page::Open("http://www.cuboxsa.com/");
+   *   //...
+   *   window->close();
+   * \endcode
    */
   class Window
   {
   public:
+    // Default window proportions.
+    static const int DEFAULT_WIDTH  = 1280;
+    static const int DEFAULT_HEIGHT = 1024;
+    
     /**
-     * Constructors.
+     * Creates instance of Window related to given browser or parent window.
      *
+     * \param browser Browser containing this window.
+     * \param parent Parent window containing this one.
+     * \param width Window width.
+     * \param height Window height.
      */
-    explicit Window(Browser* browser, string url);
-    explicit Window(Window* parent_window, string url);
-
+    Window(Browser* browser, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
+    Window(Window* parent, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
+    Window(int width, int height);
+    
     /**
      * Destructor.
-     *
      */
     virtual ~Window();
 
     /**
-     * Returns instance of browser within which this window has been created.
-     *
+     * \return Instance of browser within which this window has been created.
      */
     Browser* getBrowser();
 
     /**
      * Returns the window that contains this one. If this is top level window then it
      * will return itself.
-     * 
+     *
+     * \return Parent window.
      */
+    Window* getParent();
     Window* getParentWindow();
 
     /**
      * Returns the top level window that contains this one. If this is top level window 
      * then it will return itself.
      *
+     * \return Top level window.
      */
+    Window* getTopLevel();
     Window* getTopLevelWindow();
 
     /**
-     * If no parameters given then returns main frame, otherwise returns subframe from given index.
+     * Renders given page within  this window. 
      *
+     * \param page Page to set
      */
-    Frame* getFrame();
-    Frame* getFrame(int n);
-
+    void setPage(Page* page);
+    
     /**
-     * Returns page object which represents page loaded into main frame.  
-     *
+     * \return Page loaded into main frame.
      */
     Page* getPage();
 
     /**
-     * Returns address of currently open page.
-     *
+     * \return URL of currently opened page.
      */
     string getUrl();
 
     /**
-     * If page is an HTML page then returns its title, otherwise returns full 
-     * URL address of this website.
-     *
+     * \return Window width;
      */
-    string getTitle();
+    int getWidth();
 
     /**
-     * Proxy to <code>Frame::getNamedFrame</code>.
-     *
+     * \return Window width;
      */
-    Frame* getNamedFrame(string name);
-
-    /**
-     * Proxy to <code>Frame::getFrames</code>.
-     *
-     */
-    vector<Frame*> getFrames();
-
-    /**
-     * Proxy to <code>Frame::getHistory</code>.
-     *
-     */
-    History* getHistory();
-
-    /**
-     * Returns source code of currently opened page. 
-     *
-     */
-    string getContent();
+    int getHeight();
     
     /**
-     * Returns <code>true</code> when there is no page loaded to this window, or
-     * <code>about:blank</code> page has been opened. 
+     * Returns true if there is no page opened in this window.
      *
+     * \return Page state
      */
     bool isBlank();
     
     /**
-     * Opens specified url and loads it into main frame. 
-     *
+     * Closes this page and removes it from browser's references.
      */
-    void goTo(string url);
+    void close();
+    
+    /**
+     * Changes width to given value.
+     *
+     * \param w New width.
+     */
+    void resizeX(int w);
+    void setWidth(int w);
 
+    /**
+     * Changes height to given value.
+     *
+     * \param h New height.
+     */
+    void resizeY(int h);
+    void setHeight(int h);
+
+    /**
+     * Changes window's size.
+     *
+     * \param w New width
+     * \param h New height
+     */
+    void resize(int w, int h);
+    
   protected:
-    Window* parentWindow_;
-    Frame* frame_;
+    int width_;
+    int height_;
     Browser* browser_;
+    Window* parent_;
+    Frame* frame_;
+
+    /**
+     * DRY initializer used in all constructors.
+     */
+    void init(int width, int height, Window* parent);
   };
 }
 

@@ -17,13 +17,11 @@ class MikeWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetParentWindow);
   CPPUNIT_TEST(testGetTopLevelWindow);
   CPPUNIT_TEST(testGetUrl);
-  CPPUNIT_TEST(testGetTitle);
   CPPUNIT_TEST(testIsBlank);
-  CPPUNIT_TEST(testGetFrame);
   CPPUNIT_TEST(testGetPage);
-  CPPUNIT_TEST(testGoTo);
-  CPPUNIT_TEST(testFrames);
-  CPPUNIT_TEST(testGetContent);
+  CPPUNIT_TEST(testDefaultSize);
+  CPPUNIT_TEST(testResize);
+  CPPUNIT_TEST(testClose);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -31,7 +29,7 @@ protected:
   void testGetBrowser()
   {
     Browser* browser = new Browser();
-    Window* window = new Window(browser, "http://localhost:4567/simple.html");
+    Window* window = new Window(browser);
     ASSERT_EQUAL(window->getBrowser(), browser);
     delete window;
     delete browser;
@@ -40,38 +38,38 @@ protected:
   void testGetBrowserWhenParentWindowGiven()
   {
     Browser* browser = new Browser();
-    Window* parentWindow = new Window(browser, "http://localhost:4567/simple.html");
-    Window* childWindow = new Window(parentWindow, "http://localhost:4567/simple.html");
-    ASSERT_EQUAL(childWindow->getBrowser(), browser);
-    delete parentWindow;
-    delete childWindow;
-    delete browser;    
+    Window* parent = new Window(browser);
+    Window* child = new Window(parent);
+    ASSERT_EQUAL(child->getBrowser(), browser);
+    delete parent;
+    delete child;
+    delete browser;
   }
 
   void testGetParentWindow()
   {
     Browser* browser = new Browser();
-    Window* parentWindow = new Window(browser, "http://localhost:4567/simple.html");
-    Window* childWindow = new Window(parentWindow, "http://localhost:4567/simple.html");
-    ASSERT_EQUAL(childWindow->getParentWindow(), parentWindow);
-    ASSERT_EQUAL(parentWindow->getParentWindow(), parentWindow);
-    delete parentWindow;
-    delete childWindow;
+    Window* parent = new Window(browser);
+    Window* child = new Window(parent);
+    ASSERT_EQUAL(child->getParent(), parent);
+    ASSERT_EQUAL(parent->getParent(), parent);
+    delete parent;
+    delete child;
     delete browser;
   }
 
   void testGetTopLevelWindow()
   {
     Browser* browser = new Browser();
-    Window* topLevelWindow = new Window(browser, "http://localhost:4567/simple.html");
-    Window* parentWindow = new Window(topLevelWindow, "http://localhost:4567/simple.html");
-    Window* childWindow = new Window(parentWindow, "http://localhost:4567/simple.html");
-    ASSERT_EQUAL(childWindow->getTopLevelWindow(), topLevelWindow);
-    ASSERT_EQUAL(parentWindow->getTopLevelWindow(), topLevelWindow);
-    ASSERT_EQUAL(topLevelWindow->getTopLevelWindow(), topLevelWindow);
-    delete topLevelWindow;
-    delete parentWindow;
-    delete childWindow;
+    Window* top = new Window(browser);
+    Window* parent = new Window(top);
+    Window* child = new Window(parent);
+    ASSERT_EQUAL(child->getTopLevel(), top);
+    ASSERT_EQUAL(parent->getTopLevel(), top);
+    ASSERT_EQUAL(top->getTopLevel(), top);
+    delete top;
+    delete parent;
+    delete child;
     delete browser;
   }
 
@@ -79,88 +77,72 @@ protected:
   {
     Browser* browser = new Browser();
     string url = "http://localhost:4567/simple.html";
-    Window* window = browser->open(url);
+    Window* window = new Window(browser);
+    window->setPage(Page::Open(url));
     ASSERT_EQUAL(window->getUrl(), url);
-    delete browser;
-  }
-
-  void testGetTitle()
-  {
-    Browser* browser = new Browser();
-    Window* window1 = browser->open("http://localhost:4567/simple.html");
-    Window* window2 = browser->open("http://localhost:4567/simple.xml");
-    Window* window3 = browser->open("http://localhost:4567/with-title.html");
-    Window* window4 = browser->open("about:blank");
-    ASSERT_EQUAL(window1->getTitle(), "http://localhost:4567/simple.html");
-    ASSERT_EQUAL(window2->getTitle(), "http://localhost:4567/simple.xml");
-    ASSERT_EQUAL(window3->getTitle(), "Hello World!");
-    ASSERT_EQUAL(window4->getTitle(), "Blank...");
+    delete window;
     delete browser;
   }
 
   void testIsBlank()
   {
     Browser* browser = new Browser();
-    Window* window1 = browser->open("");
-    Window* window2 = browser->open("about:blank");
-    Window* window3 = browser->open("http://localhost:4567/simple");
-    Window* window4 = browser->open("http://localhost:4567/this-page-not-exists");
-    ASSERT(window1->isBlank());
-    ASSERT(window2->isBlank());
-    ASSERT_NOT(window3->isBlank());
-    ASSERT_NOT(window4->isBlank());
-    delete browser;
-  }
-
-  void testGetFrame()
-  {
-    Browser* browser = new Browser();
-    Window* window = browser->open("");
-    ASSERT(window->getFrame());
+    Window* window = new Window(browser);
+    ASSERT(window->isBlank());
+    window->setPage(Page::Open("http://localhost:4567/simple"));
+    ASSERT_NOT(window->isBlank());
+    delete window;
     delete browser;
   }
 
   void testGetPage()
   {
     Browser* browser = new Browser();
-    Window* window1 = browser->open("about:blank");
-    ASSERT_NULL(window1->getPage());
-    Window* window2 = browser->open("http://localhost:4567/simple.html");
-    ASSERT_NOT_NULL(window2->getPage());
+    Window* window = new Window(browser);
+    Page* page = Page::Open("http://localhost:4567/simple");
+    window->setPage(page);
+    ASSERT_EQUAL(window->getPage(), page);
+    delete window;
     delete browser;
   }
 
-  void testGoTo()
+  void testDefaultSize()
   {
     Browser* browser = new Browser();
-    Window* window = browser->open("http://localhost:4567/simple.html");
-    window->goTo("http://localhost:4567/anchors.html");
-    ASSERT_EQUAL(window->getHistory()->size(), 1);
-    window->goTo("http://localhost:4567/iframes.html");
-    ASSERT_EQUAL(window->getHistory()->size(), 2);
+    Window* window = new Window(browser);
+    ASSERT_EQUAL(window->getWidth(), 1280);
+    ASSERT_EQUAL(window->getHeight(), 1024);
+    delete window;
     delete browser;
   }
 
-  void testFrames()
+  void testResize()
   {
     Browser* browser = new Browser();
-    Window* window = browser->open("http://localhost:4567/iframes.html");
-    ASSERT_EQUAL(window->getFrames().size(), 2);
-    ASSERT_NOT_NULL(window->getFrame(0));
-    ASSERT_NOT_NULL(window->getFrame(1));
-    ASSERT_EQUAL(window->getNamedFrame("foo"), window->getFrame(1));
+    Window* window = new Window(browser);
+    window->resizeX(800);
+    ASSERT_EQUAL(window->getWidth(), 800);
+    ASSERT_EQUAL(window->getHeight(), 1024);
+    window->resizeY(600);
+    ASSERT_EQUAL(window->getWidth(), 800);
+    ASSERT_EQUAL(window->getHeight(), 600);
+    window->resize(1600, 1200);
+    ASSERT_EQUAL(window->getWidth(), 1600);
+    ASSERT_EQUAL(window->getHeight(), 1200);
+    delete window;
     delete browser;
   }
 
-  void testGetContent()
+  void testClose()
   {
     Browser* browser = new Browser();
-    Window* window = browser->open("http://localhost:4567/simple");
-    ASSERT(window->getPage()->isLoaded());
-    ASSERT_EQUAL(window->getContent(), "Kukuryku!");
+    browser->open("http://localhost:4567/simple");
+    Window* window = browser->getWindow(0);
+    window->close();
+    ASSERT_EQUAL(browser->getWindows().size(), 0);
     delete browser;
   }
-
+  
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeWindowTest);

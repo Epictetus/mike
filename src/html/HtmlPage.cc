@@ -48,6 +48,19 @@ namespace mike
     return getElementsByXpath("//iframe | //frameset/frame");
   }
 
+  string HtmlPage::getTitle()
+  {
+    XmlElement* dom_title = getElementByXpath("//html/head/title");
+
+    if (dom_title) {
+      string title = dom_title->getContent();
+      delete dom_title;
+      return title;
+    }
+
+    return "";
+  }
+  
   void HtmlPage::parseDocument()
   {
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());

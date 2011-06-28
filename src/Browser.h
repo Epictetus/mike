@@ -35,7 +35,8 @@ namespace mike
      * \param enable_cookie Should this instance allow to store cookies?
      * \param enable_javascript Should this instance allow to execute javascript?
      */
-    explicit Browser(string language="en", string user_agent="", bool enable_cookie=true, bool enable_java=true);
+    explicit Browser(string language="en", string user_agent="",
+		     bool enable_cookie=true, bool enable_java=true);
 
     /**
      * Destructor.
