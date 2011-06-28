@@ -2,6 +2,7 @@
 #define _MIKE_BROWSER_WINDOW_H_
 
 #include <string>
+#include <vector>
 #include "Browser.h"
 #include "Page.h"
 

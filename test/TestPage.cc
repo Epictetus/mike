@@ -4,6 +4,7 @@
 
 #include "utils/CppunitMacros.h"
 #include "Page.h"
+#include "Browser.h"
 
 using namespace std;
 using namespace mike;
@@ -14,6 +15,8 @@ class MikePageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBuildWhenInvalid);
   CPPUNIT_TEST(testGetContent);
   CPPUNIT_TEST(testGetStream);
+  CPPUNIT_TEST(testGetEnclosingFrame);
+  CPPUNIT_TEST(testGetEnclosingWindow);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -43,6 +46,18 @@ protected:
     ASSERT_NOT_NULL(page->getStream());
     ASSERT_EQUAL(page->getStream()->str(), "Simple!");
     delete page;
+  }
+
+  void testGetEnclosingFrame()
+  {
+    Browser* browser = new Browser();
+    //browser->open()
+    delete browser;
+  }
+
+  void testGetEnclosingWindow()
+  {
+    
   }
 
 };

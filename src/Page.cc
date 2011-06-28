@@ -1,5 +1,6 @@
 #include "Page.h"
 #include "Frame.h"
+#include "Window.h"
 #include "RegularPage.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlPage.h"
@@ -9,9 +10,9 @@ namespace mike
   Page* Page::Build(Request* request)
   {
     if (request && request->perform()) {
-      Response* response;
-
-      if ((response = request->getResponse()) != NULL) {
+      Response* response = request->getResponse();
+      
+      if (response) {
 	if (response->isHtml()) {
 	  return new HtmlPage(request);
 	} else if (response->isXml()) {
@@ -47,9 +48,14 @@ namespace mike
     return request_->getResponse();
   }
 
-  Frame* Page::getFrame()
+  Frame* Page::getEnclosingFrame()
   {
     return frame_;
+  }
+
+  Window* Page::getEnclosingWindow()
+  {
+    return frame_ ? frame_->getWindow() : NULL;
   }
 
   string Page::getUrl()

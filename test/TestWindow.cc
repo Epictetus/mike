@@ -79,7 +79,7 @@ protected:
   {
     Browser* browser = new Browser();
     string url = "http://localhost:4567/simple.html";
-    Window* window = browser->Open(url);
+    Window* window = browser->open(url);
     ASSERT_EQUAL(window->getUrl(), url);
     delete browser;
   }
@@ -87,10 +87,10 @@ protected:
   void testGetTitle()
   {
     Browser* browser = new Browser();
-    Window* window1 = browser->Open("http://localhost:4567/simple.html");
-    Window* window2 = browser->Open("http://localhost:4567/simple.xml");
-    Window* window3 = browser->Open("http://localhost:4567/with-title.html");
-    Window* window4 = browser->Open("about:blank");
+    Window* window1 = browser->open("http://localhost:4567/simple.html");
+    Window* window2 = browser->open("http://localhost:4567/simple.xml");
+    Window* window3 = browser->open("http://localhost:4567/with-title.html");
+    Window* window4 = browser->open("about:blank");
     ASSERT_EQUAL(window1->getTitle(), "http://localhost:4567/simple.html");
     ASSERT_EQUAL(window2->getTitle(), "http://localhost:4567/simple.xml");
     ASSERT_EQUAL(window3->getTitle(), "Hello World!");
@@ -101,10 +101,10 @@ protected:
   void testIsBlank()
   {
     Browser* browser = new Browser();
-    Window* window1 = browser->Open("");
-    Window* window2 = browser->Open("about:blank");
-    Window* window3 = browser->Open("http://localhost:4567/simple");
-    Window* window4 = browser->Open("http://localhost:4567/this-page-not-exists");
+    Window* window1 = browser->open("");
+    Window* window2 = browser->open("about:blank");
+    Window* window3 = browser->open("http://localhost:4567/simple");
+    Window* window4 = browser->open("http://localhost:4567/this-page-not-exists");
     ASSERT(window1->isBlank());
     ASSERT(window2->isBlank());
     ASSERT_NOT(window3->isBlank());
@@ -115,7 +115,7 @@ protected:
   void testGetFrame()
   {
     Browser* browser = new Browser();
-    Window* window = browser->Open("");
+    Window* window = browser->open("");
     ASSERT(window->getFrame());
     delete browser;
   }
@@ -123,9 +123,9 @@ protected:
   void testGetPage()
   {
     Browser* browser = new Browser();
-    Window* window1 = browser->Open("about:blank");
+    Window* window1 = browser->open("about:blank");
     ASSERT_NULL(window1->getPage());
-    Window* window2 = browser->Open("http://localhost:4567/simple.html");
+    Window* window2 = browser->open("http://localhost:4567/simple.html");
     ASSERT_NOT_NULL(window2->getPage());
     delete browser;
   }
@@ -133,7 +133,7 @@ protected:
   void testGoTo()
   {
     Browser* browser = new Browser();
-    Window* window = browser->Open("http://localhost:4567/simple.html");
+    Window* window = browser->open("http://localhost:4567/simple.html");
     window->goTo("http://localhost:4567/anchors.html");
     ASSERT_EQUAL(window->getHistory()->size(), 1);
     window->goTo("http://localhost:4567/iframes.html");
@@ -144,7 +144,7 @@ protected:
   void testFrames()
   {
     Browser* browser = new Browser();
-    Window* window = browser->Open("http://localhost:4567/iframes.html");
+    Window* window = browser->open("http://localhost:4567/iframes.html");
     ASSERT_EQUAL(window->getFrames().size(), 2);
     ASSERT_NOT_NULL(window->getFrame(0));
     ASSERT_NOT_NULL(window->getFrame(1));
@@ -155,7 +155,7 @@ protected:
   void testGetContent()
   {
     Browser* browser = new Browser();
-    Window* window = browser->Open("http://localhost:4567/simple");
+    Window* window = browser->open("http://localhost:4567/simple");
     ASSERT(window->getPage()->isLoaded());
     ASSERT_EQUAL(window->getContent(), "Kukuryku!");
     delete browser;

@@ -1,11 +1,17 @@
 #include <string.h>
 #include <uuid/uuid.h>
-#include "Browser.h"
-#include "Window.h"
+
 #include "utils/SystemInfo.h"
+#include "Page.h"
+#include "Window.h"
+#include "Browser.h" // class implemented
 
 namespace mike
 {
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+
   Browser::Browser(string language/*="en"*/, string userAgent/*=""*/, bool cookieEnabled/*=true*/, bool javaEnabled/*=true*/)
     : language_(language)
     , customUserAgent_(userAgent)
@@ -17,16 +23,17 @@ namespace mike
 
   Browser::~Browser()
   {
-    for (vector<Window*>::iterator it = windows_.begin(); it != windows_.end(); it++)
-      delete *it;
+    closeAll();
   }
 
-  string Browser::getLanguage()
+  //============================= ACCESS     ===================================
+
+  string Browser::getLanguage() const
   {
     return language_;
   }
 
-  string Browser::getUserAgent()
+  string Browser::getUserAgent() const
   {
     if (customUserAgent_.empty()) {
       char* tpl = (char*)MIKE_USER_AGENT;
@@ -37,27 +44,88 @@ namespace mike
       return customUserAgent_;
     }
   }
-  
-  bool Browser::isJavaEnabled()
+
+  string Browser::getSessionToken() const
+  {
+    return sessionToken_;
+  }
+    
+  bool Browser::isJavaEnabled() const
   {
     return javaEnabled_;
   }
 
-  bool Browser::isCookieEnabled()
+  bool Browser::isJavaScriptEnabled() const
+  {
+    return isJavaEnabled();
+  }
+
+  bool Browser::isCookieEnabled() const
   {
     return cookieEnabled_;
   }
 
-  string Browser::getSessionToken()
+  // XXX: in the future it should return read only list...
+  list<Window*> Browser::getWindows()
   {
-    return sessionToken_;
+    return windows_;
+  }
+
+  // XXX: should this raise exception when window is not found??
+  Window* Browser::getWindow(int n)
+  {
+    if (n < windows_.size()) {
+      list<Window*>::iterator it = windows_.begin();
+      advance(it, n);
+      return *it;
+    }
+
+    return NULL;
+  }
+
+  //============================= OPERATIONS ===================================
+
+  Page* Browser::open(string url)
+  {
+    Window* new_window = new Window(this, url);
+    windows_.push_back(new_window);
+    new_window->getPage();
+  }
+
+  Page* Browser::getPage(string url)
+  {
+    open(url);
   }
   
-  Window* Browser::Open(string url)
+  void Browser::closeAll()
   {
-    windows_.push_back(new Window(this, url));
-    return windows_.back();
+    for (list<Window*>::iterator it = windows_.begin(); it != windows_.end(); it++) {
+      delete *it;
+      *it = NULL;
+    }
+
+    windows_.clear();
   }
+
+  void Browser::closeAllWindows()
+  {
+    closeAll();
+  }
+
+  void Browser::closeWindow(int n)
+  {
+    Window* window = getWindow(n);
+    closeWindow(window);
+  }
+
+  void Browser::closeWindow(Window* window)
+  {
+    windows_.remove(window);
+    delete window;
+    window = NULL;
+  }
+  
+  /////////////////////////////// PROTECTED  ///////////////////////////////////
 
   void Browser::generateSessionToken()
   {

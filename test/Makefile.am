@@ -48,7 +48,6 @@ TEST_FILES = \
 	TestRegularPage.cc \
 	TestHistory.cc \
 	TestBrowser.cc \
-	TestWindow.cc \
 	TestUtils.cc \
 	Main.cc
 

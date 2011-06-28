@@ -2,101 +2,161 @@
 #define _MIKE_BROWSER_H_
 
 #include <string>
-#include <vector>
+#include <list>
 
 namespace mike
 {
   using namespace std;
 
+  class Page;
   class Window;
 
   /**
-   * Object of this class represents single, separatelly configured instance of
-   * Mike's browser. Example:
+   * Instance of this class represents single, separatelly configured browser. You can configure
+   * browser by passing various parameters to constructor (configurable language, user agent string
+   * and cookies/javascript availability).
    *
-   * <code>
+   * \code
    *   Browser* browser = new Browser("en", "", true, true); // language, custom user agent, cookies, javascript
-   *   Window* window = browser->Open("http://www.mypage.com");
-   *   HtmlPage page = window->getPage()->toHtmlPage();
-   *   // ...
+   *   HtmlPage* page = (HtmlPage*)browser->open("http://www.mypage.com");
+   *   assert(page->getTitle() == "Hello My Page!");
+   *   browser.closeAll();
    *   delete browser;
-   * </code>
-   *
+   * \endcode
    */
   class Browser
   {
   public:
     /**
-     * Constructor.
+     * Creates configured browser instance.
      *
+     * \param language The language used by this browser instance.
+     * \param user_agent Custom user agent string.
+     * \param enable_cookie Should this instance allow to store cookies?
+     * \param enable_javascript Should this instance allow to execute javascript?
      */
-    explicit Browser(string language="en", string userAgent="", bool enableCookie=true, bool enableJava=true);
+    explicit Browser(string language="en", string user_agent="", bool enable_cookie=true, bool enable_java=true);
 
     /**
      * Destructor.
-     *
      */
     ~Browser();
 
     /**
-     * Returns browser language.
-     *
+     * \return Language used by browser.
      */
-    string getLanguage();
+    string getLanguage() const;
 
     /**
-     * Returns default user agent assigned to browser.
-     *
+     * \return User agent string assigned to this browser.
      */
-    string getUserAgent();
+    string getUserAgent() const;
 
     /**
-     * Returns <code>true</code> when javascript is enabled. 
-     *
+     * \return Unique token of this session.
      */
-    bool isJavaEnabled();
+    string getSessionToken() const;
 
     /**
-     * Returns <code>true</code> when cookies are enabled.
+     * Returns list of all currently opened windows.
      *
+     * \code
+     *   browser->open("http://www.mikebrowser.com/");
+     *   browser->open("http://www.cuboxsa.com");
+     *   list<Window*> windows = browser->getWindows();
+     *   assert(windows.size() == 2);
+     * \endcode
      */
-    bool isCookieEnabled();
+    list<Window*> getWindows();
 
     /**
-     * Returns unique token of this session.
+     * Returns specified window (if opened).
      *
+     * \code
+     *   browser->open("http://www.cuboxsa.com/");
+     *   Window* window = browser->getWindow(0);
+     *   assert(window->getUrl(), "http://www.cuboxsa.com");
+     * \endcode
+     *
+     * \param n Index of window to get.
      */
-    string getSessionToken();
+    Window* getWindow(int n);
+    
+    /**
+     * \return True when javascript is enabled. 
+     */
+    bool isJavaEnabled() const;
+    bool isJavaScriptEnabled() const;
 
     /**
-     * Opens specified url in new virtual window, and returns this window.
-     *
-     * <code>
-     *   Window* google = browser->Open("http://www.google.com/");
-     *
-     *   if (google->isLoaded()) {
-     *     string title = google->getTitle();
-     *     string content = google->getPage()->getContent();
-     *     // ...
-     *   }
-     * </code>
-     *
+     * \return True when cookies are enabled.
      */
-    Window* Open(string url);
+    bool isCookieEnabled() const;
+
+    /**
+     * Closes all windows opened within current instance (called automatically when browser object
+     * is deleted).
+     *
+     * \code
+     *   Browser* browser = new Browser();
+     *   browser->open("http://www.cuboxsa.com");
+     *   browser->open("http://www.mikebrowser.com");
+     *   //...
+     *   browser->closeAll();
+     *   browser->open("http://www.cuboxsa.com");
+     *   //...
+     *   delete browser; // closeAll is called here automatically...
+     * \endcode
+     */
+    void closeAll();
+    void closeAllWindows();
+
+    /**
+     * Closes window beeing under specified index on the list. If specified window doesn't
+     * exist then nothing happen. Second version closes and removes specified window from the
+     * list of opened.
+     *
+     * \code
+     *   browser->open("http://www.mikebrowser.com/");
+     *   browser->open("http://www.cuboxsa.com/");
+     *   browser->closeWindow(1);
+     *   browser->closeWindow(browser->getWindow(0));
+     * \endcode
+     *
+     * \param n Index of window to close.
+     * \param window Window instance to close.
+     */
+    void closeWindow(int n);
+    void closeWindow(Window* window);
+    
+    /**
+     * Opens specified url in new virtual window, and returns loaded page. You can also use
+     * the getPage() alias.
+     * 
+     * \code
+     *   HtmlPage* page = (HtmlPage*)browser->open("http://www.google.com/");
+     *   assert(page->getTitle() == "Google Search");
+     *   assert(page->getContent() == "...");
+     *   // ...
+     * \endcode
+     *
+     * \param url Address of page to open. 
+     */
+    Page* open(string url);
+    Page* getPage(string url);
     
   protected:
-    /**
-     * Generates UUID token for current browser instance.
-     *
-     */
-    void generateSessionToken();
-    
     bool javaEnabled_;
     bool cookieEnabled_;
     string language_;
     string customUserAgent_;
     string sessionToken_;
-    vector<Window*> windows_;
+    list<Window*> windows_;
+
+    /**
+     * Generates UUID token for current browser instance.
+     */
+    void generateSessionToken();
   };
 }
 

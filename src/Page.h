@@ -15,6 +15,7 @@ namespace mike
   class HtmlPage;
 
   class Frame;
+  class Window;
   
   /**
    * Available page types. 
@@ -151,10 +152,16 @@ namespace mike
     virtual void openInFrame(Frame* frame);
 
     /**
-     * Returns frame associated with that page.
+     * Returns frame in which current page has been rendered.
      *
      */
-    Frame* getFrame();
+    Frame* getEnclosingFrame();
+
+    /**
+     * Returns window which contains frame with this page.
+     *
+     */
+    Window* getEnclosingWindow();
     
   protected:
     http::Request* request_;
