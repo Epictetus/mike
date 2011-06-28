@@ -1,5 +1,5 @@
-#include "Window.h"
 #include "Browser.h"
+#include "Window.h"
 #include "Frame.h"
 #include "Page.h"
 
@@ -81,7 +81,7 @@ namespace mike
 
   bool Window::isBlank()
   {
-    return getPage() == NULL;
+    return frame_ == NULL || getPage() == NULL;
   }
 
   void Window::setWidth(int w)

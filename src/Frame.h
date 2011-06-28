@@ -3,111 +3,86 @@
 
 #include <vector>
 #include <string>
-#include "Browser.h"
-#include "Window.h"
-#include "Page.h"
-#include "History.h"
 
 namespace mike
 {
   using namespace std;
-  
+
+  class Browser;
+  class Window;
+  class Page;
+  class History;
+
+  /**
+   * Frame has two jobs to do. First, each window contains at least one frame - you can
+   * consider it as main window content. Also each page may contain many frames representing
+   * DOM 'iframe' and 'frame' elements. In second case frames are attached to main window
+   * through frame which contains opened page.
+   *
+   * \code
+   *   Frame* frame = new Frame(window);
+   *   frame->setPage(page);
+   *   //...
+   *   frame->cleanup();
+   *   delete frame;
+   * \endcode
+   *
+   * Each frame maintains it's own history container, so you can navigate through all
+   * recently opened page.
+   */
   class Frame
   {
   public:
     /**
-     * Constructor.
+     * Creates instance of frame within given window.
      *
+     * \param windwo Window which contains this frame.
      */
     explicit Frame(Window* window);
 
     /**
      * Destructor.
-     *
      */
     virtual ~Frame();
 
     /**
-     * This method should be called always before opening new page within this frame.
+     * Assigns page to this frame.
      *
+     * \param page Page to open in this frame.
      */
-    void cleanup();
-    
-    /**
-     * Returns url of currently open page. 
-     *
-     */
-    string getUrl();
-
     void setPage(Page* page);
     
     /**
-     * Returns currentlu open page instance. 
-     *
+     * \return Currently open page. 
      */
-    Page* getPage();
+    Page* getPage() const;
 
     /**
-     * Retuns history container for this frame.
-     *
+     * \return History container for this frame.
      */
-    History* getHistory();
+    History* getHistory() const;
 
     /**
-     * Returns window which contains this frame.
-     *
+     * \return Window which contains this frame.
      */
-    Window* getWindow();
-
-    /**
-     * Returns name of this frame.
-     *
-     */
-    string getName();
+    Window* getWindow() const;
 
     /**
      * Sets name of this frame.
-     * 
+     *
+     * \param name New name for this frame.
      */
     void setName(string name);
-    
-    /**
-     * Creates new sub frame and returns pointer to it.
-     *
-     */
-    Frame* buildFrame();
 
     /**
-     * Returns all sub frames from this frame.
-     *
+     * \return name of this frame.
      */
-    vector<Frame*> getFrames();
-
-    /**
-     * Returns frame from given index. If list of frames doesn't have
-     * such index then <code>NULL</code> will be returned.
-     *
-     */
-    Frame* getFrame(int key);
-
-    /**
-     * Returns frame with specified name. If there is no such frame then
-     * <code>NULL</code> will be returned. 
-     *
-     */
-    Frame* getNamedFrame(string name);
-
-    /**
-     * Returns content of currently opened page.
-     *
-     */
-    string getContent();
+    string getName() const;
     
   protected:
     string name_;
     Window* window_;
     History* history_;
-    vector<Frame*> frames_;
   };
 }
 

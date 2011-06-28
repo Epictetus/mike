@@ -8,8 +8,8 @@ namespace mike
 {
   using namespace std;
 
-  class Frame;
   class Browser;
+  class Frame;
   class Page;
   
   /**
@@ -40,9 +40,9 @@ namespace mike
      * \param width Window width.
      * \param height Window height.
      */
-    Window(Browser* browser, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
-    Window(Window* parent, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
-    Window(int width, int height);
+    explicit Window(Browser* browser, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
+    explicit Window(Window* parent, int width=DEFAULT_WIDTH, int height=DEFAULT_HEIGHT);
+    explicit Window(int width, int height);
     
     /**
      * Destructor.

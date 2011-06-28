@@ -1,8 +1,13 @@
 #include <stdlib.h>
 #include "History.h"
+#include "Page.h"
 
 namespace mike
 {
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+
   History::History()
   {
     current_ = NULL;
@@ -10,12 +15,16 @@ namespace mike
 
   History::~History()
   {
+    deleteContainer(&back_);
+    deleteContainer(&forward_);
     delete current_;
+  }
 
-    for (list<Page*>::iterator it = back_.begin(); it != back_.end(); it++)
-      delete *it;
-    for (list<Page*>::iterator it = forward_.begin(); it != forward_.end(); it++)
-      delete *it;
+  //============================= ACCESS     ===================================
+
+  int History::size()
+  {
+    return back_.size() + forward_.size();
   }
 
   Page* History::getCurrent()
@@ -23,10 +32,7 @@ namespace mike
     return current_;
   }
 
-  int History::size()
-  {
-    return back_.size() + forward_.size();
-  }
+  //============================= OPERATIONS ===================================
 
   void History::push(Page* page)
   {
@@ -35,7 +41,7 @@ namespace mike
     }
     
     current_ = page;
-    forward_.clear();
+    deleteContainer(&forward_);
   }
 
   void History::goBack()
@@ -76,11 +82,22 @@ namespace mike
       }
     }
   }
+  
+  /////////////////////////////// PROTECTED  ///////////////////////////////////
 
   void History::reloadCurrent()
   {
     if (current_) {
       current_->reload();
     }
+  }
+  
+  void History::deleteContainer(list<Page*>* container) {
+    for (list<Page*>::iterator it = (*container).begin(); it != (*container).end(); it++) {
+      delete *it;
+      *it = NULL;
+    }
+
+    (*container).clear();
   }
 }

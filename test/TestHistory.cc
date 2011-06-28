@@ -5,6 +5,7 @@
 
 #include "utils/CppunitMacros.h"
 #include "History.h"
+#include "Page.h"
 
 using namespace std;
 using namespace mike;

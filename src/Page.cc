@@ -124,7 +124,6 @@ namespace mike
   void Page::openInFrame(Frame* frame)
   {
     frame_ = frame;
-    frame_->cleanup();
-    frame_->getHistory()->push(this);
+    frame_->setPage(this);
   }
 }

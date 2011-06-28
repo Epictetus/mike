@@ -5,6 +5,7 @@
 #include "Browser.h"
 #include "Window.h"
 #include "Frame.h"
+#include "Page.h"
 
 using namespace std;
 using namespace mike;

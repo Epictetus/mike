@@ -83,10 +83,9 @@ namespace mike
   void HtmlPage::loadFrames()
   {
     if (frame_) {
-      frame_->cleanup();
-      
       XmlElementSet* frames = getFrames();
 
+      /*
       for (vector<XmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
 	XmlElement* iframe = *it;
 
@@ -106,6 +105,7 @@ namespace mike
 	  }
 	}
       }
+      */
 
       delete frames;
     }
