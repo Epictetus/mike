@@ -5,7 +5,12 @@
 #include "utils/Helpers.h"
 
 namespace mike {
-  namespace http {    
+  namespace http
+  {
+    /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+    //============================= OPERATIONS ===================================
+
     void Headers::parseAndAppend(string line)
     {
       int splitter = line.find(':');
@@ -28,6 +33,8 @@ namespace mike {
     {
       return headers_;
     }
+
+    /////////////////////////////// PROTECTED  ///////////////////////////////////
     
     void Headers::clear()
     {

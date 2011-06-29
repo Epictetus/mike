@@ -2,35 +2,39 @@
 #include "http/Request.h"
 
 namespace mike {
-  namespace http {
-    namespace
+  namespace http
+  {
+    /////////////////////////////// HELPERS //////////////////////////////////////
+    
+    size_t curlWriteHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
     {
-      size_t curlWriteHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
-      {
-	if (wdata == NULL) {
-	  return 0;
-	}
-
-	string buf = string((char*)ptr, size * nmemb);
-	stringstream* response = (stringstream*)wdata;
-	response->write(buf.c_str(), (streamsize)buf.size());
-
-	return size * nmemb;
+      if (wdata == NULL) {
+	return 0;
       }
 
-      size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
-      {
-	if (wdata == NULL) {
-	  return 0;
-	}
+      string buf = string((char*)ptr, size * nmemb);
+      stringstream* response = (stringstream*)wdata;
+      response->write(buf.c_str(), (streamsize)buf.size());
 
-	string line = string((char*)ptr);
-	Headers* headers = (Headers*)wdata;
-	headers->parseAndAppend(line);
-	
-	return size * nmemb;
-      }
+      return size * nmemb;
     }
+
+    size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
+    {
+      if (wdata == NULL) {
+	return 0;
+      }
+
+      string line = string((char*)ptr);
+      Headers* headers = (Headers*)wdata;
+      headers->parseAndAppend(line);
+	
+      return size * nmemb;
+    }
+    
+    /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+    //============================= LIFECYCLE ====================================
 
     Request* Request::Get(string url)
     {
@@ -42,12 +46,12 @@ namespace mike {
       return new Request(url, "POST");
     }
     
-    Request::Request(string url, string method)
+    Request::Request(string url, string method/*="GET"*/)
       : url_(url)
       , method_(method)
     {
-      curlHeaders_ = NULL;
       response_ = NULL;
+      curlHeaders_ = NULL;
       cookieEnabled_ = false;
     }
 
@@ -56,27 +60,24 @@ namespace mike {
       curl_slist_free_all(curlHeaders_);
       cleanupResponse();
     }
+    
+    //============================= ACCESS     ===================================
 
     Response* Request::getResponse()
     {
       return response_;
     }
     
-    string Request::getUrl()
+    string Request::getUrl() const
     {
       return url_;
     }
     
-    string Request::getMethod()
+    string Request::getMethod() const
     {
       return method_;
     }
 
-    bool Request::isReady()
-    {
-      return response_ != NULL;
-    }
-    
     void Request::setHeader(string header)
     {
       curlHeaders_ = curl_slist_append(curlHeaders_, header.c_str());
@@ -87,21 +88,10 @@ namespace mike {
       curlPostData_ = data;
     }
 
-    string Request::getCookieFileName()
-    {
-      // TODO: make base path configurable!
-      return "/tmp/mike.cookie." + sessionToken_;
-    }
+    //============================= OPERATIONS ===================================
 
-    void Request::enableCookieSession(string token)
+    Response* Request::perform()
     {
-      cookieEnabled_ = !token.empty();
-      sessionToken_ = token;
-    }
-
-    bool Request::perform()
-    {
-      bool result = false;
       cleanupResponse();
       
       if (prepareCurl()) {
@@ -124,12 +114,30 @@ namespace mike {
 
 	  // Generate response
 	  response_ = new Response(response_code, buffer, response_headers.toMap(), content_type);
-	  result = true;
 	}
       }
 
       cleanupCurl();
-      return result;
+
+      if (response_ == NULL) {
+	throw ConnectionError(url_);
+      }
+
+      return response_;
+    }
+
+    void Request::enableCookieSession(string token)
+    {
+      cookieEnabled_ = !token.empty();
+      sessionToken_  = token;
+    }
+
+    /////////////////////////////// PROTECTED  ///////////////////////////////////
+    
+    string Request::cookieFileName() const
+    {
+      // TODO: make base path configurable!
+      return "/tmp/mike.cookie." + sessionToken_;
     }
 
     void Request::cleanupResponse()
@@ -161,8 +169,8 @@ namespace mike {
 
 	// Enable cookies
 	if (cookieEnabled_ && !sessionToken_.empty()) {
-	  curl_easy_setopt(curl_, CURLOPT_COOKIEJAR, getCookieFileName().c_str());
-	  curl_easy_setopt(curl_, CURLOPT_COOKIEFILE, getCookieFileName().c_str());
+	  curl_easy_setopt(curl_, CURLOPT_COOKIEJAR, cookieFileName().c_str());
+	  curl_easy_setopt(curl_, CURLOPT_COOKIEFILE, cookieFileName().c_str());
 	}
 	
 	// Set custom post data (if applicable)

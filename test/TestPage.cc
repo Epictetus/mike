@@ -8,10 +8,12 @@
 
 using namespace std;
 using namespace mike;
+using namespace mike::http;
 
 class MikePageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikePageTest);
+  CPPUNIT_TEST(testOpen);
   CPPUNIT_TEST(testBuildWhenInvalid);
   CPPUNIT_TEST(testGetContent);
   CPPUNIT_TEST(testGetStream);
@@ -21,28 +23,29 @@ class MikePageTest : public CppUnit::TestFixture
 
 protected:
 
+  void testOpen()
+  {
+    Page* page = Page::Open("http://localhost:4567/simple");
+    ASSERT_EQUAL(page->getContent(), "Kukuryku!");
+    delete page;
+  }
+  
   void testBuildWhenInvalid()
   {
-    http::Request* request = http::Request::Get("http://thiswebsiteforsure/not/exists");
-    Page* page = Page::Build(request);
-    ASSERT_NOT(page->isLoaded());
-    delete page;
+    Request* request = Request::Get("http://thiswebsiteforsure/not/exists");
+    ASSERT_THROW(Page::Build(request), ConnectionError);
   }
 
   void testGetContent()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple.txt");
-    Page* page = Page::Build(request);
-    ASSERT(page && page->isLoaded());
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
     ASSERT_EQUAL(page->getContent(), "Simple!");
     delete page;
   }
   
   void testGetStream()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple.txt");
-    Page* page = Page::Build(request);
-    ASSERT(page && page->isLoaded());
+    Page* page = Page::Open("http://localhost:4567/simple.txt");;
     ASSERT_NOT_NULL(page->getStream());
     ASSERT_EQUAL(page->getStream()->str(), "Simple!");
     delete page;
@@ -50,14 +53,12 @@ protected:
 
   void testGetEnclosingFrame()
   {
-    Browser* browser = new Browser();
-    //browser->open()
-    delete browser;
+    // TODO: ...
   }
 
   void testGetEnclosingWindow()
   {
-    
+    // TODO: ...
   }
 
 };

@@ -18,9 +18,7 @@ protected:
 
   void testBuild()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple.txt");
-    Page* page = Page::Build(request);
-    ASSERT(page && page->isLoaded());
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple.txt");
     ASSERT(page->isRegular());
     ASSERT(page->toRegularPage());

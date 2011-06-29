@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace mike;
+using namespace mike::http;
 
 class MikeHttpTest : public CppUnit::TestFixture
 {
@@ -28,7 +29,7 @@ protected:
 
   void testInitAttributesForGetRequest()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/simple");
+    Request *req = Request::Get("http://localhost:4567/simple");
     ASSERT_EQUAL(req->getUrl(), "http://localhost:4567/simple");
     ASSERT_EQUAL(req->getMethod(), "GET");
     delete req;
@@ -36,7 +37,7 @@ protected:
 
   void testInitAttributesForPostRequest()
   {
-    http::Request *req = http::Request::Post("http://localhost:4567/simple");
+    Request *req = Request::Post("http://localhost:4567/simple");
     ASSERT_EQUAL(req->getUrl(), "http://localhost:4567/simple");
     ASSERT_EQUAL(req->getMethod(), "POST");
     delete req;
@@ -44,9 +45,8 @@ protected:
 
   void testSimpleGet()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/simple");
-    ASSERT(req->perform());
-    ASSERT(req->isReady());
+    Request *req = Request::Get("http://localhost:4567/simple");
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getHeader("Content-Type"), "text/html;charset=utf-8");
     ASSERT_EQUAL(req->getResponse()->getHeader("No-Such-Header"), "");
@@ -56,10 +56,10 @@ protected:
 
   void testGetWithCustomHeaders()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/custom-headers");
+    Request *req = Request::Get("http://localhost:4567/custom-headers");
     req->setHeader("Accept: chickens");
     req->setHeader("Another: kukuryku");
-    ASSERT(req->perform());
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getBody(), "Accept: chickens; Another: kukuryku;");
     delete req;
@@ -67,16 +67,16 @@ protected:
 
   void testErrorResponseCode()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/not-exists");
-    ASSERT(req->perform());
+    Request *req = Request::Get("http://localhost:4567/not-exists");
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getCode(),404);
     delete req;
   }
 
   void testFollowRedirects()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/follow-redirects");
-    ASSERT(req->perform());
+    Request *req = Request::Get("http://localhost:4567/follow-redirects");
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getBody(), "Redirected!");
     delete req;
@@ -84,9 +84,9 @@ protected:
 
   void testSimplePost()
   {
-    http::Request *req = http::Request::Post("http://localhost:4567/simple");
+    Request *req = Request::Post("http://localhost:4567/simple");
     req->setData("mike=kukuryku&foo=bar");
-    ASSERT(req->perform());
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getBody(), "mike: kukuryku; foo: bar;");
     delete req;
@@ -94,24 +94,24 @@ protected:
 
   void testContentType()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/simple");
-    ASSERT(req->perform());
+    Request *req = Request::Get("http://localhost:4567/simple");
+    req->perform();
     ASSERT_EQUAL(req->getResponse()->getContentType(), "text/html");
     delete req;
   }
 
   void testIsHtmlMethod()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/simple");
-    ASSERT(req->perform());
+    Request *req = Request::Get("http://localhost:4567/simple");
+    req->perform();
     ASSERT(req->getResponse()->isHtml());
     delete req;
   }
 
   void testIsXmlMethod()
   {
-    http::Request *req = http::Request::Get("http://localhost:4567/simple.xml");
-    ASSERT(req->perform());
+    Request *req = Request::Get("http://localhost:4567/simple.xml");
+    req->perform();
     ASSERT(req->getResponse()->isXml());
     delete req;
   }
@@ -119,12 +119,12 @@ protected:
   void testCookiesWhenEnabled()
   {
     string token = "test";
-    http::Request *set = http::Request::Get("http://localhost:4567/cookies/set");
+    Request *set = Request::Get("http://localhost:4567/cookies/set");
     set->enableCookieSession(token);
-    ASSERT(set->perform());
-    http::Request *show = http::Request::Get("http://localhost:4567/cookies/show");
+    set->perform();
+    Request *show = Request::Get("http://localhost:4567/cookies/show");
     show->enableCookieSession(token);
-    ASSERT(show->perform());
+    show->perform();
     ASSERT_EQUAL(show->getResponse()->getBody(), "foo=foobar");
     delete set;
     delete show;
@@ -132,10 +132,10 @@ protected:
 
   void testCookiesWhenDisabled()
   {
-    http::Request *set = http::Request::Get("http://localhost:4567/cookies/set");
-    ASSERT(set->perform());
-    http::Request *show = http::Request::Get("http://localhost:4567/cookies/show");
-    ASSERT(show->perform());
+    Request *set = Request::Get("http://localhost:4567/cookies/set");
+    set->perform();
+    Request *show = Request::Get("http://localhost:4567/cookies/show");
+    show->perform();
     ASSERT_EQUAL(show->getResponse()->getBody(), "foo=");
     delete set;
     delete show;

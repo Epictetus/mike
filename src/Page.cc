@@ -9,14 +9,14 @@ namespace mike
 {
   Page* Page::Open(string url)
   {
-    http::Request* req = http::Request::Get(url);
+    Request* req = Request::Get(url);
     return Build(req);
   }
   
   Page* Page::Build(Request* request)
   {
-    if (request && request->perform()) {
-      Response* response = request->getResponse();
+    if (request) {
+      Response* response = request->perform();
       
       if (response) {
 	if (response->isHtml()) {
@@ -29,7 +29,7 @@ namespace mike
       }
     }
 
-    return new Page(request, UNKNOWN_PAGE);
+    throw "Invalid request.";
   }
 
   Page::Page(Request* request, PageType type)
@@ -111,7 +111,7 @@ namespace mike
 
   bool Page::isLoaded()
   {
-    return (type_ != UNKNOWN_PAGE && request_ && request_->isReady());
+    return (request_ && request_->getResponse());
   }
   
   void Page::reload()

@@ -22,9 +22,7 @@ protected:
 
   void testBuild()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple.xml");
-    Page* page = Page::Build(request);
-    ASSERT(page && page->isLoaded());
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/simple.xml");
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple.xml");
     ASSERT(page->isXml());
     ASSERT(page->toXmlPage());
@@ -33,9 +31,7 @@ protected:
 
   void testGetElementsByTagName()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page && page->isLoaded());
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
     XmlElementSet* elems = page->getElementsByTagName("elem");
     ASSERT_EQUAL(elems->size(), 3);
     delete elems;
@@ -44,9 +40,7 @@ protected:
   
   void testGetElementsByXpath()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page && page->isLoaded());
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
     XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elems->size(), 2);
     delete elems;
@@ -55,9 +49,7 @@ protected:
 
   void testGetElementByXpath()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xpath.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page && page->isLoaded());
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
     XmlElement* elem = page->getElementByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elem->getContent(), "First");
     delete elem;
@@ -66,9 +58,7 @@ protected:
   
   void testGetElementsByXpathOnInvalidDoc()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/simple");
-    XmlPage* page = Page::Build(request)->toXmlPage();
-    ASSERT(page && page->isLoaded());
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/simple");
     XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elems->size(), 0);
     delete elems;

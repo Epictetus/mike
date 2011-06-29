@@ -14,22 +14,41 @@ namespace mike {
   {
     using namespace std;
 
+    // Friendly names for CURL types.
     typedef CURL Curl;
+    typedef CURLcode CurlCode;
     typedef struct curl_slist* CurlList;
 
+    /**
+     * Error throwed when requested page can't be reached. 
+     */
+    class ConnectionError
+    {
+    public:
+      ConnectionError(string url) : url_(url) {}
+      const char* getReason() const { return ("Page " + url_ + " can't be reached.").c_str(); }
+      const char* getUrl() const { return url_.c_str(); }
+    protected:
+      string url_;
+    };
+    
     /**
      * HTTP request class built at top of CURL library. This class rather will
      * not be used directly in code, it's base for browser specific requests.
      *
-     * Example:
-     *
-     * <code>
-     *   mike::http::Request* req = mike::http::Request::Get("http://www.mypage.com");
+     * \code
+     *   Request* req = Request::Get("http://www.mypage.com");
      *   req->setHeader("Custom-Header: Forfiter");
-     *   assert(req->pefrorm());
-     *   string content = req->getResponse()->getBody();
-     * </code>
      *
+     *   try {
+     *     req->pefrorm());
+     *     string content = req->getResponse()->getBody();
+     *   } catch (ConnectionError err) {
+     *     printf(err->getReason());
+     *   } finally {
+     *     delete req;
+     *   }
+     * \endcode
      */
     class Request
     {
@@ -37,114 +56,89 @@ namespace mike {
       /**
        * Creates new GET request for given url.
        *
+       * \param URL of page to open.
+       * \return New request object.
        */
       static Request* Get(string url);
 
       /**
        * Creates new POST request for given url.
        *
+       * \param URL of page to open.
+       * \return New request object.
        */
       static Request* Post(string url);
 
       /**
-       * Constructor.
+       * Creates new request.
        *
+       * \param URL of page to open.
+       * \param HTTP request method.
        */
-      Request(string url, string method);
+      Request(string url, string method="GET");
 
       /**
        * Destructor.
-       *
        */
       ~Request();
 
       /**
-       * This method allows you to set custom HTTP headers for this request, eg:
+       * Sets given custom HTTP header for this request, eg:
        *
-       * <code>
+       * \code
        *   req->setHeader("Referer: http://www.referersite.com");
-       * </code>
+       *   req->setHeader("Accept: text/javascript");
+       * \endcode
        *
+       * \param header HTTP header line to set.
        */
       void setHeader(string header);
 
       /**
        * Sets given string as POST data, eg:
        *
-       * <code>
+       * \code
        *   req->setData("user=forfiter&password=szwagier");
-       * </code>
+       * \endcode
        *
+       * \param data Post data to set.
        */
       void setData(string data);
 
       /**
-       * Returns URL for which current request has been created.
-       *
+       * \return URL for which current request has been created.
        */
-      string getUrl();
+      string getUrl() const;
 
       /**
-       * Returns request method defined by constructor.
-       *
+       * \return Request method defined by constructor.
        */
-      string getMethod();
+      string getMethod() const;
 
       /**
        * Returns HTTP response generated after performing this request. If request
-       * has not been performed yet then obviously <code>NULL</code> will be returned.
+       * has not been performed yet then obviously 'NULL' will be returned.
        *
-       * Check the <code>http/request.h</code> file to get more details.
-       *
+       * \return Response for this request.
        */
       Response* getResponse();
 
       /**
-       * Performs current request. Returns <code>true</code> when everything went fine.
+       * Performs this request. If requested page is unreachable then throws ConnectionError.
        *
+       * \return Response for this request.
        */
-      bool perform();
-
-      /**
-       * Returns <code>true</code> if request has been performed and response has been
-       * generated properly. 
-       *
-       */
-      bool isReady();
-
-      /**
-       * Returns name of file where cookies should be stored.
-       *
-       */
-      string getCookieFileName();
+      Response* perform();
 
       /**
        * Enables cookies within encapsulated seession. Session is distinguised by given
        * instance's token.
        *
+       * \param token Cookie session token.
        */
       void enableCookieSession(string token);
       
     protected:
-      /**
-       * Deletes from memory and cleans up referenced response object.
-       *
-       */
-      void cleanupResponse();
-
-      /**
-       * Sets all CURL request options. Returns <code>false</code> when handler can't be
-       * properly configured.
-       *
-       */
-      bool prepareCurl();
-
-      /**
-       * Cleanups CURL handler.
-       *
-       */
-      void cleanupCurl();
-
       string url_;
       string method_;
       Response* response_;
@@ -154,6 +148,29 @@ namespace mike {
       char curlErrorBuffer_[CURL_ERROR_SIZE];
       string sessionToken_;
       bool cookieEnabled_;
+
+      /**
+       * \return Name of file where cookies should be stored.
+       */
+      string cookieFileName() const;
+
+      /**
+       * Deletes from memory and cleans up referenced response object.
+       */
+      void cleanupResponse();
+
+      /**
+       * Sets all CURL request options. Returns 'false' when handler can't be properly configured.
+       *
+       * \return State of CURL handle preparation.
+       */
+      bool prepareCurl();
+
+      /**
+       * Cleanups CURL handler.
+       */
+      void cleanupCurl();
+
     };
   }
 }

@@ -11,8 +11,7 @@ namespace mike {
     
     /**
      * HTTP headers parser and extractor. It's not fully funcitonal HTTP parser,
-     * it cooperates with CURL's headers handler defined in request.
-     *
+     * it cooperates with CURL's headers handler defined for request.
      */
     class Headers
     {
@@ -20,27 +19,28 @@ namespace mike {
       /**
        * Parses given line and appends extracted header and value to headers map.
        *
-       * <code>
+       * \code
        *   headers.parseAndAppend("Referer: http://mywebsite.com\r\n");
        *   headers.parseAndAppend("Cookie: cookiestring\r\n");
-       * </code>
+       * \endcode
        *
+       * \param line HTTP headers line to parse.
        */
       void parseAndAppend(string line);
 
       /**
-       * Returns all extracted headers as key/value map.
+       * Converts all extracted headers to key/value map.
        *
-       * <code>
+       * \code
        *   map<string,string> headers_map = headers.toMap();
-       * </code>
+       * \endcode
        *
+       * \return Map of header's keys and values.
        */
       map<string,string> toMap();
 
       /**
        * Cleans up referenced headers map.
-       *
        */
       void clear();
 
