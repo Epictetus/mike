@@ -25,7 +25,8 @@ namespace mike
     UNKNOWN_PAGE,
     XML_PAGE,
     HTML_PAGE,
-    REGULAR_PAGE
+    TEXT_PAGE,
+    BINARY_PAGE
   };
   
   /**
@@ -58,7 +59,7 @@ namespace mike
      * Constructor.
      *
      */
-    explicit Page(Request* request, PageType type);
+    explicit Page(Request* request, PageType type=UNKNOWN_PAGE);
     
     /**
      * Destructor.
@@ -107,33 +108,6 @@ namespace mike
      *
      */
     bool isHtml();
-
-    /**
-     * Returns <code>true</code> when current page is an regular file.
-     *
-     */
-    bool isRegular();
-
-    /**
-     * If current page is an XML (or HTML) document then returns <code>XmlPage</code>
-     * object, otherwise <code>NULL</code> will be returned.
-     *
-     */
-    XmlPage* toXmlPage();
-
-    /**
-     * If current page is an HTML document then returns <code>HtmlPage</code>
-     * object, otherwise <code>NULL</code> will be returned.
-     *
-     */
-    HtmlPage* toHtmlPage();
-
-    /**
-     * If current page is an regular file then returns <code>RegularPage</code> object
-     * representing it, otherwise <code>NULL</code> will be returned.
-     *
-     */
-    RegularPage* toRegularPage();
 
     /**
      * Returns <code>true</code> when page has been properly loaded.

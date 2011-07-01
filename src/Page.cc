@@ -1,7 +1,6 @@
 #include "Page.h"
 #include "Frame.h"
 #include "Window.h"
-#include "RegularPage.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlPage.h"
 
@@ -24,7 +23,7 @@ namespace mike
 	} else if (response->isXml()) {
 	  return new XmlPage(request);
 	} else {
-	  return new RegularPage(request);
+	  return new Page(request);
 	}
       }
     }
@@ -32,7 +31,7 @@ namespace mike
     throw "Invalid request.";
   }
 
-  Page::Page(Request* request, PageType type)
+  Page::Page(Request* request, PageType type/*=UNKNOWN_PAGE*/)
     : type_(type)
   {
     request_ = request;
@@ -87,26 +86,6 @@ namespace mike
   bool Page::isHtml()
   {
     return type_ == HTML_PAGE;
-  }
-
-  bool Page::isRegular()
-  {
-    return type_ == REGULAR_PAGE;
-  }
-
-  XmlPage* Page::toXmlPage()
-  {
-    return isXml() ? (XmlPage*)this : NULL;
-  }
-
-  HtmlPage* Page::toHtmlPage()
-  {
-    return isHtml() ? (HtmlPage*)this : NULL;
-  }
-
-  RegularPage* Page::toRegularPage()
-  {
-    return isRegular() ? (RegularPage*)this : NULL;
   }
 
   bool Page::isLoaded()
