@@ -95,6 +95,16 @@ namespace mike
     bool isCookieEnabled() const;
 
     /**
+     * Enables cookies handling.
+     */
+    void enableCookies();
+
+    /**
+     * Disables cookies handling.
+     */
+    void disableCookies();
+    
+    /**
      * Closes all windows opened within current instance (called automatically when browser object
      * is deleted).
      *

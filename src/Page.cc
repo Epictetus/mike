@@ -6,6 +6,10 @@
 
 namespace mike
 {
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+
   Page* Page::Open(string url)
   {
     Request* req = Request::Get(url);
@@ -43,6 +47,8 @@ namespace mike
     delete request_;
   }
 
+  //============================= ACCESS     ===================================
+  
   Request* Page::getRequest()
   {
     return request_;
@@ -51,16 +57,6 @@ namespace mike
   Response* Page::getResponse()
   {
     return request_->getResponse();
-  }
-
-  Frame* Page::getEnclosingFrame()
-  {
-    return frame_;
-  }
-
-  Window* Page::getEnclosingWindow()
-  {
-    return frame_ ? frame_->getWindow() : NULL;
   }
 
   string Page::getUrl()
@@ -88,21 +84,28 @@ namespace mike
     return type_ == HTML_PAGE;
   }
 
-  bool Page::isLoaded()
+  Frame* Page::getEnclosingFrame()
   {
-    return (request_ && request_->getResponse());
+    return frame_;
   }
+
+  Window* Page::getEnclosingWindow()
+  {
+    return frame_ ? frame_->getWindow() : NULL;
+  }
+
+  //============================= OPERATIONS ===================================
   
   void Page::reload()
   {
-    if (request_) {
-      request_->perform();
-    }
+    request_->perform();
   }
 
-  void Page::openInFrame(Frame* frame)
+  void Page::enclose(Frame* frame)
   {
-    frame_ = frame;
-    frame_->setPage(this);
+    if (frame_ == NULL) {
+      frame_ = frame;
+      frame_->setPage(this);
+    }
   }
 }

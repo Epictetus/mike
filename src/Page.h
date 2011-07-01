@@ -3,23 +3,22 @@
 
 #include <string>
 #include <sstream>
+
 #include "http/Request.h"
 
 namespace mike
 {
   using namespace std;
   using namespace http;
-
-  class RegularPage;
-  class XmlPage;
-  class HtmlPage;
-
+  
   class Frame;
   class Window;
+
+  class XmlPage;
+  class HtmlPage;
   
   /**
-   * Available page types. 
-   *
+   * Available page types.
    */
   enum PageType {
     UNKNOWN_PAGE,
@@ -30,112 +29,115 @@ namespace mike
   };
   
   /**
-   * Object of this class represents single page loaded by corresponding request.
-   * This is base class for all complex kinds of pages, like HTML, XML, Text page, etc.
-   *
+   * This is base class for any kind of pages opened in browser. You should never create
+   * instances directly, only use the 'Open' method for simple get page, and Factory' method
+   * for more complex requests.
    */
   class Page
   {
   public:
+    /**
+     * Performs GET request on specified URL and returns page object of appropriate type.
+     *
+     * \code
+     *   Page* page = Page::Open("http://www.mikebrowser.com");
+     *   assert(page->isHtml());
+     *   //...
+     *   delete page;
+     * \endcode
+     *
+     * \param url URL to open.
+     * \return Page object.
+     */
     static Page* Open(string url);
     
     /**
-     * Performs given request, and depending on response content type build proper
-     * page object for it. Example: 
+     * Performs given request, and depending on response content type creates new instance of
+     * appropriate type. 
      *
-     * <code>
-     *   http::Request* req = http::Request::Get("http://www.mikebrowser.com/");
-     *   Page* page = Page::Build(req);
-     *   // ...
+     * \code
+     *   Request* request = Request::Post("http://www.mypage.com/form");
+     *   request->setPostData("foo=bar&spam=eggs");
+     *   Page* page = Page::Factory(request);
+     *   //...
      *   delete page;
-     * </code>
+     * \endcode
      *
-     * Note: you don't need to delete req object, it will be done automatically on page destroy.
+     * Note: you don't need to delete req object, this will be done automatically on page destroy.
      *
+     * \param request Request to perform.
+     * \return Page object.
      */
     static Page* Factory(Request* request);
 
     /**
-     * Constructor.
+     * Creates new page instance. Don't call it directly, use 'Factory' or 'Open' instead. 
      *
+     * \param request Performed request for this page.
+     * \param type Kind of page.
      */
     explicit Page(Request* request, PageType type=UNKNOWN_PAGE);
     
     /**
      * Destructor.
-     *
      */
     virtual ~Page();
 
     /**
-     * Returns HTTP request built for this page.
-     *
+     * \return HTTP request built for the page.
      */
     Request* getRequest();
 
     /**
-     * Returns HTTP response built for this page.
-     *
+     * \return HTTP response for the page.
      */
     Response* getResponse();
 
     /**
-     * Requrns request url of this website.
-     *
+     * \requrn URL address of the page.
      */
     string getUrl();
 
     /**
-     * Returns string stream with content of this page;
-     *
+     * \return Stream with content of the page.
      */
     stringstream* getStream();
 
     /**
-     * Returns strinc content of this page.
-     *
+     * \return Content of the page as string.
      */
     string getContent();
    
     /**
-     * Returns <code>true</code> when current page is an XML or HTML page.
-     *
+     * \return Whether page is an XML document or not.
      */
     bool isXml();
 
     /**
-     * Returns <code>true</code> when current page is an HTML page.
-     *
+     * \return Whether page is an HTML document or not.
      */
     bool isHtml();
 
     /**
-     * Returns <code>true</code> when page has been properly loaded.
-     *
-     */
-    virtual bool isLoaded();
-    
-    /**
-     * Performs request to this page once again and reloads everything.
-     *
+     * Reloads page using request passed to constructor.
      */
     virtual void reload();
 
     /**
-     * Opens specified page in given frame.
+     * Opens the page in given frame. For the security reasons each instance can
+     * be enclosed only once.
      *
+     * \param frame Frame in which this page should be opened.
      */
-    virtual void openInFrame(Frame* frame);
+    virtual void enclose(Frame* frame);
 
     /**
-     * Returns frame in which current page has been rendered.
-     *
+     * \return Frame in which current page has been rendered.
      */
     Frame* getEnclosingFrame();
 
     /**
-     * Returns window which contains frame with this page.
-     *
+     * \return Window which contains frame with this page.
      */
     Window* getEnclosingWindow();
     

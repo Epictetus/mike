@@ -74,9 +74,9 @@ namespace mike
     loadFrames();
   }
   
-  void HtmlPage::openInFrame(Frame* frame)
+  void HtmlPage::enclose(Frame* frame)
   {
-    Page::openInFrame(frame);
+    Page::enclose(frame);
     loadFrames();
   }
 

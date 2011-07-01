@@ -12,7 +12,7 @@ namespace mike
 
   Frame::Frame(Window* window)
   {
-    window_ = window_;
+    window_ = window;
     history_ = new History();
   }
 

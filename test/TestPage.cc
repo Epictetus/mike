@@ -5,6 +5,8 @@
 #include "utils/CppunitMacros.h"
 #include "Page.h"
 #include "Browser.h"
+#include "Window.h"
+#include "Frame.h"
 
 using namespace std;
 using namespace mike;
@@ -16,8 +18,10 @@ class MikePageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testOpen);
   CPPUNIT_TEST(testFactoryWhenInvalidUrlGiven);
   CPPUNIT_TEST(testGetContent);
+  CPPUNIT_TEST(testGetUrl);
   CPPUNIT_TEST(testGetStream);
   CPPUNIT_TEST(testGetEnclosingFrame);
+  CPPUNIT_TEST(testMultipleEncloseProtection);
   CPPUNIT_TEST(testGetEnclosingWindow);
   CPPUNIT_TEST_SUITE_END();
 
@@ -42,6 +46,13 @@ protected:
     ASSERT_EQUAL(page->getContent(), "Simple!");
     delete page;
   }
+
+  void testGetUrl()
+  {
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
+    ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple.txt");
+    delete page;
+  }
   
   void testGetStream()
   {
@@ -53,12 +64,36 @@ protected:
 
   void testGetEnclosingFrame()
   {
-    // TODO: ...
+    Frame* frame = new Frame(NULL);
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
+    page->enclose(frame);
+    ASSERT_EQUAL(page->getEnclosingFrame(), frame);
+    delete frame;
+  }
+
+  void testMultipleEncloseProtection()
+  {
+    Frame* frame1 = new Frame(NULL);
+    Frame* frame2 = new Frame(NULL);
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
+    page->enclose(frame1);
+    page->enclose(frame2);
+    ASSERT_EQUAL(page->getEnclosingFrame(), frame1);
+    delete frame1;
+    delete frame2;
   }
 
   void testGetEnclosingWindow()
   {
-    // TODO: ...
+    Browser* browser = new Browser();
+    Window* window = new Window(browser);
+    Frame* frame = new Frame(window);
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
+    page->enclose(frame);
+    ASSERT_EQUAL(page->getEnclosingWindow(), window);
+    delete frame;
+    delete window;
+    delete browser;
   }
 
 };

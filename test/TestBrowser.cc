@@ -25,6 +25,8 @@ class MikeBrowserTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testCloseAll);
   CPPUNIT_TEST(testCloseWindowByPosition);
   CPPUNIT_TEST(testCloseWindowByObject);
+  CPPUNIT_TEST(testEnabledCookiesHandling);
+  CPPUNIT_TEST(testDisabledCookiesHandling);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -131,6 +133,26 @@ protected:
     browser->closeWindow(browser->getWindow(0));
     ASSERT_EQUAL(browser->getWindows().size(), 1);
     ASSERT_EQUAL(browser->getWindow(0)->getUrl(), "http://localhost:4567/simple.xml");
+    delete browser;
+  }
+
+  void testEnabledCookiesHandling()
+  {
+    Browser* browser = new Browser();
+    browser->enableCookies();
+    browser->open("http://localhost:4567/cookies/set");
+    Page* page = browser->open("http://localhost:4567/cookies/show");
+    ASSERT_EQUAL(page->getContent(), "foo=foobar");
+    delete browser;
+  }
+
+  void testDisabledCookiesHandling()
+  {
+    Browser* browser = new Browser();
+    browser->disableCookies();
+    browser->open("http://localhost:4567/cookies/set");
+    Page* page = browser->open("http://localhost:4567/cookies/show");
+    ASSERT_EQUAL(page->getContent(), "foo=");
     delete browser;
   }
   

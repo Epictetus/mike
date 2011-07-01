@@ -76,7 +76,7 @@ namespace mike
      * @override
      *
      */
-    virtual void openInFrame(Frame* frame);
+    virtual void enclose(Frame* frame);
 
     /**
      * @override

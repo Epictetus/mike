@@ -109,10 +109,8 @@ namespace mike {
 
   void XmlPage::prepareDocument()
   {
-    if (isLoaded()) {
-      cleanupDocument();
-      parseDocument();
-    }
+    cleanupDocument();
+    parseDocument();
   }
 
   void XmlPage::parseDocument()

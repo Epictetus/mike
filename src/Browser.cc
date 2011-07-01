@@ -1,5 +1,6 @@
 #include <string.h>
 #include <uuid/uuid.h>
+#include "http/Request.h"
 #include "utils/SystemInfo.h"
 #include "Page.h"
 #include "Window.h"
@@ -7,6 +8,8 @@
 
 namespace mike
 {
+  using namespace http;
+  
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
@@ -65,6 +68,16 @@ namespace mike
     return cookieEnabled_;
   }
 
+  void Browser::enableCookies()
+  {
+    cookieEnabled_ = true;
+  }
+
+  void Browser::disableCookies()
+  {
+    cookieEnabled_ = false;
+  }
+
   // XXX: in the future it should return read only list...
   list<Window*> Browser::getWindows()
   {
@@ -90,7 +103,13 @@ namespace mike
     Window* window = new Window(this);
     windows_.push_back(window);
 
-    Page* page = Page::Open(url);
+    Request* request = Request::Get(url);
+
+    if (isCookieEnabled()) {
+      request->enableCookieSession(getSessionToken());
+    }
+
+    Page* page = Page::Factory(request);
     window->setPage(page);
     
     return page;

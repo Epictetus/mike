@@ -66,7 +66,7 @@ namespace mike
 
   void Window::setPage(Page* page)
   {
-    frame_->setPage(page);
+    page->enclose(frame_);
   }
   
   Page* Window::getPage()
