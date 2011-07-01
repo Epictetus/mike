@@ -4,6 +4,10 @@
 
 namespace mike
 {
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+  
   XmlElement::XmlElement(XmlPage* page, xmlNodePtr node)
   {
     page_ = page;
@@ -16,6 +20,8 @@ namespace mike
       xmlFree((*it).second);
   }
 
+  //============================= ACCESS     ===================================
+  
   string XmlElement::getAttribute(string name)
   {
     xmlChar* attr_name = xmlCharStrdup(name.c_str());
@@ -68,6 +74,11 @@ namespace mike
   string XmlElement::getName()
   {
     return (char*)node_->name;
+  }
+
+  string XmlElement::getTagName()
+  {
+    return getName();
   }
 
   bool XmlElement::hasChildren()

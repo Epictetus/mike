@@ -131,7 +131,9 @@ namespace mike
   {
     xmlSetGenericErrorFunc((void*)this, xmlErrorHandler);
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
-    doc_ = xmlReadDoc(body, getUrl().c_str(), "utf-8", XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
+    // FIXME: encoding should be taken from http response!
+    doc_ = xmlReadDoc(body, getUrl().c_str(), "utf-8",
+		      XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
     xmlFree(body);
   }
   

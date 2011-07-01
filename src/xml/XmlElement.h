@@ -14,22 +14,30 @@ namespace mike
   class XmlElement;
 
   /**
-   * This class represents single XML node element. It wraps up libxml2's <code>xmlNode</code>
-   * and provides some extra functionalities at top of it.
+   * Single XML node representation. It wraps up libxml2's <code>xmlNode</code> and provides
+   * extra functionalities at top of it.
    *
+   * \code
+   *   XmlElement* elem = page->getElementById("foobar");
+   *   assert(elem->hasAttribute("class", "some-class"));
+   *   assert(elem->hasContent("Foooo!");
+   *   assert(elem->hasChildren());
+   *   delete elem;
+   * \endcode
    */
   class XmlElement
   {
   public:
     /**
-     * Constructor.
+     * Creates new element.
      *
+     * \param page Page to which belongs this element.
+     * \param node Wrapped libxml node.
      */
     explicit XmlElement(XmlPage* page, xmlNodePtr node);
 
     /**
      * Destructor.
-     *
      */
     virtual ~XmlElement();
 
@@ -37,41 +45,48 @@ namespace mike
      * Returns value of specified attribute. If attribute is not defined then
      * empty string will be returned. 
      *
+     * \param name Name of attribute.
+     * \return Value of specified attribute.
      */
     string getAttribute(string name);
 
     /**
-     * Returns <code>true</code> when this node has specified attribute. If second parameter
-     * specified then it checks if given value is the same as value of the checked attribute
-     * (if this attr exists of course).
+     * Checks whether this node has defined given attribute or not. If second parameter
+     * given then matches given value with attribute's value.
      *
+     * \param name Name of attribute.
+     * \param value Value to match.
+     * \return Whether given attribute exists or equals specified value.
      */
     bool hasAttribute(string name);
     bool hasAttribute(string name, string value);
     
     /**
-     * Returns content of all children nodes.
+     * \return Content of all children nodes.
      */
     string getContent();
 
     /**
-     * When called without params then returns <code>true</code> if this elements contains any
-     * content. If params passed then checks if it's the same as content of this element.
+     * When called without params then checks whether this elements contains any text.
+     * If param passed then matches it with the content of this element.
      *
+     * \param value Value to match.
+     * \retrurn Whether element contains any text, or contains specified text.
      */
     bool hasContent();
     bool hasContent(string value);
 
     /**
-     * Returns element's tag name.
-     *
+     * \return Element's tag name.
      */
     string getName();
+    string getTagName();
 
     /**
-     * Returns <code>true</code> when given element contains any children or text. So speaking
-     * more accurately it happens only when current element is self closed.
+     * Returns whether given element contains any children/text or not. So speaking
+     * more accurately returns false only when current element is self closed.
      *
+     * \return Whether element has children nodes or not.
      */
     bool hasChildren();
     
