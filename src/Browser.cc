@@ -84,7 +84,6 @@ namespace mike
     return windows_;
   }
 
-  // XXX: should this raise exception when window is not found??
   Window* Browser::getWindow(int n)
   {
     if (n < windows_.size()) {
@@ -93,7 +92,7 @@ namespace mike
       return *it;
     }
 
-    return NULL;
+    throw WindowNotExistsError();
   }
 
   //============================= OPERATIONS ===================================

@@ -32,7 +32,7 @@ namespace mike
       }
     }
 
-    throw "Invalid request.";
+    throw "Invalid request."; // just in case, should never appear...
   }
 
   Page::Page(Request* request, PageType type/*=UNKNOWN_PAGE*/)

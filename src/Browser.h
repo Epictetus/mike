@@ -12,6 +12,15 @@ namespace mike
   class Window;
 
   /**
+   * Error raised when trying to get window which is not open in particular browser instance.
+   */
+  class WindowNotExistsError
+  {
+  public:
+    const char* getReason() const { return "Such window doesn't exist in this browser"; }
+  };
+  
+  /**
    * Instance of this class represents single, separatelly configured browser. You can configure
    * browser by passing various parameters to constructor (configurable language, user agent string
    * and cookies/javascript availability).
@@ -71,7 +80,7 @@ namespace mike
     list<Window*> getWindows();
 
     /**
-     * Returns specified window (if opened).
+     * Returns specified window if opened, otherwise throws 'WindowNotFound' error.
      *
      * \code
      *   browser->open("http://www.cuboxsa.com/");

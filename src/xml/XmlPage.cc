@@ -1,49 +1,55 @@
 #include <string.h>
 #include "xml/XmlPage.h"
 
-namespace mike {
-  namespace
+namespace mike
+{
+  /////////////////////////////// HELPERS //////////////////////////////////////
+
+  void xmlErrorHandler(void *ctx, const char *msg, ...)
   {
-    void xmlErrorHandler(void *ctx, const char *msg, ...)
-    {
-      // so far nothing, just mute errors...
-    }
+    // so far nothing, just mute errors...
+  }
 
-    void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, XmlElementSet* elems)
-    {
-      while (node) {
-	if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
-	  elems->push_back(new XmlElement(page, node));
-	}
+  void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, XmlElementSet* elems)
+  {
+    while (node) {
+      if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
+	elems->push_back(new XmlElement(page, node));
+      }
 	
-	getElementsByTagNameIter(page, tag, node->children, elems);
-	node = node->next;
-      }
-    }
-
-    xmlXPathObjectPtr findByXPath(xmlDocPtr doc, string xpath)
-    {
-      if (doc) {
-	// Setup XPath stuff and evaluate expression
-	xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
-	xmlXPathContextPtr ctx = xmlXPathNewContext(doc);
-	xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
-
-	// Free XPath stuff
-	xmlXPathFreeContext(ctx);
-	xmlFree(cxpath);
-
-	// Return results if any
-	if (found && !xmlXPathNodeSetIsEmpty(found->nodesetval)) {
-	  return found;
-	} else {
-	  xmlXPathFreeObject(found);
-	}
-      }
-      
-      return NULL;
+      getElementsByTagNameIter(page, tag, node->children, elems);
+      node = node->next;
     }
   }
+
+  xmlXPathObjectPtr findByXPath(xmlDocPtr doc, string xpath)
+  {
+    if (doc) {
+      // Setup XPath stuff and evaluate expression
+      xmlChar* cxpath = xmlCharStrdup(xpath.c_str());
+      xmlXPathContextPtr ctx = xmlXPathNewContext(doc);
+      xmlXPathObjectPtr found = xmlXPathEvalExpression(cxpath, ctx);
+
+      // Free XPath stuff
+      xmlXPathFreeContext(ctx);
+      xmlFree(cxpath);
+
+      // Return results if any
+      if (found == NULL) {
+	throw InvalidXpathExpressionError(xpath);
+      } else if (!xmlXPathNodeSetIsEmpty(found->nodesetval)) {
+	return found;
+      } else {
+	xmlXPathFreeObject(found);
+      }
+    }
+      
+    return NULL;
+  }
+
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+  
+  //============================= LIFECYCLE ====================================
   
   XmlPage::XmlPage(Request* request)
     : Page(request, XML_PAGE)
@@ -57,18 +63,7 @@ namespace mike {
     cleanupDocument();
   }
 
-  XmlElement* XmlPage::getElementByXpath(string xpath)
-  {
-    xmlXPathObjectPtr found = findByXPath(doc_, xpath);
-    XmlElement* result = NULL;
-    
-    if (found) {
-      result = new XmlElement(this, found->nodesetval->nodeTab[0]);
-      xmlXPathFreeObject(found);
-    }
-    
-    return result;
-  }
+  //============================= ACCESS     ===================================
   
   XmlElementSet* XmlPage::getElementsByXpath(string xpath)
   {
@@ -89,6 +84,21 @@ namespace mike {
       
     return result;
   }
+  
+  XmlElement* XmlPage::getElementByXpath(string xpath)
+  {
+    xmlXPathObjectPtr found = findByXPath(doc_, xpath);
+    XmlElement* result = NULL;
+    
+    if (found) {
+      result = new XmlElement(this, found->nodesetval->nodeTab[0]);
+      xmlXPathFreeObject(found);
+    } else {
+      throw ElementNotFoundError("XPath = " + xpath);
+    }
+    
+    return result;
+  }
 
   XmlElementSet* XmlPage::getElementsByTagName(string tag)
   {
@@ -101,12 +111,16 @@ namespace mike {
     return elems;
   }
 
+  //============================= OPERATIONS ===================================
+  
   void XmlPage::reload()
   {
     Page::reload();
     prepareDocument();
   }
 
+  /////////////////////////////// PROTECTED  ///////////////////////////////////
+  
   void XmlPage::prepareDocument()
   {
     cleanupDocument();

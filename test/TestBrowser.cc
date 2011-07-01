@@ -97,7 +97,7 @@ protected:
     browser->open("http://localhost:4567/simple.html");
     browser->open("http://localhost:4567/simple.xml");
     ASSERT_EQUAL(browser->getWindow(1)->getUrl(), "http://localhost:4567/simple.xml");
-    ASSERT_NULL(browser->getWindow(2));
+    ASSERT_THROW(browser->getWindow(2), WindowNotExistsError);
     delete browser;
   }
 
