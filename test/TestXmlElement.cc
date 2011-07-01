@@ -23,8 +23,7 @@ protected:
 
   void testGetAttribute()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     ASSERT(page);
     XmlElementSet* elems = page->getElementsByTagName("elem");
     XmlElement* elem = (*elems)[0];
@@ -38,8 +37,7 @@ protected:
 
   void testHasAttribute()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     ASSERT(page);
     XmlElementSet* elems = page->getElementsByTagName("elem");
     XmlElement* elem = (*elems)[0];
@@ -54,8 +52,7 @@ protected:
 
   void testGetContent()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     ASSERT(page);
     XmlElementSet* elems = page->getElementsByTagName("elem");
     XmlElement* elem = (*elems)[0];
@@ -67,8 +64,7 @@ protected:
 
   void testHasContent()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     ASSERT(page);
     XmlElementSet* elems = page->getElementsByTagName("elem");
     XmlElement* elem = (*elems)[0];
@@ -82,8 +78,7 @@ protected:
 
   void testGetName()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/xml-elements.xml");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     ASSERT(page);
     XmlElementSet* elems = page->getElementsByTagName("elem");
     XmlElement* elem = (*elems)[0];
@@ -95,8 +90,7 @@ protected:
 
   void testHasChildren()
   {
-    http::Request* request = http::Request::Get("http://localhost:4567/anchors.html");
-    XmlPage* page = Page::Build(request)->toXmlPage();
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/anchors.html");
     ASSERT(page);
     XmlElementSet* elems1 = page->getElementsByTagName("a");
     XmlElement* elem1 = (*elems1)[0];

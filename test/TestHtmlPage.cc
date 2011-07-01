@@ -11,7 +11,7 @@ using namespace mike;
 class MikeHtmlPageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikeHtmlPageTest);
-  CPPUNIT_TEST(testBuild);
+  CPPUNIT_TEST(testFactory);
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementById);
@@ -23,12 +23,11 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
 
 protected:
 
-  void testBuild()
+  void testFactory()
   {
     Page* page = Page::Open("http://localhost:4567/simple");
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple");
     ASSERT(page->isHtml());
-    ASSERT(page->toHtmlPage());
     delete page;
   }
 

@@ -10,10 +10,10 @@ namespace mike
   Page* Page::Open(string url)
   {
     Request* req = Request::Get(url);
-    return Build(req);
+    return Factory(req);
   }
   
-  Page* Page::Build(Request* request)
+  Page* Page::Factory(Request* request)
   {
     if (request) {
       Response* response = request->perform();

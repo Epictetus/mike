@@ -52,7 +52,7 @@ namespace mike
      * Note: you don't need to delete req object, it will be done automatically on page destroy.
      *
      */
-    static Page* Build(Request* request);
+    static Page* Factory(Request* request);
 
     /**
      * Constructor.

@@ -23,16 +23,15 @@ protected:
 
   void testPushing()
   {
-    http::Request* request1 = http::Request::Get("http://localhost:4567/simple");
-    Page* page1 = Page::Build(request1);
-    http::Request* request2 = http::Request::Get("http://localhost:4567/simple");
-    Page* page2 = Page::Build(request2);
+    Page* page1 = Page::Open("http://localhost:4567/simple.xml");
+    Page* page2 = Page::Open("http://localhost:4567/simple.html");
     History* history = new History();
     history->push(page1);
     ASSERT_EQUAL(history->size(), 0);
     ASSERT_EQUAL(history->getCurrent(), page1);
     history->push(page2);
     ASSERT_EQUAL(history->size(), 1);
+    ASSERT_EQUAL(history->getCurrent(), page2);
     delete history;
   }
 
@@ -42,8 +41,7 @@ protected:
     Page* pages[4];
     
     for (int i = 0; i < 4; i++) {
-      http::Request* request = http::Request::Get("http://localhost:4567/simple");
-      pages[i] = Page::Build(request);
+      pages[i] = Page::Open("http://localhost:4567/simple");
       history->push(pages[i]);
     }
 
@@ -69,8 +67,7 @@ protected:
     Page* pages[4];
     
     for (int i = 0; i < 4; i++) {
-      http::Request* request = http::Request::Get("http://localhost:4567/simple");
-      pages[i] = Page::Build(request);
+      pages[i] = Page::Open("http://localhost:4567/simple");
       history->push(pages[i]);
     }
 
@@ -96,8 +93,7 @@ protected:
     Page* pages[4];
     
     for (int i = 0; i < 4; i++) {
-      http::Request* request = http::Request::Get("http://localhost:4567/simple");
-      pages[i] = Page::Build(request);
+      pages[i] = Page::Open("http://localhost:4567/simple");
       history->push(pages[i]);
     }
 

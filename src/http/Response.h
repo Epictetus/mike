@@ -12,70 +12,67 @@ namespace mike {
     using namespace std;
 
     /**
-     * HTTP response handler. The same as request class it's base for browser's
-     * response, and will not be used directly. Shouldn't be also explicitly created
-     * from outside of request class. 
-     *
+     * HTTP response handler. Shouldn't be used directly anywhere, should be accessed
+     * from the inside of request object. 
      */
     class Response
     {
     public:
       /**
-       * Constructor.
+       * Creates new response.
        *
+       * \param code HTTP response code.
+       * \param content Stream with response body.
+       * \param headers Map of HTTP header's keys and values.
+       * \param content_type Response content type.
        */
       Response(long code, stringstream* content, map<string,string> headers, string content_type);
 
       /**
        * Destructor.
-       *
        */
       ~Response();
 
       /**
-       * Returns HTTP response code.
-       *
+       * \return HTTP response code.
        */
       long getCode();
 
       /**
-       * Returns body of requested website as string.
-       *
+       * \return Body of requested page.
        */
       string getBody();
 
       /**
-       * Returns string stream with content of requested website.
-       *
+       * \return Stream with page content.
        */
       stringstream* getStream();
 
       /**
-       * Returns specified response header. Example:
+       * Returns specified response header.
        *
-       * <code>
+       * \code
        *   res->getHeader("Referer");
        *   res->getHeader("Accept-Language");
-       * </code>
+       * \endcode
        *
+       * \param key Which header should be returned.
+       * \return Specified response header value.
        */
       string getHeader(string key);
 
       /**
-       * Returns content type of requested website extracted from response headers.
-       * 
+       * \return Content type of requested page.
        */
       string getContentType();
 
       /**
-       * Returns <code>true</code> if requested website is an XML document.
-       *
+       * \return Whether requested page is an XML document or not.
        */
       bool isXml();
 
       /**
-       * Returns <code>true</code> if requested website is an HTML document. 
-       *
+       * \return Whether requested page is an HTML document or not.
        */
       bool isHtml();
 

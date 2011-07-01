@@ -1,17 +1,8 @@
 /Makefile
 /Makefile.in
 
-/lib/Makefile
-/lib/Makefile.in
-
 /src/Makefile
 /src/Makefile.in
-/src/api/Makefile
-/src/api/Makefile.in
-/src/glue/Makefile
-/src/glue/Makefile.in
-/src/glue/glue/Makefile
-/src/glue/glue/Makefile.in
 
 /test/*suite
 /test/Makefile
@@ -27,6 +18,8 @@
 /configure
 /tmp
 
+eproject.cfg
+
 .libs
 .deps
 .dirstamp
@@ -39,9 +32,6 @@
 *.a
 *.guess
 *.sub
-
-/lib/*.js
-/lib/browser/*.js
 
 *~
 \#*

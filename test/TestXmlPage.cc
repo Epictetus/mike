@@ -11,7 +11,7 @@ using namespace mike;
 class MikeXmlPageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikeXmlPageTest);
-  CPPUNIT_TEST(testBuild);
+  CPPUNIT_TEST(testFactory);
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementByXpath);
@@ -20,12 +20,11 @@ class MikeXmlPageTest : public CppUnit::TestFixture
 
 protected:
 
-  void testBuild()
+  void testFactory()
   {
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/simple.xml");
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/simple.xml");
     ASSERT(page->isXml());
-    ASSERT(page->toXmlPage());
     delete page;
   }
 

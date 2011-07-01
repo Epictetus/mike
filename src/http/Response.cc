@@ -2,36 +2,40 @@
 #include "utils/Helpers.h"
 
 namespace mike {
-  namespace http {
-    namespace
+  namespace http
+  {
+    /////////////////////////////// HELPERS //////////////////////////////////////
+
+    string extractContentType(string mime)
     {
-      string extractContentType(string mime)
-      {
-	if (mime.empty()) {
-	  return "text/plain";
-	} else {
-	  int split = mime.find(";");
-	  return split > 0 ? mime.substr(0, split) : mime;
-	}
-      }
-
-      list<string> extractCookies(string cookieString)
-      {
-	return list<string>();
-      }
-
-      bool matchContentType(string mime, string opts[], int numopts)
-      {
-	for (int i = 0; i < numopts; i++) {
-	  if (mime == opts[i]) {
-	    return true;
-	  }
-	}
-
-	return false;
+      if (mime.empty()) {
+	return "text/plain";
+      } else {
+	int split = mime.find(";");
+	return split > 0 ? mime.substr(0, split) : mime;
       }
     }
-    
+
+    list<string> extractCookies(string cookieString)
+    {
+      return list<string>();
+    }
+
+    bool matchContentType(string mime, string opts[], int numopts)
+    {
+      for (int i = 0; i < numopts; i++) {
+	if (mime == opts[i]) {
+	  return true;
+	}
+      }
+      
+      return false;
+    }
+
+    /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+    //============================= LIFECYCLE ====================================
+
     Response::Response(long code, stringstream* content, map<string,string> headers, string content_type)
       : code_(code)
     {
@@ -46,6 +50,8 @@ namespace mike {
       delete content_;
     }
 
+    //============================= ACCESS     ===================================
+    
     long Response::getCode()
     {
       return code_;

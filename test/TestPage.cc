@@ -14,7 +14,7 @@ class MikePageTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikePageTest);
   CPPUNIT_TEST(testOpen);
-  CPPUNIT_TEST(testBuildWhenInvalid);
+  CPPUNIT_TEST(testFactoryWhenInvalidUrlGiven);
   CPPUNIT_TEST(testGetContent);
   CPPUNIT_TEST(testGetStream);
   CPPUNIT_TEST(testGetEnclosingFrame);
@@ -30,10 +30,10 @@ protected:
     delete page;
   }
   
-  void testBuildWhenInvalid()
+  void testFactoryWhenInvalidUrlGiven()
   {
     Request* request = Request::Get("http://thiswebsiteforsure/not/exists");
-    ASSERT_THROW(Page::Build(request), ConnectionError);
+    ASSERT_THROW(Page::Factory(request), ConnectionError);
   }
 
   void testGetContent()
