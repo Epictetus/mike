@@ -11,6 +11,7 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/utils/SystemInfo.h \
 	$(TESTEE_SOURCES_DIR)/utils/Helpers.h \
 	$(TESTEE_SOURCES_DIR)/utils/Helpers.cc \
+	$(TESTEE_SOURCES_DIR)/utils/Pector.h \
 	$(TESTEE_SOURCES_DIR)/http/Response.h \
 	$(TESTEE_SOURCES_DIR)/http/Response.cc \
 	$(TESTEE_SOURCES_DIR)/http/Request.h \
@@ -29,8 +30,6 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/Frame.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.cc \
-	$(TESTEE_SOURCES_DIR)/xml/XmlElementSet.h \
-	$(TESTEE_SOURCES_DIR)/xml/XmlElementSet.cc \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlPage.h \

@@ -11,10 +11,12 @@
 
 #include "Page.h"
 #include "xml/XmlElement.h"
-#include "xml/XmlElementSet.h"
+#include "utils/Pector.h"
 
 namespace mike
 {
+  typedef Pector<XmlElement> XmlElementSet;
+  
   /**
    * Error raised when there is no elements in document matching given conditions (like xpath,
    * id, etc..). 
@@ -63,7 +65,7 @@ namespace mike
      * \param xpath XPath expression.
      * \return Set of matching elements.
      */
-    XmlElementSet* getElementsByXpath(string xpath);
+    virtual XmlElementSet* getElementsByXpath(string xpath);
 
     /**
      * Acts almost the same as <code>getElementsByXpath</code> but returns only first
@@ -73,7 +75,7 @@ namespace mike
      * \param xpath XPath expression.
      * \return First matching element.
      */
-    XmlElement* getElementByXpath(string xpath);
+    virtual XmlElement* getElementByXpath(string xpath);
 
     /**
      * Returns set of elements with given tag name.
@@ -85,7 +87,7 @@ namespace mike
      * \param tag Tag to find.
      * \return Elements matching requested tag.
      */
-    XmlElementSet* getElementsByTagName(string tag);
+    virtual XmlElementSet* getElementsByTagName(string tag);
     
   protected:
     xmlDocPtr doc_;
