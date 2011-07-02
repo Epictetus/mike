@@ -58,7 +58,15 @@ namespace mike
   
   string XmlElement::getContent()
   {
-    return hasChildren() ? (char*)node_->children->content : "";
+    xmlChar* content = xmlNodeGetContent(node_);
+    char* result = (char*)content;
+    xmlFree(content);
+    return content ? string(result) : "";
+  }
+
+  string XmlElement::getText()
+  {
+    return getContent();
   }
 
   bool XmlElement::hasContent()
@@ -69,6 +77,16 @@ namespace mike
   bool XmlElement::hasContent(string value)
   {
     return (value == getContent());
+  }
+
+  bool XmlElement::hasText()
+  {
+    return hasContent();
+  }
+
+  bool XmlElement::hasText(string value)
+  {
+    return hasContent(value);
   }
 
   string XmlElement::getName()
@@ -84,5 +102,28 @@ namespace mike
   bool XmlElement::hasChildren()
   {
     return (node_ && node_->children);
+  }
+
+  string XmlElement::getPath()
+  {
+    xmlChar* path = xmlGetNodePath(node_);
+    string result = (char*)path;
+    xmlFree(path);
+    return result;
+  }
+
+  // XXX: HtmlElement should use htmlNodeDump func.
+  string XmlElement::toXml()
+  {
+    xmlBufferPtr buffer = xmlBufferCreate();
+    xmlNodeDump(buffer, node_->doc, node_, 0, 0);
+    string xml = (char*)buffer->content;
+    xmlBufferFree(buffer);
+    return xml;
+  }
+
+  string XmlElement::dump()
+  {
+    return toXml();
   }
 }

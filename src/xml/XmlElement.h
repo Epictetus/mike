@@ -65,6 +65,7 @@ namespace mike
      * \return Content of all children nodes.
      */
     string getContent();
+    string getText();
 
     /**
      * When called without params then checks whether this elements contains any text.
@@ -75,7 +76,9 @@ namespace mike
      */
     bool hasContent();
     bool hasContent(string value);
-
+    bool hasText();
+    bool hasText(string value);
+    
     /**
      * \return Element's tag name.
      */
@@ -89,6 +92,17 @@ namespace mike
      * \return Whether element has children nodes or not.
      */
     bool hasChildren();
+
+    /**
+     * \return XML path to this element.
+     */
+    string getPath();
+
+    /**
+     * \return XML source of this element. 
+     */
+    string toXml();
+    string dump();
     
   protected:
     XmlPage* page_;

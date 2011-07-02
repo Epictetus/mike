@@ -38,7 +38,7 @@ end
 
 get "/xml-elements.xml" do
   content_type 'application/xml'
-  "<?xml version=\"1.0\"?><root><elem foo='bar'>Hello Foo!</elem></root>"
+  "<?xml version=\"1.0\"?><root><elem foo='bar'>Hello Foo!</elem><elem><sub>Hello</sub> sub!</elem></root>"
 end
 
 post "/simple" do

@@ -105,9 +105,19 @@ namespace mike
       return items_.back();
     }
 
+    T* get(int n)
+    {
+      return (T*)items_[n];
+    }
+
+    T* at(int n)
+    {
+      return (T*)items_[n];
+    }
+    
     T* operator[](int n)
     {
-      return items_[n];
+      return (T*)items_[n];
     }
 
     /**
