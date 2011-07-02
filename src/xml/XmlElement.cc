@@ -59,9 +59,9 @@ namespace mike
   string XmlElement::getContent()
   {
     xmlChar* content = xmlNodeGetContent(node_);
-    char* result = (char*)content;
+    string result = (char*)content;
     xmlFree(content);
-    return content ? string(result) : "";
+    return content ? result : "";
   }
 
   string XmlElement::getText()
