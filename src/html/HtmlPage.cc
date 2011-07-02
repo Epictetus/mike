@@ -221,15 +221,19 @@ namespace mike
 	    request->enableCookieSession(browser->getSessionToken());
 	  }
 
-	  Page* page = Page::Factory(request);
-	  HtmlFrame* frame = new HtmlFrame(frame_);
-	  frames_.push_back(frame);
+	  try {
+	    Page* page = Page::Factory(request);
+	    HtmlFrame* frame = new HtmlFrame(frame_);
+	    frames_.push_back(frame);
 
-	  if ((*it)->hasAttribute("name")) {
-	    frame->setName((*it)->getAttribute("name"));
+	    if ((*it)->hasAttribute("name")) {
+	      frame->setName((*it)->getAttribute("name"));
+	    }
+	    
+	    page->enclose((Frame*)frame);
+	  } catch (ConnectionError err) {
+	    delete request;
 	  }
-	  
-	  page->enclose((Frame*)frame);
 	}
       }
 
