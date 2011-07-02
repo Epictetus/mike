@@ -27,6 +27,22 @@ namespace mike
     return s;
   }
 
+  string strjoin(string parts[], int size, string separator/*=""*/)
+  {
+    string result = "";
+
+    if (size > 0) {
+      result += parts[0];
+      
+      for (int i = 1; i < size; i++) {
+	result += separator;
+	result += parts[i];
+      }
+    }
+
+    return result;
+  }
+
   string xpathSanitize(string arg)
   {
     char find[3] = { '&', '"', '\'' };

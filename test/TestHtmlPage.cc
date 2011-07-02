@@ -16,9 +16,11 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementById);
   CPPUNIT_TEST(testGetElementsByClassName);
-  CPPUNIT_TEST(testGetElementByAnchor);
-  CPPUNIT_TEST(testGetFramesWithIframes);
-  CPPUNIT_TEST(testGetFramesWithFrameset);
+  CPPUNIT_TEST(testGetLinkOrButton);
+  CPPUNIT_TEST(testGetLink);
+  CPPUNIT_TEST(testGetButton);
+  //CPPUNIT_TEST(testGetFramesWithIframes);
+  //CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -34,7 +36,7 @@ protected:
   void testGetElementsByTagName()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/xpath.html");
-    XmlElementSet* elems = page->getElementsByTagName("li");
+    HtmlElementSet* elems = page->getElementsByTagName("li");
     ASSERT_EQUAL(elems->size(), 3);
     delete elems;
     delete page;
@@ -43,7 +45,7 @@ protected:
   void testGetElementsByXpath()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/xpath.html");
-    XmlElementSet* elems = page->getElementsByXpath("//ul[@id='elems']/li[contains(@class, 'load')]");
+    HtmlElementSet* elems = page->getElementsByXpath("//ul[@id='elems']/li[contains(@class, 'load')]");
     ASSERT_EQUAL(elems->size(), 2);
     delete elems;
     delete page;
@@ -52,21 +54,19 @@ protected:
   void testGetElementById()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/xpath.html");
-    XmlElement* should_be_found = page->getElementById("elems");
-    XmlElement* should_not_be_found = page->getElementById("not-found");
+    HtmlElement* should_be_found = page->getElementById("elems");
     ASSERT_NOT_NULL(should_be_found);
-    ASSERT_NULL(should_not_be_found);
+    ASSERT_THROW(page->getElementById("not-found"), ElementNotFoundError);
     delete should_be_found;
-    delete should_not_be_found;
     delete page;
   }
 
   void testGetElementsByClassName()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/xpath.html");
-    XmlElementSet* elems_ok = page->getElementsByClassName("load");
-    XmlElementSet* elems_not_ok = page->getElementsByClassName("loa");
-    XmlElementSet* elems_not_ok_too = page->getElementsByClassName("load fo");
+    HtmlElementSet* elems_ok = page->getElementsByClassName("load");
+    HtmlElementSet* elems_not_ok = page->getElementsByClassName("loa");
+    HtmlElementSet* elems_not_ok_too = page->getElementsByClassName("load fo");
     ASSERT_EQUAL(elems_ok->size(), 2);
     ASSERT_EQUAL(elems_not_ok->size(), 0);
     ASSERT_EQUAL(elems_not_ok_too->size(), 0);
@@ -76,31 +76,50 @@ protected:
     delete page;
   }
 
-  void testGetElementByAnchor()
+  // TODO: test finding links/buttons by name and id!
+  
+  void testGetLinkOrButton()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
-    XmlElement* should_be_found1 = page->getElementByAnchor("I am a link!");
-    XmlElement* should_be_found2 = page->getElementByAnchor("I am a button!");
-    XmlElement* should_be_found3 = page->getElementByAnchor("I am a submit!");
-    XmlElement* should_not_be_found = page->getElementByAnchor("I am a div!");
-    ASSERT_NOT_NULL(should_be_found1);
+    HtmlElement* should_be_found1 = page->getLinkOrButton("I am a link!");
     ASSERT_EQUAL(should_be_found1->getName(), "a");
-    ASSERT_NOT_NULL(should_be_found2);
+    HtmlElement* should_be_found2 = page->getLinkOrButton("I am a button!");
     ASSERT_EQUAL(should_be_found2->getName(), "button");
-    ASSERT_NOT_NULL(should_be_found3);
+    HtmlElement* should_be_found3 = page->getLinkOrButton("I am a submit!");
     ASSERT_EQUAL(should_be_found3->getName(), "input");
-    ASSERT_NULL(should_not_be_found);
+    ASSERT_THROW(page->getLinkOrButton("I am a div!"), ElementNotFoundError);
     delete should_be_found1;
     delete should_be_found2;
     delete should_be_found3;
-    delete should_not_be_found;
     delete page;
   }
 
+  void testGetLink()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* link = page->getLinkOrButton("I am a link!");
+    ASSERT_EQUAL(link->getName(), "a");
+    delete link;
+    delete page;
+  }
+
+  void testGetButton()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* button = page->getLinkOrButton("I am a button!");
+    ASSERT_EQUAL(button->getName(), "button");
+    HtmlElement* submit = page->getLinkOrButton("I am a submit!");
+    ASSERT_EQUAL(submit->getName(), "input");
+    delete button;
+    delete submit;
+    delete page;
+  }
+  
+  /*
   void testGetFramesWithIframes()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/iframes.html");
-    XmlElementSet* frames = page->getFrames();
+    HtmlElementSet* frames = page->getFrames();
     ASSERT_EQUAL(frames->size(), 2);
     delete frames;
     delete page;
@@ -109,11 +128,12 @@ protected:
   void testGetFramesWithFrameset()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/frameset.html");
-    XmlElementSet* frames = page->getFrames();
+    HtmlElementSet* frames = page->getFrames();
     ASSERT_EQUAL(frames->size(), 2);
     delete frames;
     delete page;
   }
+  */
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeHtmlPageTest);

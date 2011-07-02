@@ -16,6 +16,16 @@ namespace mike
   char* strstrip(string value);
 
   /**
+   * Combines given array of strings, optionally using specified separator.
+   *
+   * \param parts Strings to combine.
+   * \param size Number of strings to join.
+   * \param separator Separator placed between joined strings.
+   * \return Combined string.
+   */
+  string strjoin(string parts[], int size, string separator="");
+  
+  /**
    * Sanitizes given XPath argument.
    *
    * \param arg Argument to sanitize.

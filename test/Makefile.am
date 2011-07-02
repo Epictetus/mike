@@ -33,7 +33,9 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlPage.h \
-	$(TESTEE_SOURCES_DIR)/html/HtmlPage.cc
+	$(TESTEE_SOURCES_DIR)/html/HtmlPage.cc \
+	$(TESTEE_SOURCES_DIR)/html/HtmlElement.h \
+	$(TESTEE_SOURCES_DIR)/html/HtmlElement.cc 
 
 # List of test files.
 TEST_FILES = \

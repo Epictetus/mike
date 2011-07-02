@@ -52,6 +52,7 @@ namespace mike
     explicit XmlPage(Request* request);
     virtual ~XmlPage();
 
+    // override
     virtual void reload();
 	
     /**
@@ -65,7 +66,7 @@ namespace mike
      * \param xpath XPath expression.
      * \return Set of matching elements.
      */
-    virtual XmlElementSet* getElementsByXpath(string xpath);
+    XmlElementSet* getElementsByXpath(string xpath);
 
     /**
      * Acts almost the same as <code>getElementsByXpath</code> but returns only first
@@ -75,7 +76,7 @@ namespace mike
      * \param xpath XPath expression.
      * \return First matching element.
      */
-    virtual XmlElement* getElementByXpath(string xpath);
+    XmlElement* getElementByXpath(string xpath);
 
     /**
      * Returns set of elements with given tag name.
@@ -87,7 +88,7 @@ namespace mike
      * \param tag Tag to find.
      * \return Elements matching requested tag.
      */
-    virtual XmlElementSet* getElementsByTagName(string tag);
+    XmlElementSet* getElementsByTagName(string tag);
     
   protected:
     xmlDocPtr doc_;
