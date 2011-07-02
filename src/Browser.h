@@ -18,6 +18,7 @@ namespace mike
   {
   public:
     const char* getReason() const { return "Such window doesn't exist in this browser"; }
+    const char* operator*() { return getReason(); }
   };
   
   /**

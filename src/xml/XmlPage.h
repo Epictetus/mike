@@ -26,6 +26,7 @@ namespace mike
   public:
     ElementNotFoundError(string condition) : condition_(condition) {}
     const char* getReason() { return ("No element matches to a given conditions: " + condition_).c_str(); }
+    const char* operator*() { return getReason(); }
   protected:
     string condition_;
   };
@@ -38,6 +39,7 @@ namespace mike
   public:
     InvalidXpathExpressionError(string expr) : expr_(expr) {}
     const char* getReason() { return ("Invalid XPath expression: " + expr_).c_str(); }
+    const char* operator*() { return getReason(); }
   protected:
     string expr_;
   };

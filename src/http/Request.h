@@ -28,6 +28,7 @@ namespace mike {
       ConnectionError(string url) : url_(url) {}
       const char* getReason() const { return ("Page " + url_ + " can't be reached.").c_str(); }
       const char* getUrl() const { return url_.c_str(); }
+      const char* operator*() { return getReason(); }
     protected:
       string url_;
     };

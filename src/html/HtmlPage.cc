@@ -5,11 +5,16 @@
 
 namespace mike
 {
-  const string XPATH_LINK_LOCATOR = "//a[text()='%L' or @id='%L' or @name='%L']";
-  const string XPATH_BUTTON_LOCATOR = "//button[text()='%L' or @id='%L' or @name='%L']";
+  // links/buttons locators
+  const string XPATH_LINK_LOCATOR            = "//a[text()='%L' or @id='%L' or @name='%L']";
+  const string XPATH_BUTTON_LOCATOR          = "//button[text()='%L' or @id='%L' or @name='%L']";
   const string XPATH_SUBMIT_OR_RESET_LOCATOR = "//input[@type='submit' or @type='reset'][@value='%L' or @id='%L' or @name='%L']";
-  const string XPATH_FORM_FIELD_LOCATOR = "";
 
+  // form fields locators
+  const string XPATH_INPUT_FIELD_LOCATOR     = "//input[@type!='hidden' and @type!='reset' and @type!='submit' and @type!='image'][@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  const string XPATH_SELECT_FIELD_LOCATOR    = "//select[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  const string XPATH_TEXTAREA_LOCATOR        = "//textarea[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  
   /////////////////////////////// HELPERS //////////////////////////////////////
 
   string buildXpathForLocator(string parts[], int size, string locator)
@@ -99,7 +104,9 @@ namespace mike
 
   HtmlElement* HtmlPage::getField(string locator)
   {
-    throw "Not implemented!";
+    string locators[3] = { XPATH_INPUT_FIELD_LOCATOR, XPATH_SELECT_FIELD_LOCATOR, XPATH_TEXTAREA_LOCATOR };
+    string xpath = buildXpathForLocator(locators, 3, locator);
+    return getElementByXpath(xpath);
   }
   
   string HtmlPage::getTitle()

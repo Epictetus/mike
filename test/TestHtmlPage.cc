@@ -16,9 +16,13 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementById);
   CPPUNIT_TEST(testGetElementsByClassName);
-  CPPUNIT_TEST(testGetLinkOrButton);
+  CPPUNIT_TEST(testGetLinkOrButtonAgainstLink);
+  CPPUNIT_TEST(testGetLinkOrButtonAgainstButton);
+  CPPUNIT_TEST(testGetLinkOrButtonAgainstSubmit);
+  CPPUNIT_TEST(testGetLinkOrButtonAgainstDiv);
   CPPUNIT_TEST(testGetLink);
   CPPUNIT_TEST(testGetButton);
+  CPPUNIT_TEST(testGetField);
   //CPPUNIT_TEST(testGetFramesWithIframes);
   //CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST_SUITE_END();
@@ -78,19 +82,46 @@ protected:
 
   // TODO: test finding links/buttons by name and id!
   
-  void testGetLinkOrButton()
+  void testGetLinkOrButtonAgainstLink()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
-    HtmlElement* should_be_found1 = page->getLinkOrButton("I am a link!");
-    ASSERT_EQUAL(should_be_found1->getName(), "a");
-    HtmlElement* should_be_found2 = page->getLinkOrButton("I am a button!");
-    ASSERT_EQUAL(should_be_found2->getName(), "button");
-    HtmlElement* should_be_found3 = page->getLinkOrButton("I am a submit!");
-    ASSERT_EQUAL(should_be_found3->getName(), "input");
+    HtmlElement* link = page->getLinkOrButton("I am a link!");
+    ASSERT_EQUAL(link->getName(), "a");
+    ASSERT(link->hasAttribute("name", "link"));
+    link = page->getLinkOrButton("link");
+    ASSERT_EQUAL(link->getName(), "a");
+    delete link;
+    delete page;
+  }
+
+  void testGetLinkOrButtonAgainstButton()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* button = page->getLinkOrButton("I am a button!");
+    ASSERT_EQUAL(button->getName(), "button");
+    ASSERT(button->hasAttribute("id", "buuu"));
+    button = page->getLinkOrButton("buuu");
+    ASSERT_EQUAL(button->getName(), "button");
+    delete button;
+    delete page;
+  }
+
+  void testGetLinkOrButtonAgainstSubmit()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* submit = page->getLinkOrButton("I am a submit!");
+    ASSERT_EQUAL(submit->getName(), "input");
+    ASSERT(submit->hasAttribute("name", "foo"));
+    submit = page->getLinkOrButton("foo");
+    ASSERT_EQUAL(submit->getName(), "input");
+    delete submit;
+    delete page;
+  }
+
+  void testGetLinkOrButtonAgainstDiv()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     ASSERT_THROW(page->getLinkOrButton("I am a div!"), ElementNotFoundError);
-    delete should_be_found1;
-    delete should_be_found2;
-    delete should_be_found3;
     delete page;
   }
 
@@ -112,6 +143,25 @@ protected:
     ASSERT_EQUAL(submit->getName(), "input");
     delete button;
     delete submit;
+    delete page;
+  }
+
+  void testGetField()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/fields.html");
+    HtmlElement* input = page->getField("foo");
+    ASSERT(input->hasAttribute("name", "foo"));
+    HtmlElement* password = page->getField("pass");
+    ASSERT(password->hasAttribute("id", "pass"));
+    HtmlElement* select = page->getField("opts");
+    ASSERT(select->hasAttribute("id", "opts"));
+    ASSERT_EQUAL(select->getName(), "select");
+    HtmlElement* textarea = page->getField("Hello label!");
+    ASSERT(textarea->hasAttribute("id", "bar"));
+    delete textarea;
+    delete select;
+    delete password;
+    delete input;
     delete page;
   }
   
