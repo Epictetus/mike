@@ -92,6 +92,9 @@ namespace mike
   
     void pop_back()
     {
+      T* p = NULL;
+      swap(p, items_[items_.size()-1]);
+      delete p;
       items_.pop_back();
     }
 

@@ -48,6 +48,7 @@ TEST_FILES = \
 	TestBrowser.cc \
 	TestWindow.cc \
 	TestUtils.cc \
+	TestPector.cc \
 	Main.cc
 
 # Test suite setting and compiler flags.
