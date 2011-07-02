@@ -213,8 +213,10 @@ namespace mike
       Browser* browser = frame_->getWindow()->getBrowser();
 
       for (vector<HtmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
-	if ((*it)->hasAttribute("src")) {
-	  string uri = buildUri((*it)->getAttribute("src"), getUrl());
+	HtmlElement* elem = *it;
+	
+	if (elem->hasAttribute("src")) {
+	  string uri = buildUri(elem->getAttribute("src"), getUrl());
 	  Request* request = Request::Get(uri);
 
 	  if (browser->isCookieEnabled()) {
@@ -226,8 +228,8 @@ namespace mike
 	    HtmlFrame* frame = new HtmlFrame(frame_);
 	    frames_.push_back(frame);
 
-	    if ((*it)->hasAttribute("name")) {
-	      frame->setName((*it)->getAttribute("name"));
+	    if (elem->hasAttribute("name")) {
+	      frame->setName(elem->getAttribute("name"));
 	    }
 	    
 	    page->enclose((Frame*)frame);
