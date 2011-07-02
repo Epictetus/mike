@@ -19,7 +19,14 @@ namespace mike
   Page* Page::Factory(Request* request)
   {
     if (request) {
-      Response* response = request->perform();
+      Response* response = NULL;
+      
+      try {
+	response = request->perform();
+      } catch (ConnectionError err) {
+	delete request;
+	throw err;
+      }
       
       if (response) {
 	if (response->isHtml()) {

@@ -10,12 +10,23 @@ namespace mike
 
   //============================= LIFECYCLE ====================================
 
+  Frame::Frame()
+  {
+    history_ = new History();
+  }
+  
   Frame::Frame(Window* window)
   {
     window_ = window;
     history_ = new History();
   }
 
+  Frame::Frame(Frame* parent)
+  {
+    window_ = parent->getWindow();
+    history_ = new History();
+  }
+  
   Frame::~Frame()
   {
     delete history_;
@@ -33,6 +44,11 @@ namespace mike
     return history_->getCurrent();
   }
 
+  Page* Frame::getEnclosedPage() const
+  {
+    return getPage();
+  }
+
   History* Frame::getHistory() const
   {
     return history_;
@@ -41,6 +57,11 @@ namespace mike
   Window* Frame::getWindow() const
   {
     return window_;
+  }
+
+  Frame* Frame::getParent() const
+  {
+    return parent_;
   }
 
   void Frame::setName(string name)

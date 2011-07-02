@@ -64,7 +64,7 @@ protected:
 
   void testGetEnclosingFrame()
   {
-    Frame* frame = new Frame(NULL);
+    Frame* frame = new Frame();
     Page* page = Page::Open("http://localhost:4567/simple.txt");
     page->enclose(frame);
     ASSERT_EQUAL(page->getEnclosingFrame(), frame);
@@ -73,8 +73,8 @@ protected:
 
   void testMultipleEncloseProtection()
   {
-    Frame* frame1 = new Frame(NULL);
-    Frame* frame2 = new Frame(NULL);
+    Frame* frame1 = new Frame();
+    Frame* frame2 = new Frame();
     Page* page = Page::Open("http://localhost:4567/simple.txt");
     page->enclose(frame1);
     page->enclose(frame2);

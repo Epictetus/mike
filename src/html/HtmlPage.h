@@ -7,11 +7,15 @@
 
 #include "xml/XmlPage.h"
 #include "html/HtmlElement.h"
+#include "html/HtmlFrame.h"
 #include "utils/Pector.h"
 
 namespace mike
 {
   typedef Pector<HtmlElement> HtmlElementSet;
+
+  class Window;
+  class Browser;
   
   /**
    * HTML page representation.
@@ -129,8 +133,26 @@ namespace mike
     string getTitle();
     string getTitleText();
 
+    /**
+     * \return All frames from within this page.
+     */
+    vector<HtmlFrame*> getFrames();
+
+    /**
+     * If number given then returns frame from given index on the list, if string
+     * then tries to find named frame.
+     *
+     * \param n Frame index.
+     * \param name Frame name.
+     * \return Specified frame.
+     */
+    HtmlFrame* getFrame(int n);
+    HtmlFrame* getFrame(string name);
+    HtmlFrame* getNamedFrame(string name);
+    
   protected:
     htmlDocPtr doc_;
+    vector<HtmlFrame*> frames_;
     
     // override
     virtual void parseDocument();
@@ -139,6 +161,11 @@ namespace mike
      * Loads all iframes and frames, and opens them in virtual frames.
      */
     virtual void loadFrames();
+
+    /**
+     * Removes all frames.
+     */
+    virtual void clearFrames();
   };
 }
 

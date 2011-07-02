@@ -1,7 +1,10 @@
 #include <list>
-#include "html/HtmlPage.h"
+#include <libxml/uri.h>
+
 #include "utils/Helpers.h"
-#include "Frame.h"
+#include "html/HtmlPage.h"
+#include "Browser.h"
+#include "Window.h"
 
 namespace mike
 {
@@ -29,6 +32,21 @@ namespace mike
 
     return strjoin(parts, size, " | ");
   }
+
+  string buildUri(string uri, string base)
+  {
+    xmlChar* xuri = xmlCharStrdup(uri.c_str());
+    xmlChar* xbase = xmlCharStrdup(base.c_str());
+    xmlChar* xresult = xmlBuildURI(xuri, xbase);
+
+    string result = (char*)xresult;
+
+    xmlFree(xuri);
+    xmlFree(xbase);
+    xmlFree(xresult);
+
+    return result;
+  }
   
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
@@ -42,6 +60,7 @@ namespace mike
 
   HtmlPage::~HtmlPage()
   {
+    clearFrames();
   }
 
   //============================= ACCESS     ===================================
@@ -111,12 +130,16 @@ namespace mike
   
   string HtmlPage::getTitle()
   {
-    XmlElement* dom_title = getElementByXpath("//html/head/title");
+    try {
+      XmlElement* title = getElementByXpath("//html/head/title");
 
-    if (dom_title) {
-      string title = dom_title->getContent();
-      delete dom_title;
-      return title;
+      if (title) {
+	string text = title->getContent();
+	delete title;
+	return text;
+      }
+    } catch (ElementNotFoundError err) {
+      // nothing...
     }
 
     return "";
@@ -126,14 +149,39 @@ namespace mike
   {
     return getTitle();
   }
-  
-  void HtmlPage::parseDocument()
+
+  vector<HtmlFrame*> HtmlPage::getFrames()
   {
-    xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
-    doc_ = htmlParseDoc(body, NULL);
-    xmlFree(body);
+    return frames_;
   }
 
+  HtmlFrame* HtmlPage::getFrame(int n)
+  {
+    if (n < frames_.size()) {
+      return frames_[n];
+    } else {
+      throw FrameNotExistsError();
+    }
+  }
+
+  HtmlFrame* HtmlPage::getFrame(string name)
+  {
+    for (vector<HtmlFrame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
+      if ((*it)->getName() == name) {
+	return *it;
+      }
+    }
+
+    throw NamedFrameNotExistsError(name);
+  }
+
+  HtmlFrame* HtmlPage::getNamedFrame(string name)
+  {
+    return getFrame(name);
+  }
+
+  //============================= OPERATIONS ===================================
+  
   void HtmlPage::reload()
   {
     Page::reload();
@@ -146,34 +194,56 @@ namespace mike
     loadFrames();
   }
 
+  /////////////////////////////// PROTECTED ////////////////////////////////////
+  
+  void HtmlPage::parseDocument()
+  {
+    xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
+    doc_ = htmlParseDoc(body, NULL);
+    xmlFree(body);
+  }
+
+  // XXX: add infinity loop prevention for frames opening!
   void HtmlPage::loadFrames()
   {
+    clearFrames();
+
     if (frame_) {
-      //XmlElementSet* frames = getFrames();
+      HtmlElementSet* frames = getElementsByXpath("//iframe | //frameset//frame");
+      Browser* browser = frame_->getWindow()->getBrowser();
 
-      /*
-      for (vector<XmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
-	XmlElement* iframe = *it;
+      for (vector<HtmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
+	if ((*it)->hasAttribute("src")) {
+	  string uri = buildUri((*it)->getAttribute("src"), getUrl());
+	  Request* request = Request::Get(uri);
 
-	if (iframe->hasAttribute("src")) {
-	  http::Request* irequest = http::Request::Get(iframe->getAttribute("src"));
-	  Page* ipage = Page::Build(irequest);
-	  Frame* new_frame = frame_->buildFrame();
-
-	  if (iframe->hasAttribute("name")) {
-	    new_frame->setName(iframe->getAttribute("name"));
+	  if (browser->isCookieEnabled()) {
+	    request->enableCookieSession(browser->getSessionToken());
 	  }
-	
-	  if (ipage->isHtml()) {
-	    ipage->toHtmlPage()->openInFrame(new_frame);
-	  } else {
-	    ipage->openInFrame(new_frame);
+
+	  Page* page = Page::Factory(request);
+	  HtmlFrame* frame = new HtmlFrame(frame_);
+	  frames_.push_back(frame);
+
+	  if ((*it)->hasAttribute("name")) {
+	    frame->setName((*it)->getAttribute("name"));
 	  }
+	  
+	  page->enclose((Frame*)frame);
 	}
       }
-      */
 
-      //delete frames;
+      delete frames;
     }
+  }
+
+  void HtmlPage::clearFrames()
+  {
+    for (vector<HtmlFrame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
+      delete *it;
+      *it = NULL;
+    }
+
+    frames_.clear();
   }
 }

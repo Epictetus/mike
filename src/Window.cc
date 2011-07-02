@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Frame.h"
 #include "Page.h"
+#include "html/HtmlPage.h"
 
 namespace mike
 {

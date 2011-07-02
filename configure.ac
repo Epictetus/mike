@@ -86,6 +86,7 @@ AC_CHECK_LIB([uuid], [main], [LIBUUID=-luuid], [AC_MSG_ERROR(this package requir
 
 AC_SUBST([LIBPTHREAD])
 AC_SUBST([LIBCURL])
+AC_SUBST([LIBUUID])
 
 # Check for headers. 
 

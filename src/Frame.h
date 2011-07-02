@@ -38,8 +38,10 @@ namespace mike
      *
      * \param windwo Window which contains this frame.
      */
+    explicit Frame();
     explicit Frame(Window* window);
-
+    explicit Frame(Frame* frame);
+    
     /**
      * Destructor.
      */
@@ -56,6 +58,7 @@ namespace mike
      * \return Currently open page. 
      */
     Page* getPage() const;
+    Page* getEnclosedPage() const;
 
     /**
      * \return History container for this frame.
@@ -68,6 +71,11 @@ namespace mike
     Window* getWindow() const;
 
     /**
+     * \return Parent frame.
+     */
+    Frame* getParent() const;
+    
+    /**
      * Sets name of this frame.
      *
      * \param name New name for this frame.
@@ -78,11 +86,12 @@ namespace mike
      * \return name of this frame.
      */
     string getName() const;
-    
+
   protected:
     string name_;
     Window* window_;
     History* history_;
+    Frame* parent_;
   };
 }
 

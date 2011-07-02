@@ -4,6 +4,7 @@
 
 #include "utils/CppunitMacros.h"
 #include "html/HtmlPage.h"
+#include "Browser.h"
 
 using namespace std;
 using namespace mike;
@@ -23,8 +24,9 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetLink);
   CPPUNIT_TEST(testGetButton);
   CPPUNIT_TEST(testGetField);
-  //CPPUNIT_TEST(testGetFramesWithIframes);
-  //CPPUNIT_TEST(testGetFramesWithFrameset);
+  CPPUNIT_TEST(testGetTitle);
+  CPPUNIT_TEST(testGetFramesWithIframes);
+  CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -164,26 +166,35 @@ protected:
     delete input;
     delete page;
   }
+
+  void testGetTitle()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/with-title.html");
+    ASSERT_EQUAL(page->getTitle(), "Hello World!");
+    page = (HtmlPage*)Page::Open("http://localhost:4567/simple.html");
+    ASSERT_EQUAL(page->getTitle(), "");
+    delete page;
+  }
   
-  /*
   void testGetFramesWithIframes()
   {
-    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/iframes.html");
-    HtmlElementSet* frames = page->getFrames();
-    ASSERT_EQUAL(frames->size(), 2);
-    delete frames;
-    delete page;
+    Browser* browser = new Browser();
+    HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/iframes.html");
+    vector<HtmlFrame*> frames = page->getFrames();
+    ASSERT_EQUAL(frames.size(), 2);
+    ASSERT_EQUAL(frames[0]->getPage()->getUrl(), "http://localhost:4567/iframes/1.html");
+    delete browser;
   }
   
   void testGetFramesWithFrameset()
   {
-    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/frameset.html");
-    HtmlElementSet* frames = page->getFrames();
-    ASSERT_EQUAL(frames->size(), 2);
-    delete frames;
-    delete page;
+    Browser* browser = new Browser();
+    HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/frameset.html");
+    vector<HtmlFrame*> frames = page->getFrames();
+    ASSERT_EQUAL(frames.size(), 2);
+    ASSERT_EQUAL(frames[0]->getPage()->getUrl(), "http://localhost:4567/iframes/1.html");
+    delete browser;
   }
-  */
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeHtmlPageTest);

@@ -17,7 +17,7 @@ namespace mike
   class WindowNotExistsError
   {
   public:
-    const char* getReason() const { return "Such window doesn't exist in this browser"; }
+    const char* getReason() const { return "Window index out of range"; }
     const char* operator*() { return getReason(); }
   };
   
