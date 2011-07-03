@@ -13,6 +13,7 @@ class MikeUtilsTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(MikeUtilsTest);
   CPPUNIT_TEST(testStrstrip);
   CPPUNIT_TEST(testStrjoin);
+  CPPUNIT_TEST(testStrsplit);
   CPPUNIT_TEST(testXpathSanitize);
   CPPUNIT_TEST_SUITE_END();
 
@@ -34,6 +35,19 @@ protected:
     ASSERT_EQUAL(strjoin(parts, 3, "|"), "one|two|three");
     ASSERT_EQUAL(strjoin(parts, 1, "|"), "one");
     ASSERT_EQUAL(strjoin(parts, 2, "|"), "one|two");
+  }
+
+  void testStrsplit()
+  {
+    vector<string> parts1 = strsplit(" Hello my world!   ");
+    ASSERT_EQUAL(parts1.size(), 3);
+    ASSERT_EQUAL(parts1[0], "Hello");
+    ASSERT_EQUAL(parts1[1], "my");
+    ASSERT_EQUAL(parts1[2], "world!");
+    vector<string> parts2 = strsplit("hello:delim", ':');
+    ASSERT_EQUAL(parts2.size(), 2);
+    ASSERT_EQUAL(parts2[0], "hello");
+    ASSERT_EQUAL(parts2[1], "delim");
   }
 
   void testXpathSanitize()

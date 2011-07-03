@@ -2,6 +2,7 @@
 #define _MIKE_HELPERS_H_
 
 #include <string>
+#include <vector>
 
 namespace mike
 {
@@ -24,6 +25,15 @@ namespace mike
    * \return Combined string.
    */
   string strjoin(string parts[], int size, string separator="");
+
+  /**
+   * Splits given string by given delimiter into vector of substrings.
+   *
+   * \param text Text to split.
+   * \param delim Delimiter.
+   * \return Vector of substrings.
+   */
+  vector<string> strsplit(string text, char delim=' ');
   
   /**
    * Sanitizes given XPath argument.

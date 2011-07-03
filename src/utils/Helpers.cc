@@ -1,3 +1,4 @@
+#include <sstream>
 #include <string.h>
 #include "utils/Helpers.h"
 
@@ -43,6 +44,20 @@ namespace mike
     return result;
   }
 
+  vector<string> strsplit(string text, char delim/*=' '*/)
+  {
+    vector<string> parts;
+    stringstream stream(text);
+    string part;
+
+    while (getline(stream, part, delim)) {
+      if (!part.empty())
+	parts.push_back(part);
+    }
+    
+    return parts;
+  }
+  
   string xpathSanitize(string arg)
   {
     char find[3] = { '&', '"', '\'' };
