@@ -3,38 +3,33 @@
 
 #include <string>
 #include <vector>
+#include "html/HtmlElement.h"
 
-#define HTML_ATTRIBUTE(func, attr)		\
-  string get##func()				\
-  {						\
-    return getAttribute(attr);			\
-  }						\
-  bool has##func()				\
-  {						\
-    return hasAttribute(attr);			\
-  }						\
-  bool has##func(string val)			\
-  {						\
-    return hasAttribute(attr, val);		\
+#define HTML_ATTRIBUTE(func, attr)			\
+  string get##func()					\
+  {							\
+    return self()->getAttribute(attr);			\
+  }							\
+  bool has##func()					\
+  {							\
+    return self()->hasAttribute(attr);			\
+  }							\
+  bool has##func(string val)				\
+  {							\
+    return self()->hasAttribute(attr, val);		\
   }
 
 namespace mike
 {
   using namespace std;
 
-  /**
-   * Base class for extending with attributes. Contains just stub methods
-   * implemented in XmlElement and HtmlElement.
-   */
-  class HtmlAttrs
+  class HtmlElementWithAttrs
   {
   public:
-    virtual string getAttribute(string name);
-    virtual bool hasAttribute(string name);
-    virtual bool hasAttribute(string name, string value);
+    virtual HtmlElement* self() { return 0; }
   };
-
-  class HtmlCoreAttrs : public HtmlAttrs
+  
+  class HtmlElementWithCoreAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(Id, "id");
@@ -71,7 +66,7 @@ namespace mike
     bool hasAnyClass(int n_args, ...);
   };
 
-  class HtmlI18nAttrs : public HtmlAttrs
+  class HtmlElementWithI18nAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(Lang, "lang");
@@ -79,11 +74,11 @@ namespace mike
     HTML_ATTRIBUTE(Dir, "dir");
   };
 
-  class HtmlEventAttrs : public HtmlAttrs
+  class HtmlElementWithEventAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(OnClick, "onclick");
-    HTML_ATTRIBUTE(OnDbClick, "ondbclick");
+    HTML_ATTRIBUTE(OnDblClick, "ondblclick");
     HTML_ATTRIBUTE(OnMouseDown, "onmousedown");
     HTML_ATTRIBUTE(OnMouseUp, "onmouseup");
     HTML_ATTRIBUTE(OnMouseOver, "onmouseover");
@@ -94,7 +89,7 @@ namespace mike
     HTML_ATTRIBUTE(OnKeyUp, "onkeyup");
   };
 
-  class HtmlAccessAttrs : public HtmlAttrs
+  class HtmlElementWithAccessAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(Accesskey, "accesskey");
@@ -103,7 +98,7 @@ namespace mike
     HTML_ATTRIBUTE(OnBlur, "onblur");
   };
 
-  class HtmlAlignAttrs : public HtmlAttrs
+  class HtmlElementWithHAlignAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(Align, "align");
@@ -111,16 +106,16 @@ namespace mike
     HTML_ATTRIBUTE(CharOff, "charoff");
   };
 
-  class HtmlVAlignAttrs : public HtmlAttrs
+  class HtmlElementWithVAlignAttrs : public virtual HtmlElementWithAttrs
   {
   public:
     HTML_ATTRIBUTE(VAlign, "valign");
   };
 
-  class HtmlDefaultAttrs
-    : public HtmlCoreAttrs
-    , public HtmlI18nAttrs
-    , public HtmlEventAttrs
+  class HtmlElementWithDefaultAttrs
+    : public virtual HtmlElementWithCoreAttrs
+    , public virtual HtmlElementWithI18nAttrs
+    , public virtual HtmlElementWithEventAttrs
   {
   };
 }

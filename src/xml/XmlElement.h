@@ -27,6 +27,7 @@ namespace mike
    */
   class XmlElement
   {
+    friend class XmlPage;
   public:
     /**
      * Creates new element.
@@ -34,7 +35,7 @@ namespace mike
      * \param page Page to which belongs this element.
      * \param node Wrapped libxml node.
      */
-    explicit XmlElement(XmlPage* page, xmlNodePtr node);
+    XmlElement(XmlPage* page=NULL, xmlNodePtr node=NULL);
 
     /**
      * Destructor.
@@ -48,7 +49,7 @@ namespace mike
      * \param name Name of attribute.
      * \return Value of specified attribute.
      */
-    string getAttribute(string name);
+    virtual string getAttribute(string name);
 
     /**
      * Checks whether this node has defined given attribute or not. If second parameter
@@ -58,8 +59,8 @@ namespace mike
      * \param value Value to match.
      * \return Whether given attribute exists or equals specified value.
      */
-    bool hasAttribute(string name);
-    bool hasAttribute(string name, string value);
+    virtual bool hasAttribute(string name);
+    virtual bool hasAttribute(string name, string value);
     
     /**
      * \return Content of all children nodes.
@@ -107,7 +108,6 @@ namespace mike
   protected:
     XmlPage* page_;
     xmlNodePtr node_;
-    map<string,xmlChar*> attrsCache_;
   };
 }
 

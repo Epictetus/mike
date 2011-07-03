@@ -90,3 +90,21 @@ end
 get "/with-title.html" do
   "<html><head><title>Hello World!</title></head><body>Hello!</body></html>"
 end
+
+get "/all-elements.html" do
+<<-HTML
+<html>
+<head>
+  <title>Foo!</title>
+</head>
+<body>
+  <div>Foo</div>
+  <table>
+    <tbody>
+      <tr><td>Foo</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
+HTML
+end

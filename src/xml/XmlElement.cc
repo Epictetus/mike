@@ -7,7 +7,7 @@ namespace mike
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
-  
+
   XmlElement::XmlElement(XmlPage* page, xmlNodePtr node)
   {
     page_ = page;
@@ -16,8 +16,6 @@ namespace mike
 
   XmlElement::~XmlElement()
   {
-    for (map<string,xmlChar*>::iterator it = attrsCache_.begin(); it != attrsCache_.end(); it++)
-      xmlFree((*it).second);
   }
 
   //============================= ACCESS     ===================================
@@ -26,21 +24,15 @@ namespace mike
   {
     xmlChar* attr_name = xmlCharStrdup(name.c_str());
     xmlChar* value = NULL;
-
-    map<string,xmlChar*>::iterator found = attrsCache_.find(name);
-
-    if (found != attrsCache_.end()) {
-      value = (*found).second;
-    } else {
-      if (node_ && (value = xmlGetProp(node_, attr_name)) != NULL) {
-	xmlFree(attr_name);
-	attrsCache_[name] = value;
-      } else {
-	return "";
-      }
-    }
+    string result = "";
     
-    return string((char*)value, xmlStrlen(value));
+    if (node_ && (value = xmlGetProp(node_, attr_name)) != NULL) {
+      result = (char*)value;
+      xmlFree(attr_name);
+      xmlFree(value);
+    }
+
+    return result;
   }
 
   bool XmlElement::hasAttribute(string name)

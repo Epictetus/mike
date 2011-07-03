@@ -39,7 +39,10 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/html/HtmlElement.h \
 	$(TESTEE_SOURCES_DIR)/html/HtmlElement.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.h \
-	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc 
+	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc \
+	$(TESTEE_SOURCES_DIR)/html/elements/HtmlHtmlElement.h \
+	$(TESTEE_SOURCES_DIR)/html/elements/HtmlHeadElement.h \
+	$(TESTEE_SOURCES_DIR)/html/elements/HtmlDivElement.h
 
 # List of test files.
 TEST_FILES = \
@@ -48,6 +51,7 @@ TEST_FILES = \
 	TestXmlPage.cc \
 	TestXmlElement.cc \
 	TestHtmlPage.cc \
+	TestHtmlElements.cc \
 	TestHistory.cc \
 	TestBrowser.cc \
 	TestWindow.cc \

@@ -4,54 +4,67 @@
 
 namespace mike
 {
-  string HtmlCoreAttrs::getClass()
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= ACCESS     ===================================
+  
+  string HtmlElementWithCoreAttrs::getClass()
   {
-    return getAttribute("class");
+    return self()->getAttribute("class");
   }
   
-  vector<string> HtmlCoreAttrs::getClasses()
+  vector<string> HtmlElementWithCoreAttrs::getClasses()
   {
-    return strsplit(getClass());
+    if (hasClass())
+      return strsplit(getClass());
+    else
+      return vector<string>();
   }
 
-  bool HtmlCoreAttrs::hasClass()
+  bool HtmlElementWithCoreAttrs::hasClass()
   {
-    return hasAttribute("class");
+    return self()->hasAttribute("class");
   }
   
-  bool HtmlCoreAttrs::hasClass(string klass)
+  bool HtmlElementWithCoreAttrs::hasClass(string klass)
   {
-    vector<string> classes = getClasses();
-    
-    for (vector<string>::iterator it = classes.begin(); it != classes.end(); it++) {
-      if (*it == klass)
-	return true;
+    if (hasClass()) {
+      vector<string> classes = getClasses();
+      
+      for (vector<string>::iterator it = classes.begin(); it != classes.end(); it++) {
+	if (*it == klass)
+	  return true;
+      }
     }
-
+    
     return false;
   }
 
-  bool HtmlCoreAttrs::hasClasses(int n_args, ...)
+  bool HtmlElementWithCoreAttrs::hasClasses(int n_args, ...)
   {
-    va_list args;
-    va_start(args, n_args);
+    if (hasClass()) {
+      va_list args;
+      va_start(args, n_args);
 
-    for (int i = 0; i < n_args; i++) {
-      if (!hasClass(string(va_arg(args, char*))))
-	return false;
+      for (int i = 0; i < n_args; i++) {
+	if (!hasClass(string(va_arg(args, char*))))
+	  return false;
+      }
     }
 
     return true;
   }
 
-  bool HtmlCoreAttrs::hasAnyClass(int n_args, ...)
+  bool HtmlElementWithCoreAttrs::hasAnyClass(int n_args, ...)
   {
-    va_list args;
-    va_start(args, n_args);
-
-    for (int i = 0; i < n_args; i++) {
-      if (hasClass(string(va_arg(args, char*))))
-	return true;
+    if (hasClass()) {
+      va_list args;
+      va_start(args, n_args);
+      
+      for (int i = 0; i < n_args; i++) {
+	if (hasClass(string(va_arg(args, char*))))
+	  return true;
+      }
     }
 
     return false;

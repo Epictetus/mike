@@ -10,6 +10,11 @@
 #include "html/HtmlFrame.h"
 #include "utils/Pector.h"
 
+#include "html/elements/HtmlHtmlElement.h"
+#include "html/elements/HtmlHeadElement.h"
+#include "html/elements/HtmlDivElement.h"
+#include "html/elements/HtmlTrElement.h"
+
 namespace mike
 {
   typedef Pector<HtmlElement> HtmlElementSet;
