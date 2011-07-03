@@ -35,6 +35,10 @@ namespace mike
    */
   class Page
   {
+    friend class Window;
+    friend class HtmlPage;
+    friend class XmlPage;
+    
   public:
     /**
      * Performs GET request on specified URL and returns page object of appropriate type.
@@ -124,14 +128,6 @@ namespace mike
     virtual void reload();
 
     /**
-     * Opens the page in given frame. For the security reasons each instance can
-     * be enclosed only once.
-     *
-     * \param frame Frame in which this page should be opened.
-     */
-    virtual void enclose(Frame* frame);
-
-    /**
      * \return Frame in which current page has been rendered.
      */
     Frame* getEnclosingFrame();
@@ -145,6 +141,14 @@ namespace mike
     http::Request* request_;
     PageType type_;
     Frame* frame_;
+
+    /**
+     * Opens the page in given frame. For the security reasons each instance can
+     * be enclosed only once.
+     *
+     * \param frame Frame in which this page should be opened.
+     */
+    virtual void enclose(Frame* frame);
   };
 }
 

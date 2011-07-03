@@ -64,35 +64,28 @@ protected:
 
   void testGetEnclosingFrame()
   {
-    Frame* frame = new Frame();
-    Page* page = Page::Open("http://localhost:4567/simple.txt");
-    page->enclose(frame);
-    ASSERT_EQUAL(page->getEnclosingFrame(), frame);
-    delete frame;
+    Browser* browser = new Browser();
+    Page* page = browser->open("http://localhost:4567/simple.txt");
+    ASSERT_EQUAL(page->getEnclosingFrame()->getPage(), page);
+    delete browser;
   }
 
   void testMultipleEncloseProtection()
   {
-    Frame* frame1 = new Frame();
-    Frame* frame2 = new Frame();
-    Page* page = Page::Open("http://localhost:4567/simple.txt");
-    page->enclose(frame1);
-    page->enclose(frame2);
-    ASSERT_EQUAL(page->getEnclosingFrame(), frame1);
-    delete frame1;
-    delete frame2;
+    Browser* browser = new Browser();
+    Page* page = browser->open("http://localhost:4567/simple.txt");
+    Window *window = new Window(browser);
+    window->setPage(page);
+    ASSERT_EQUAL(page->getEnclosingWindow(), browser->getWindow(0));
+    delete browser;
+    delete window;
   }
 
   void testGetEnclosingWindow()
   {
     Browser* browser = new Browser();
-    Window* window = new Window(browser);
-    Frame* frame = new Frame(window);
-    Page* page = Page::Open("http://localhost:4567/simple.txt");
-    page->enclose(frame);
-    ASSERT_EQUAL(page->getEnclosingWindow(), window);
-    delete frame;
-    delete window;
+    Page* page = browser->open("http://localhost:4567/simple.txt");
+    ASSERT_EQUAL(page->getEnclosingWindow(), browser->getWindow(0));
     delete browser;
   }
 

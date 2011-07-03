@@ -35,7 +35,6 @@ namespace mike
     HtmlElementSet* getElementsByXpath(string xpath);
     HtmlElement* getElementByXpath(string xpath);
     HtmlElementSet* getElementsByTagName(string tag);
-    virtual void enclose(Frame* frame);
     virtual void reload();
 
     /**
@@ -160,6 +159,7 @@ namespace mike
     vector<HtmlFrame*> frames_;
     
     // override
+    virtual void enclose(Frame* frame);
     virtual void parseDocument();
 
     /**
