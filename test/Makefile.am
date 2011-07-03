@@ -7,42 +7,21 @@ TESTEE_INCLUDES_DIR = $(TESTEE_SOURCES_DIR)
 
 # List of sources to compile and test.
 TESTEE_FILES = \
-	$(TESTEE_SOURCES_DIR)/utils/CppunitMacros.h \
-	$(TESTEE_SOURCES_DIR)/utils/SystemInfo.h \
-	$(TESTEE_SOURCES_DIR)/utils/Helpers.h \
 	$(TESTEE_SOURCES_DIR)/utils/Helpers.cc \
-	$(TESTEE_SOURCES_DIR)/utils/Pector.h \
-	$(TESTEE_SOURCES_DIR)/http/Response.h \
 	$(TESTEE_SOURCES_DIR)/http/Response.cc \
-	$(TESTEE_SOURCES_DIR)/http/Request.h \
 	$(TESTEE_SOURCES_DIR)/http/Request.cc \
-	$(TESTEE_SOURCES_DIR)/http/Headers.h \
 	$(TESTEE_SOURCES_DIR)/http/Headers.cc \
-	$(TESTEE_SOURCES_DIR)/Page.h \
 	$(TESTEE_SOURCES_DIR)/Page.cc \
-	$(TESTEE_SOURCES_DIR)/History.h \
 	$(TESTEE_SOURCES_DIR)/History.cc \
-	$(TESTEE_SOURCES_DIR)/Browser.h \
 	$(TESTEE_SOURCES_DIR)/Browser.cc \
-	$(TESTEE_SOURCES_DIR)/Window.h \
 	$(TESTEE_SOURCES_DIR)/Window.cc \
-	$(TESTEE_SOURCES_DIR)/Frame.h \
 	$(TESTEE_SOURCES_DIR)/Frame.cc \
-	$(TESTEE_SOURCES_DIR)/xml/XmlElement.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlElement.cc \
-	$(TESTEE_SOURCES_DIR)/xml/XmlPage.h \
 	$(TESTEE_SOURCES_DIR)/xml/XmlPage.cc \
-	$(TESTEE_SOURCES_DIR)/html/HtmlPage.h \
 	$(TESTEE_SOURCES_DIR)/html/HtmlPage.cc \
-	$(TESTEE_SOURCES_DIR)/html/HtmlAttributes.h \
 	$(TESTEE_SOURCES_DIR)/html/HtmlAttributes.cc \
-	$(TESTEE_SOURCES_DIR)/html/HtmlElement.h \
 	$(TESTEE_SOURCES_DIR)/html/HtmlElement.cc \
-	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.h \
-	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc \
-	$(TESTEE_SOURCES_DIR)/html/elements/HtmlHtmlElement.h \
-	$(TESTEE_SOURCES_DIR)/html/elements/HtmlHeadElement.h \
-	$(TESTEE_SOURCES_DIR)/html/elements/HtmlDivElement.h
+	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc
 
 # List of test files.
 TEST_FILES = \
