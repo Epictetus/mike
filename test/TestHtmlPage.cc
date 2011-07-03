@@ -29,6 +29,7 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetTitle);
   CPPUNIT_TEST(testGetFramesWithIframes);
   CPPUNIT_TEST(testGetFramesWithFrameset);
+  CPPUNIT_TEST(testDiscardNoScriptElementsWhenJavaScriptEnabled);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -223,6 +224,16 @@ protected:
     vector<HtmlFrame*> frames = page->getFrames();
     ASSERT_EQUAL(frames.size(), 2);
     ASSERT_EQUAL(frames[0]->getPage()->getUrl(), "http://localhost:4567/iframes/1.html");
+    delete browser;
+  }
+
+  void testDiscardNoScriptElementsWhenJavaScriptEnabled()
+  {
+    Browser* browser = new Browser();
+    browser->enableJava();
+    HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/noscript.html");
+    HtmlElementSet* noscripts = page->getElementsByTagName("noscript");
+    ASSERT(noscripts->empty());
     delete browser;
   }
 };

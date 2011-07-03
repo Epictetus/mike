@@ -1,4 +1,5 @@
 #include <list>
+#include <string.h>
 #include <libxml/uri.h>
 
 #include "utils/Helpers.h"
@@ -47,7 +48,7 @@ namespace mike
 
     return result;
   }
-  
+
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
@@ -216,16 +217,18 @@ namespace mike
   {
     Page::reload();
     loadFrames();
+    processScripts();
   }
-  
+
+  /////////////////////////////// PROTECTED ////////////////////////////////////
+
   void HtmlPage::enclose(Frame* frame)
   {
     Page::enclose(frame);
     loadFrames();
+    processScripts();
   }
 
-  /////////////////////////////// PROTECTED ////////////////////////////////////
-  
   void HtmlPage::parseDocument()
   {
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
@@ -233,6 +236,26 @@ namespace mike
     xmlFree(body);
   }
 
+  void HtmlPage::processScripts()
+  {
+    if (frame_ && doc_) {
+      if (frame_->getWindow()->getBrowser()->isJavaEnabled()) {
+	removeNoScriptNodes();
+	HtmlElementSet* scripts = getElementsByTagName("script");
+      }
+    }
+  }
+
+  void HtmlPage::removeNoScriptNodes()
+  {
+    HtmlElementSet* nodes = getElementsByTagName("noscript");
+
+    for (vector<HtmlElement*>::iterator it = nodes->begin(); it != nodes->end(); it++)
+      (*it)->unlink();
+    
+    delete nodes;
+  }
+  
   // XXX: add infinity loop prevention for frames opening!
   void HtmlPage::loadFrames()
   {

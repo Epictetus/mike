@@ -15,4 +15,15 @@ namespace mike
   HtmlElement::~HtmlElement()
   {
   }
+
+  /////////////////////////////// PROTECTED ////////////////////////////////////
+
+  void HtmlElement::unlink()
+  {
+    if (node_) {
+      xmlUnlinkNode(node_);
+      xmlFreeNode(node_);
+      node_ = NULL;
+    }
+  }
 }

@@ -46,6 +46,7 @@ namespace mike
     HtmlElement* getElementByXpath(string xpath);
     HtmlElement* getElementByPath(string path);
     HtmlElementSet* getElementsByTagName(string tag);
+
     virtual void reload();
 
     /**
@@ -193,14 +194,24 @@ namespace mike
     virtual void parseDocument();
 
     /**
+     * Processes all javascripts within this page.
+     */
+    void processScripts();
+    
+    /**
      * Loads all iframes and frames, and opens them in virtual frames.
      */
-    virtual void loadFrames();
+    void loadFrames();
 
     /**
      * Removes all frames.
      */
-    virtual void clearFrames();
+    void clearFrames();
+
+    /**
+     * Removes all "<noscript>...</noscript>" nodes.
+     */
+    void removeNoScriptNodes();
   };
 }
 

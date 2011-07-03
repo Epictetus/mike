@@ -78,6 +78,26 @@ namespace mike
     cookieEnabled_ = false;
   }
 
+  void Browser::enableJava()
+  {
+    javaEnabled_ = true;
+  }
+
+  void Browser::enableJavaScript()
+  {
+    enableJava();
+  }
+
+  void Browser::disableJava()
+  {
+    javaEnabled_ = false;
+  }
+
+  void Browser::disableJavaScript()
+  {
+    disableJava();
+  }
+  
   // XXX: in the future it should return read only list...
   list<Window*> Browser::getWindows()
   {

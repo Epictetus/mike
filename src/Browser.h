@@ -113,6 +113,18 @@ namespace mike
      * Disables cookies handling.
      */
     void disableCookies();
+
+    /**
+     * Enables javascript processing.
+     */
+    void enableJava();
+    void enableJavaScript();
+
+    /**
+     * Disables javascript processing.
+     */
+    void disableJava();
+    void disableJavaScript();
     
     /**
      * Closes all windows opened within current instance (called automatically when browser object

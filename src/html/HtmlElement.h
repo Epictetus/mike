@@ -37,6 +37,8 @@ namespace mike
    */
   class HtmlElement : public XmlElement
   {
+    friend class HtmlPage;
+    
   public:
     HtmlElement(HtmlPage* page, xmlNodePtr node);
     virtual ~HtmlElement();
@@ -78,6 +80,12 @@ namespace mike
       delete this;
       return p;
     }
+
+  protected:
+    /**
+     * Removes this element from the page.
+     */
+    void unlink();
   };
 }
 
