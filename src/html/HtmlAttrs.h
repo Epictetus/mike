@@ -1,35 +1,21 @@
-#ifndef _MIKE_HTML_ATTRIBUTES_H_
-#define _MIKE_HTML_ATTRIBUTES_H_
+#ifndef _MIKE_HTML_ATTRS_H_
+#define _MIKE_HTML_ATTRS_H_
 
 #include <string>
 #include <vector>
 #include "html/HtmlElement.h"
 
-#define HTML_ATTRIBUTE(func, attr)			\
-  string get##func()					\
-  {							\
-    return self()->getAttribute(attr);			\
-  }							\
-  bool has##func()					\
-  {							\
-    return self()->hasAttribute(attr);			\
-  }							\
-  bool has##func(string val)				\
-  {							\
-    return self()->hasAttribute(attr, val);		\
-  }
-
 namespace mike
 {
   using namespace std;
 
-  class HtmlElementWithAttrs
+  class HtmlAttrs
   {
   public:
     virtual HtmlElement* self() { return 0; }
   };
   
-  class HtmlElementWithCoreAttrs : public virtual HtmlElementWithAttrs
+  class HtmlCoreAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(Id, "id");
@@ -66,7 +52,7 @@ namespace mike
     bool hasAnyClass(int n_args, ...);
   };
 
-  class HtmlElementWithI18nAttrs : public virtual HtmlElementWithAttrs
+  class HtmlI18nAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(Lang, "lang");
@@ -74,7 +60,7 @@ namespace mike
     HTML_ATTRIBUTE(Dir, "dir");
   };
 
-  class HtmlElementWithEventAttrs : public virtual HtmlElementWithAttrs
+  class HtmlEventAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(OnClick, "onclick");
@@ -89,7 +75,7 @@ namespace mike
     HTML_ATTRIBUTE(OnKeyUp, "onkeyup");
   };
 
-  class HtmlElementWithAccessAttrs : public virtual HtmlElementWithAttrs
+  class HtmlAccessAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(Accesskey, "accesskey");
@@ -98,7 +84,7 @@ namespace mike
     HTML_ATTRIBUTE(OnBlur, "onblur");
   };
 
-  class HtmlElementWithHAlignAttrs : public virtual HtmlElementWithAttrs
+  class HtmlHAlignAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(Align, "align");
@@ -106,18 +92,18 @@ namespace mike
     HTML_ATTRIBUTE(CharOff, "charoff");
   };
 
-  class HtmlElementWithVAlignAttrs : public virtual HtmlElementWithAttrs
+  class HtmlVAlignAttrs : public virtual HtmlAttrs
   {
   public:
     HTML_ATTRIBUTE(VAlign, "valign");
   };
 
-  class HtmlElementWithDefaultAttrs
-    : public virtual HtmlElementWithCoreAttrs
-    , public virtual HtmlElementWithI18nAttrs
-    , public virtual HtmlElementWithEventAttrs
+  class HtmlDefaultAttrs
+    : public virtual HtmlCoreAttrs
+    , public virtual HtmlI18nAttrs
+    , public virtual HtmlEventAttrs
   {
   };
 }
 
-#endif /* _MIKE_HTML_ATTRIBUTES_H_ */
+#endif /* _MIKE_HTML_ATTRS_H_ */

@@ -1,7 +1,7 @@
 #ifndef _MIKE_HTML_HEAD_ELEMENT_H_
 #define _MIKE_HTML_HEAD_ELEMENT_H_
 
-#include "html/HtmlAttributes.h"
+#include "html/HtmlAttrs.h"
 
 namespace mike
 {

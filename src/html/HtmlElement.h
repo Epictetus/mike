@@ -13,7 +13,18 @@
   class Html##type##Element : public HtmlElement
 
 #define WITH_ATTRS(group) \
-  public HtmlElementWith##group##Attrs
+  public Html##group##Attrs
+
+#define HTML_ATTRIBUTE(func, attr)			\
+  string get##func() { 					\
+    return self()->getAttribute(attr);			\
+  }							\
+  bool has##func() {					\
+    return self()->hasAttribute(attr);			\
+  }							\
+  bool has##func(string val) {				\
+    return self()->hasAttribute(attr, val);		\
+  }
 
 namespace mike
 {
@@ -21,6 +32,9 @@ namespace mike
 
   class HtmlPage;
 
+  /**
+   * Complex representation of HTML elements.
+   */
   class HtmlElement : public XmlElement
   {
   public:

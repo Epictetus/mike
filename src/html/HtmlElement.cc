@@ -3,6 +3,10 @@
 
 namespace mike
 {
+  /////////////////////////////// PUBLIC ///////////////////////////////////////
+
+  //============================= LIFECYCLE ====================================
+  
   HtmlElement::HtmlElement(HtmlPage* page, xmlNodePtr node)
     : XmlElement((XmlPage*)page, node)
   {

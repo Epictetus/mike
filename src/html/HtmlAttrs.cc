@@ -1,19 +1,19 @@
 #include <stdarg.h>
-#include "html/HtmlAttributes.h"
+#include "html/HtmlAttrs.h"
 #include "utils/Helpers.h"
 
 namespace mike
 {
   /////////////////////////////// PUBLIC ///////////////////////////////////////
-
+  
   //============================= ACCESS     ===================================
   
-  string HtmlElementWithCoreAttrs::getClass()
+  string HtmlCoreAttrs::getClass()
   {
     return self()->getAttribute("class");
   }
   
-  vector<string> HtmlElementWithCoreAttrs::getClasses()
+  vector<string> HtmlCoreAttrs::getClasses()
   {
     if (hasClass())
       return strsplit(getClass());
@@ -21,12 +21,12 @@ namespace mike
       return vector<string>();
   }
 
-  bool HtmlElementWithCoreAttrs::hasClass()
+  bool HtmlCoreAttrs::hasClass()
   {
     return self()->hasAttribute("class");
   }
   
-  bool HtmlElementWithCoreAttrs::hasClass(string klass)
+  bool HtmlCoreAttrs::hasClass(string klass)
   {
     if (hasClass()) {
       vector<string> classes = getClasses();
@@ -40,7 +40,7 @@ namespace mike
     return false;
   }
 
-  bool HtmlElementWithCoreAttrs::hasClasses(int n_args, ...)
+  bool HtmlCoreAttrs::hasClasses(int n_args, ...)
   {
     if (hasClass()) {
       va_list args;
@@ -55,7 +55,7 @@ namespace mike
     return true;
   }
 
-  bool HtmlElementWithCoreAttrs::hasAnyClass(int n_args, ...)
+  bool HtmlCoreAttrs::hasAnyClass(int n_args, ...)
   {
     if (hasClass()) {
       va_list args;
