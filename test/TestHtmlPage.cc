@@ -16,6 +16,8 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementById);
+  CPPUNIT_TEST(testGetElementWhenNoLocatorTypeSpecified);
+  CPPUNIT_TEST(testGetElementWhenLocatorTypeSpecified);
   CPPUNIT_TEST(testGetElementsByClassName);
   CPPUNIT_TEST(testGetLinkOrButtonAgainstLink);
   CPPUNIT_TEST(testGetLinkOrButtonAgainstButton);
@@ -67,6 +69,34 @@ protected:
     delete page;
   }
 
+  void testGetElementWhenLocatorTypeSpecified()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* elem;
+    elem = page->getElement(BY_XPATH, "//a");
+    ASSERT_EQUAL(elem->getText(), "I am a link!");
+    delete elem;
+    elem = page->getElement(BY_ID, "buuu");
+    ASSERT_EQUAL(elem->getText(), "I am a button!");
+    delete elem;
+    elem = page->getElement(BY_PATH, "/html/body/a[1]");
+    ASSERT_EQUAL(elem->getText(), "I am a link!");
+    delete elem;
+    //elem = page->getElement(BY_CSS, "#buuu");
+    //ASSERT_EQUAL(elem->getText(), "I am a button!");
+    //delete elem;
+    delete page;
+  }
+  
+  void testGetElementWhenNoLocatorTypeSpecified()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
+    HtmlElement* elem = page->getElement("I am a link!");
+    ASSERT_EQUAL(elem->getName(), "a");
+    delete elem;
+    delete page;
+  }
+  
   void testGetElementsByClassName()
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/xpath.html");

@@ -75,6 +75,11 @@ namespace mike
     return (HtmlElement*)XmlPage::getElementByXpath(xpath);
   }
 
+  HtmlElement* HtmlPage::getElementByPath(string path)
+  {
+    return (HtmlElement*)XmlPage::getElementByPath(path);
+  }
+
   HtmlElementSet* HtmlPage::getElementsByTagName(string tag)
   {
     return (HtmlElementSet*)XmlPage::getElementsByTagName(tag);
@@ -84,6 +89,12 @@ namespace mike
   {
     // TODO: implement this someday...
     throw "HtmlPage::getElementsByCss is not implemented yet.";
+  }
+  
+  HtmlElement* HtmlPage::getElementByCss(string rule)
+  {
+    // TODO: ...
+    throw "HtmlPage::getElementByCss is not implemented yet.";
   }
 
   HtmlElementSet* HtmlPage::getElementsByClassName(string klass)
@@ -126,6 +137,25 @@ namespace mike
     string locators[3] = { XPATH_INPUT_FIELD_LOCATOR, XPATH_SELECT_FIELD_LOCATOR, XPATH_TEXTAREA_LOCATOR };
     string xpath = buildXpathForLocator(locators, 3, locator);
     return getElementByXpath(xpath);
+  }
+
+  HtmlElement* HtmlPage::getElement(LocatorType type, string locator)
+  {
+    switch (type) {
+    case BY_XPATH:
+      return getElementByXpath(locator);
+    case BY_CSS:
+      return getElementByCss(locator);
+    case BY_ID:
+      return getElementById(locator);
+    case BY_PATH:
+      return getElementByPath(locator);
+    }
+  }
+  
+  HtmlElement* HtmlPage::getElement(string locator)
+  {
+    return getLinkOrButton(locator);
   }
   
   string HtmlPage::getTitle()

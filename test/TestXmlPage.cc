@@ -15,6 +15,7 @@ class MikeXmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetElementsByTagName);
   CPPUNIT_TEST(testGetElementsByXpath);
   CPPUNIT_TEST(testGetElementByXpath);
+  CPPUNIT_TEST(testGetElementByPath);
   CPPUNIT_TEST(testGetElementByXpathWhenElementNotFound);
   CPPUNIT_TEST(testGetElementsByXpathWhenInvalidExpression);
   CPPUNIT_TEST(testGetElementsByXpathOnInvalidDoc);
@@ -45,6 +46,19 @@ protected:
     XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elems->size(), 2);
     delete elems;
+    delete page;
+  }
+
+  void testGetElementByPath()
+  {
+    XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
+    XmlElement* elem = page->getElementByPath("/root/elems/elem[2]");
+    ASSERT_EQUAL(elem->getContent(), "Second");
+    delete elem;
+    elem = page->getElementByPath("/root/elems/elem");
+    ASSERT_EQUAL(elem->getContent(), "First");
+    delete elem;
+    ASSERT_THROW(page->getElementByPath("/root/elems/elem[0]"), ElementNotFoundError);
     delete page;
   }
 

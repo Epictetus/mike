@@ -21,6 +21,16 @@ namespace mike
 
   class Window;
   class Browser;
+
+  /**
+   * Available locator types.
+   */
+  enum LocatorType {
+    BY_PATH,
+    BY_XPATH,
+    BY_CSS,
+    BY_ID
+  };
   
   /**
    * HTML page representation.
@@ -34,6 +44,7 @@ namespace mike
     // override
     HtmlElementSet* getElementsByXpath(string xpath);
     HtmlElement* getElementByXpath(string xpath);
+    HtmlElement* getElementByPath(string path);
     HtmlElementSet* getElementsByTagName(string tag);
     virtual void reload();
 
@@ -49,6 +60,14 @@ namespace mike
      */
     HtmlElementSet* getElementsByCss(string rule);
 
+    /**
+     * The same as 'getElementsByCss', but returns only the first element.
+     *
+     * \param rule CSS rule;
+     * \return First matching element.
+     */
+    HtmlElement* getElementByCss(string rule);
+    
     /**
      * Returns all elements with given class name.
      *
@@ -73,7 +92,7 @@ namespace mike
      * \return Element with specified id. 
      */
     HtmlElement* getElementById(string id);
-    
+
     /**
      * Locates link or button on a page. It can be find by id, name or text.
      *
@@ -131,6 +150,17 @@ namespace mike
     // TODO: change result to HtmlFormFieldElement or smth...
     HtmlElement* getField(string locator);
 
+    /**
+     * Locates element using given locator. If no locator specified then acts exacltly 
+     * the same as 'getLinkOrButton' method.
+     *
+     * \param type Locator type.
+     * \param locator XPath, CSS rule, ID or link/button property.
+     * \return Element matching given locator.
+     */
+    HtmlElement* getElement(LocatorType type, string locator);
+    HtmlElement* getElement(string locator);
+    
     /**
      * \return Page title text.
      */

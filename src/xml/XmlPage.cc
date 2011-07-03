@@ -1,5 +1,7 @@
 #include <string.h>
+#include <stdlib.h>
 #include "xml/XmlPage.h"
+#include "utils/Helpers.h"
 
 namespace mike
 {
@@ -47,6 +49,25 @@ namespace mike
     return NULL;
   }
 
+  int normalizePathLevel(string *level)
+  {
+    int split = (*level).find('[');
+
+    if (split > 0) {
+      string pos = (*level).substr(split+1);
+      *level = (*level).substr(0, split);
+      
+      if ((split = pos.find(']')) > 0) {
+	pos = pos.substr(0, split);
+	return atoi(pos.c_str());
+      } else {
+	return 0;
+      }
+    };
+
+    return 1;
+  }
+
   /////////////////////////////// PUBLIC ///////////////////////////////////////
   
   //============================= LIFECYCLE ====================================
@@ -88,18 +109,53 @@ namespace mike
   XmlElement* XmlPage::getElementByXpath(string xpath)
   {
     xmlXPathObjectPtr found = findByXPath(doc_, xpath);
-    XmlElement* result = NULL;
     
     if (found) {
-      result = new XmlElement(this, found->nodesetval->nodeTab[0]);
+      XmlElement* result = new XmlElement(this, found->nodesetval->nodeTab[0]);
       xmlXPathFreeObject(found);
+      return result;
     } else {
       throw ElementNotFoundError("XPath = " + xpath);
     }
-    
-    return result;
   }
 
+  XmlElement* XmlPage::getElementByPath(string path)
+  {
+    if (doc_ && !path.empty()) {
+      vector<string> levels = strsplit(path, '/');
+      xmlNodePtr node = NULL;
+
+      for (vector<string>::iterator it = levels.begin(); it != levels.end(); it++) {
+	string level = *it;
+	int pos = normalizePathLevel(&level);
+
+	if (pos == 0) {
+	  node = NULL;
+	  break;
+	}
+	
+	node = node ? node->children : doc_->children;
+	
+	while (node) {
+	  if (strcmp((char*)node->name, level.c_str()) == 0 && --pos == 0) {
+	    break;
+	  } else {
+	    node = node->next;
+	  }
+	}
+
+	if (node == NULL)
+	  break;
+      }
+
+      if (node) {
+	return new XmlElement(this, node);
+      }
+    }
+
+    throw ElementNotFoundError("Path = " + path);
+  }
+  
   XmlElementSet* XmlPage::getElementsByTagName(string tag)
   {
     XmlElementSet* elems = new XmlElementSet();

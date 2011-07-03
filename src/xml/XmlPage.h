@@ -43,7 +43,7 @@ namespace mike
   protected:
     string expr_;
   };
-  
+
   /**
    * LibXML2 powered XML page representation. This page type allows for XPath search,
    * and getting elements by tag names.
@@ -80,6 +80,18 @@ namespace mike
      */
     XmlElement* getElementByXpath(string xpath);
 
+    /**
+     * Finds element by its node path.
+     *
+     * \code
+     *   XmlElement* title = page->getElementByPath("/html/header/title");
+     * \endcode
+     *
+     * \param path Path to find.
+     * \return Element from specified path.
+     */
+    XmlElement* getElementByPath(string path);
+    
     /**
      * Returns set of elements with given tag name.
      *
