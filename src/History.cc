@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "History.h"
+#include "utils/Helpers.h"
 #include "Page.h"
 
 namespace mike
@@ -15,8 +16,8 @@ namespace mike
 
   History::~History()
   {
-    deleteContainer(&back_);
-    deleteContainer(&forward_);
+    delete_all< list<Page*> >(&back_);
+    delete_all< list<Page*> >(&forward_);
     delete current_;
   }
 
@@ -41,7 +42,7 @@ namespace mike
     }
     
     current_ = page;
-    deleteContainer(&forward_);
+    delete_all< list<Page*> >(&forward_);
   }
 
   void History::goBack()
@@ -90,14 +91,5 @@ namespace mike
     if (current_) {
       current_->reload();
     }
-  }
-  
-  void History::deleteContainer(list<Page*>* container) {
-    for (list<Page*>::iterator it = (*container).begin(); it != (*container).end(); it++) {
-      delete *it;
-      *it = NULL;
-    }
-
-    (*container).clear();
   }
 }

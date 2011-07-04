@@ -2,6 +2,7 @@
 #include <uuid/uuid.h>
 #include "http/Request.h"
 #include "utils/SystemInfo.h"
+#include "utils/Helpers.h"
 #include "Page.h"
 #include "Window.h"
 #include "Browser.h"
@@ -141,12 +142,7 @@ namespace mike
   
   void Browser::closeAll()
   {
-    for (list<Window*>::iterator it = windows_.begin(); it != windows_.end(); it++) {
-      delete *it;
-      *it = NULL;
-    }
-
-    windows_.clear();
+    delete_all< list<Window*> >(&windows_);
   }
 
   void Browser::closeAllWindows()

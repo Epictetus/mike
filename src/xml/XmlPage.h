@@ -15,8 +15,6 @@
 
 namespace mike
 {
-  typedef pector<XmlElement> XmlElementSet;
-  
   /**
    * Error raised when there is no elements in document matching given conditions (like xpath,
    * id, etc..). 
@@ -62,13 +60,13 @@ namespace mike
      * empty set will be returned. 
      *
      * \code
-     *   XmlElementSet* items = page->getElementsByXpath("//ul[id='items']//li");
+     *   vector<XmlElement*> items = page->getElementsByXpath("//ul[id='items']//li");
      * \endcode
      *
      * \param xpath XPath expression.
      * \return Set of matching elements.
      */
-    XmlElementSet* getElementsByXpath(string xpath);
+    vector<XmlElement*> getElementsByXpath(string xpath);
 
     /**
      * Acts almost the same as <code>getElementsByXpath</code> but returns only first
@@ -96,16 +94,17 @@ namespace mike
      * Returns set of elements with given tag name.
      *
      * \code
-     *   XmlElementSet* images = page->getElementsByTagName('img');
+     *   vector<XmlElement*> images = page->getElementsByTagName('img');
      * \endcode
      *
      * \param tag Tag to find.
      * \return Elements matching requested tag.
      */
-    XmlElementSet* getElementsByTagName(string tag);
+    vector<XmlElement*> getElementsByTagName(string tag);
     
   protected:
     xmlDocPtr doc_;
+    list<XmlElement*> usedElements_;
 
     /**
      * Parse current page content as XML document, and prepare environment
@@ -123,6 +122,11 @@ namespace mike
      * Cleans up document object if necessary.
      */
     virtual void cleanupDocument();
+
+    /**
+     * Recursive iterator for 'getElementsByTagName' method.
+     */
+    void getElementsByTagNameIter(string tag, xmlNodePtr node, vector<XmlElement*>* elems);
   };
 }
 

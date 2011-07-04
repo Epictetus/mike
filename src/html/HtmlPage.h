@@ -17,7 +17,7 @@
 
 namespace mike
 {
-  typedef pector<HtmlElement> HtmlElementSet;
+  using namespace std;
 
   class Window;
   class Browser;
@@ -42,10 +42,10 @@ namespace mike
     virtual ~HtmlPage();
 
     // override
-    HtmlElementSet* getElementsByXpath(string xpath);
+    vector<HtmlElement*> getElementsByXpath(string xpath);
     HtmlElement* getElementByXpath(string xpath);
     HtmlElement* getElementByPath(string path);
-    HtmlElementSet* getElementsByTagName(string tag);
+    vector<HtmlElement*> getElementsByTagName(string tag);
 
     virtual void reload();
 
@@ -53,13 +53,13 @@ namespace mike
      * Returns set of elements matching given CSS rule.
      *
      * \code
-     *   HtmlElementSet* items = page->getElementsByCss("ul#items li");
+     *   vector<HtmlElement*> items = page->getElementsByCss("ul#items li");
      * \endcode
      *
      * \param rule CSS rule.
      * \return Matching elements.
      */
-    HtmlElementSet* getElementsByCss(string rule);
+    vector<HtmlElement*> getElementsByCss(string rule);
 
     /**
      * The same as 'getElementsByCss', but returns only the first element.
@@ -73,13 +73,13 @@ namespace mike
      * Returns all elements with given class name.
      *
      * \code
-     *   HtmlElementSet* tags = page->getElementsByClassName("tag");
+     *   vector<HtmlElement*> tags = page->getElementsByClassName("tag");
      * \endcode
      *
      * \param klass Class name to find.
      * \return Elements with specified class name.
      */
-    HtmlElementSet* getElementsByClassName(string klass);
+    vector<HtmlElement*> getElementsByClassName(string klass);
 
     /**
      * Returns first found element with given ID. If no elements found then ElementNotFoundError
@@ -171,7 +171,7 @@ namespace mike
     /**
      * \return All frames from within this page.
      */
-    vector<HtmlFrame*> getFrames();
+    vector<HtmlFrame*>& getFrames();
 
     /**
      * If number given then returns frame from given index on the list, if string
@@ -202,11 +202,6 @@ namespace mike
      * Loads all iframes and frames, and opens them in virtual frames.
      */
     void loadFrames();
-
-    /**
-     * Removes all frames.
-     */
-    void clearFrames();
 
     /**
      * Removes all "<noscript>...</noscript>" nodes.

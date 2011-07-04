@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "utils/Helpers.h"
 
 namespace mike
 {
@@ -50,7 +51,6 @@ namespace mike
      */
     ~pector()
     {
-      clear();
     }
 
     void assign(int size, T* items[])
@@ -65,12 +65,7 @@ namespace mike
     
     void clear()
     {
-      for (typename vector<T*>::iterator it = begin(); it < end(); it++) {
-	delete *it;
-	*it = NULL;
-      }
-    
-      items_.clear();
+      delete_all< vector<T*> >(&items_);
     }
 
     bool empty()

@@ -85,13 +85,6 @@ namespace mike
      */
     void reloadCurrent();
 
-    /**
-     * Destroys all elements from given container and cleans it up.
-     *
-     * \param container Pointer to container to clean up. 
-     */
-    void deleteContainer(list<Page*>* container);
-    
   };
 }
 

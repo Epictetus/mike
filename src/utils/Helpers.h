@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 namespace mike
 {
@@ -42,6 +43,51 @@ namespace mike
    * \return Sanitized XPath argument.
    */
   string xpathSanitize(string arg);
+
+  /**
+   * Deletes all pointers in given vector and clears it out.
+   *
+   * \code
+   *   vector<HtmlElement*> elems;
+   *   elems.push_back(elem1);
+   *   //...
+   *   delete_all< vector<HtmlElement*> >(&elems);
+   * \endcode
+   *
+   * \param elems Vector of pointers.
+   */
+  template <typename T> void delete_all(T* c)
+  {
+    for (typename T::iterator it = c->begin(); it != c->end(); it++) {
+      delete *it;
+      *it = NULL;
+    }
+    
+    c->clear();
+  }
+
+  /**
+   * Casts all pointers from given vector to specified type.
+   *
+   * \code
+   *   vector<Derived> elems(new Derived(1), new Derived(2));
+   *   vector<Base> base_elems = vector_cast<Derived,Base>(elems);
+   * \endcode
+   *
+   * \param v Input vector.
+   * \return Converted vector.
+   */
+  template <typename F, typename T> vector<T*> vector_cast(vector<F*> v)
+  {
+    vector<T*> result;
+    result.resize(v.size());
+    int i = 0;
+    
+    for (typename vector<F*>::iterator it = v.begin(); it != v.end(); it++)
+      result[i++] = (T*)*it;
+
+    return result;
+  }
 }
 
 #endif /* _MIKE_HELPERS_H_ */

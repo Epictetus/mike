@@ -61,14 +61,14 @@ namespace mike
 
   HtmlPage::~HtmlPage()
   {
-    clearFrames();
+    delete_all< vector<HtmlFrame*> >(&frames_);
   }
 
   //============================= ACCESS     ===================================
   
-  HtmlElementSet* HtmlPage::getElementsByXpath(string xpath)
+  vector<HtmlElement*> HtmlPage::getElementsByXpath(string xpath)
   {
-    return (HtmlElementSet*)XmlPage::getElementsByXpath(xpath);
+    return vector_cast<XmlElement,HtmlElement>(XmlPage::getElementsByXpath(xpath));
   }
 
   HtmlElement* HtmlPage::getElementByXpath(string xpath)
@@ -81,12 +81,12 @@ namespace mike
     return (HtmlElement*)XmlPage::getElementByPath(path);
   }
 
-  HtmlElementSet* HtmlPage::getElementsByTagName(string tag)
+  vector<HtmlElement*> HtmlPage::getElementsByTagName(string tag)
   {
-    return (HtmlElementSet*)XmlPage::getElementsByTagName(tag);
+    return vector_cast<XmlElement,HtmlElement>(XmlPage::getElementsByTagName(tag));
   }
   
-  HtmlElementSet* HtmlPage::getElementsByCss(string rule)
+  vector<HtmlElement*> HtmlPage::getElementsByCss(string rule)
   {
     // TODO: implement this someday...
     throw "HtmlPage::getElementsByCss is not implemented yet.";
@@ -98,7 +98,7 @@ namespace mike
     throw "HtmlPage::getElementByCss is not implemented yet.";
   }
 
-  HtmlElementSet* HtmlPage::getElementsByClassName(string klass)
+  vector<HtmlElement*> HtmlPage::getElementsByClassName(string klass)
   {
     // TODO: write it without using xpath... we neeeed speeeeeed!
     klass = xpathSanitize(klass);
@@ -162,13 +162,8 @@ namespace mike
   string HtmlPage::getTitle()
   {
     try {
-      XmlElement* title = getElementByXpath("//html/head/title");
-
-      if (title) {
-	string text = title->getContent();
-	delete title;
-	return text;
-      }
+      HtmlElement* title = getElementByXpath("//html/head/title");
+      return  title->getContent();
     } catch (ElementNotFoundError err) {
       // nothing...
     }
@@ -181,7 +176,7 @@ namespace mike
     return getTitle();
   }
 
-  vector<HtmlFrame*> HtmlPage::getFrames()
+  vector<HtmlFrame*>& HtmlPage::getFrames()
   {
     return frames_;
   }
@@ -241,31 +236,29 @@ namespace mike
     if (frame_ && doc_) {
       if (frame_->getWindow()->getBrowser()->isJavaEnabled()) {
 	removeNoScriptNodes();
-	HtmlElementSet* scripts = getElementsByTagName("script");
+	vector<HtmlElement*> scripts = getElementsByTagName("script");
       }
     }
   }
 
   void HtmlPage::removeNoScriptNodes()
   {
-    HtmlElementSet* nodes = getElementsByTagName("noscript");
+    vector<HtmlElement*> nodes = getElementsByTagName("noscript");
 
-    for (pector<HtmlElement>::iterator it = nodes->begin(); it != nodes->end(); it++)
+    for (pector<HtmlElement>::iterator it = nodes.begin(); it != nodes.end(); it++)
       (*it)->unlink();
-    
-    delete nodes;
   }
   
   // XXX: add infinity loop prevention for frames opening!
   void HtmlPage::loadFrames()
   {
-    clearFrames();
-
     if (frame_) {
-      HtmlElementSet* frames = getElementsByXpath("//iframe | //frameset//frame");
+      delete_all< vector<HtmlFrame*> >(&frames_);
+      
+      vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getWindow()->getBrowser();
 
-      for (pector<HtmlElement>::iterator it = frames->begin(); it != frames->end(); it++) {
+      for (pector<HtmlElement>::iterator it = frames.begin(); it != frames.end(); it++) {
 	HtmlElement* elem = *it;
 	
 	if (elem->hasAttribute("src")) {
@@ -291,18 +284,6 @@ namespace mike
 	  }
 	}
       }
-
-      delete frames;
     }
-  }
-
-  void HtmlPage::clearFrames()
-  {
-    for (vector<HtmlFrame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
-      delete *it;
-      *it = NULL;
-    }
-
-    frames_.clear();
   }
 }

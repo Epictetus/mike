@@ -34,18 +34,16 @@ protected:
   void testGetElementsByTagName()
   {
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
-    XmlElementSet* elems = page->getElementsByTagName("elem");
-    ASSERT_EQUAL(elems->size(), 3);
-    delete elems;
+    vector<XmlElement*> elems = page->getElementsByTagName("elem");
+    ASSERT_EQUAL(elems.size(), 3);
     delete page;
   }
   
   void testGetElementsByXpath()
   {
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
-    XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
-    ASSERT_EQUAL(elems->size(), 2);
-    delete elems;
+    vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
+    ASSERT_EQUAL(elems.size(), 2);
     delete page;
   }
 
@@ -54,10 +52,8 @@ protected:
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
     XmlElement* elem = page->getElementByPath("/root/elems/elem[2]");
     ASSERT_EQUAL(elem->getContent(), "Second");
-    delete elem;
     elem = page->getElementByPath("/root/elems/elem");
     ASSERT_EQUAL(elem->getContent(), "First");
-    delete elem;
     ASSERT_THROW(page->getElementByPath("/root/elems/elem[0]"), ElementNotFoundError);
     delete page;
   }
@@ -67,7 +63,6 @@ protected:
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xpath.xml");
     XmlElement* elem = page->getElementByXpath("//root//elems/elem[@load]");
     ASSERT_EQUAL(elem->getContent(), "First");
-    delete elem;
     delete page;
   }
 
@@ -88,9 +83,8 @@ protected:
   void testGetElementsByXpathOnInvalidDoc()
   {
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/simple");
-    XmlElementSet* elems = page->getElementsByXpath("//root//elems/elem[@load]");
-    ASSERT_EQUAL(elems->size(), 0);
-    delete elems;
+    vector<XmlElement*> elems = page->getElementsByXpath("//root//elems/elem[@load]");
+    ASSERT_EQUAL(elems.size(), 0);
     delete page;
   }
 };

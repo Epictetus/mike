@@ -22,13 +22,15 @@ namespace mike
    *   assert(elem->hasAttribute("class", "some-class"));
    *   assert(elem->hasContent("Foooo!");
    *   assert(elem->hasChildren());
-   *   delete elem;
    * \endcode
    */
   class XmlElement
   {
     friend class XmlPage;
   public:
+    static int created;
+    static int destroyed;
+    
     /**
      * Creates new element.
      *

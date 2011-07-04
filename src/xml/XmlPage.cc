@@ -12,18 +12,6 @@ namespace mike
     // so far nothing, just mute errors...
   }
 
-  void getElementsByTagNameIter(XmlPage* page, string tag, xmlNodePtr node, XmlElementSet* elems)
-  {
-    while (node) {
-      if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
-	elems->push_back(new XmlElement(page, node));
-      }
-	
-      getElementsByTagNameIter(page, tag, node->children, elems);
-      node = node->next;
-    }
-  }
-
   xmlXPathObjectPtr findByXPath(xmlDocPtr doc, string xpath)
   {
     if (doc) {
@@ -86,9 +74,9 @@ namespace mike
 
   //============================= ACCESS     ===================================
   
-  XmlElementSet* XmlPage::getElementsByXpath(string xpath)
+  vector<XmlElement*> XmlPage::getElementsByXpath(string xpath)
   {
-    XmlElementSet* result = new XmlElementSet();
+    vector<XmlElement*> result;
     xmlXPathObjectPtr found = findByXPath(doc_, xpath);
 
     if (found) {
@@ -97,9 +85,10 @@ namespace mike
 	
       for (int i = 0; i < nodeset->nodeNr; i++) {
 	elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
+	usedElements_.push_back(elements[i]);
       }
       
-      result = new XmlElementSet(elements, nodeset->nodeNr);
+      result.assign(elements, elements+nodeset->nodeNr);
       xmlXPathFreeObject(found);
     }
       
@@ -111,9 +100,10 @@ namespace mike
     xmlXPathObjectPtr found = findByXPath(doc_, xpath);
     
     if (found) {
-      XmlElement* result = new XmlElement(this, found->nodesetval->nodeTab[0]);
+      XmlElement* elem = new XmlElement(this, found->nodesetval->nodeTab[0]);
       xmlXPathFreeObject(found);
-      return result;
+      usedElements_.push_back(elem);
+      return elem;
     } else {
       throw ElementNotFoundError("XPath = " + xpath);
     }
@@ -149,22 +139,24 @@ namespace mike
       }
 
       if (node) {
-	return new XmlElement(this, node);
+	XmlElement* elem = new XmlElement(this, node);
+	usedElements_.push_back(elem);
+	return elem;
       }
     }
 
     throw ElementNotFoundError("Path = " + path);
   }
   
-  XmlElementSet* XmlPage::getElementsByTagName(string tag)
+  vector<XmlElement*> XmlPage::getElementsByTagName(string tag)
   {
-    XmlElementSet* elems = new XmlElementSet();
+    vector<XmlElement*> result;
       
     if (doc_ && !tag.empty()) {
-      getElementsByTagNameIter(this, tag, doc_->children, elems);
+      getElementsByTagNameIter(tag, doc_->children, &result);
     }
 
-    return elems;
+    return result;
   }
 
   //============================= OPERATIONS ===================================
@@ -187,9 +179,11 @@ namespace mike
   {
     xmlSetGenericErrorFunc((void*)this, xmlErrorHandler);
     xmlChar* body = xmlCharStrdup(getResponse()->getBody().c_str());
+
     // FIXME: encoding should be taken from http response!
     doc_ = xmlReadDoc(body, getUrl().c_str(), "utf-8",
 		      XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
+
     xmlFree(body);
   }
   
@@ -198,6 +192,21 @@ namespace mike
     if (doc_ != NULL) {
       xmlFreeDoc(doc_);
       doc_ = NULL;
+      delete_all< list<XmlElement*> >(&usedElements_);
+    }
+  }
+
+  void XmlPage::getElementsByTagNameIter(string tag, xmlNodePtr node, vector<XmlElement*>* elems)
+  {
+    while (node) {
+      if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
+	XmlElement* elem = new XmlElement(this, node);
+	usedElements_.push_back(elem);
+	elems->push_back(elem);
+      }
+	
+      getElementsByTagNameIter(tag, node->children, elems);
+      node = node->next;
     }
   }
 }
