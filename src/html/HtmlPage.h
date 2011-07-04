@@ -17,7 +17,7 @@
 
 namespace mike
 {
-  typedef Pector<HtmlElement> HtmlElementSet;
+  typedef pector<HtmlElement> HtmlElementSet;
 
   class Window;
   class Browser;

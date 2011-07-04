@@ -28,28 +28,28 @@ protected:
 
   void testCreateEmpty()
   {
-    Pector<int> pv = Pector<int>();
+    pector<int> pv = pector<int>();
     ASSERT(pv.empty());
   }
   
   void testCreateAndAssign()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     ASSERT_EQUAL(pv.size(), 3);
   }
 
   void testClear()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     pv.clear();
     ASSERT(pv.empty());
   }
 
   void testPushBack()
   {
-    Pector<int> pv = Pector<int>();
+    pector<int> pv = pector<int>();
     pv.push_back(new int(10));
     ASSERT_EQUAL(pv.size(), 1);
     ASSERT_EQUAL(*pv[0], 10);
@@ -58,7 +58,7 @@ protected:
   void testPopBack()
   {
     int* items[1] = {new int(1)};
-    Pector<int> pv = Pector<int>(items, 1);
+    pector<int> pv = pector<int>(items, 1);
     ASSERT_NOT(pv.empty());
     pv.pop_back();
     ASSERT(pv.empty());
@@ -67,41 +67,52 @@ protected:
   void testFront()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     ASSERT_EQUAL(*pv.front(), 1);
   }
 
   void testBack()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     ASSERT_EQUAL(*pv.back(), 3);
   }
 
   void testBegin()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     ASSERT_EQUAL(**pv.begin(), 1);
   }
 
   void testEnd()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     ASSERT_EQUAL(**(--pv.end()), 3);
   }
 
   void testPick()
   {
     int* items[3] = {new int(1), new int(2), new int(3)};
-    Pector<int> pv = Pector<int>(items, 3);
+    pector<int> pv = pector<int>(items, 3);
     int* picked = pv.pick(1);
     ASSERT_EQUAL(pv.size(), 2);
     ASSERT_EQUAL(*pv[0], 1);
     ASSERT_EQUAL(*pv[1], 3);
     ASSERT_EQUAL(*picked, 2);
     delete picked;
+  }
+
+  void testIterator()
+  {
+    int* items[3] = {new int(1), new int(2), new int(3)};
+    pector<int> pv = pector<int>(items, 3);
+    int i = 0;
+    
+    for (pector<int>::iterator it = pv.begin(); it != pv.end(); it++) {
+      ASSERT_EQUAL(*it, items[i++]);
+    }
   }
 };
 

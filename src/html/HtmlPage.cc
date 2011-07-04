@@ -250,7 +250,7 @@ namespace mike
   {
     HtmlElementSet* nodes = getElementsByTagName("noscript");
 
-    for (vector<HtmlElement*>::iterator it = nodes->begin(); it != nodes->end(); it++)
+    for (pector<HtmlElement>::iterator it = nodes->begin(); it != nodes->end(); it++)
       (*it)->unlink();
     
     delete nodes;
@@ -265,7 +265,7 @@ namespace mike
       HtmlElementSet* frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getWindow()->getBrowser();
 
-      for (vector<HtmlElement*>::iterator it = frames->begin(); it != frames->end(); it++) {
+      for (pector<HtmlElement>::iterator it = frames->begin(); it != frames->end(); it++) {
 	HtmlElement* elem = *it;
 	
 	if (elem->hasAttribute("src")) {

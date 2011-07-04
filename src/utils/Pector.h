@@ -14,20 +14,23 @@ namespace mike
    * struct - see its docs for details.
    *
    * \code
-   *   Pector<XmlElement>* pv = new Pector<XmlElement>();
-   *   pv->push_back(first_elem);
-   *   pv->push_back(second_elem);
+   *   pector<XmlElement> pv = pector<XmlElement>();
+   *   pv.push_back(first_elem);
+   *   pv.push_back(second_elem);
+   *   assert(pector.size(), 2);
+   *   assert(pector[0], first_elem);
    *   //...
-   *   delete pv; // deletes first_elem and second_elem too.
    * \endcode
    */
-  template <typename T> class Pector
+  template <typename T> class pector
   {
   public:
+    typedef typename vector<T*>::iterator iterator;
+    
     /**
      * Creates empty instance.
      */
-    Pector()
+    pector()
     {
     }
 
@@ -37,7 +40,7 @@ namespace mike
      * \param items Initial items array.
      * \param size Size of initial items.
      */
-    Pector(T* items[], int size)
+    pector(T* items[], int size)
     {    
       assign(size, items);
     }
@@ -45,7 +48,7 @@ namespace mike
     /**
      * Destructor.
      */
-    ~Pector()
+    ~pector()
     {
       clear();
     }
@@ -75,12 +78,12 @@ namespace mike
       return items_.empty();
     }
 
-    typename vector<T*>::iterator begin()
+    iterator begin()
     {
       return items_.begin();
     }
 
-    typename vector<T*>::iterator end()
+    iterator end()
     {
       return items_.end();
     }
@@ -143,7 +146,7 @@ namespace mike
     {
       T* p = NULL;
       swap(p, items_[n]);
-      typename vector<T*>::iterator it = items_.begin();
+      iterator it = (iterator)items_.begin();
       advance(it, n);
       items_.erase(it);
       return p;

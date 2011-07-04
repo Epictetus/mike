@@ -15,7 +15,7 @@
 
 namespace mike
 {
-  typedef Pector<XmlElement> XmlElementSet;
+  typedef pector<XmlElement> XmlElementSet;
   
   /**
    * Error raised when there is no elements in document matching given conditions (like xpath,
