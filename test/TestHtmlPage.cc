@@ -30,6 +30,7 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetFramesWithIframes);
   CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST(testDiscardNoScriptElementsWhenJavaScriptEnabled);
+  CPPUNIT_TEST(testNoScriptElementsWhenJavaScriptDisabled);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -234,6 +235,16 @@ protected:
     HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/noscript.html");
     HtmlElementSet* noscripts = page->getElementsByTagName("noscript");
     ASSERT(noscripts->empty());
+    delete browser;
+  }
+
+  void testNoScriptElementsWhenJavaScriptDisabled()
+  {
+    Browser* browser = new Browser();
+    browser->disableJava();
+    HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/noscript.html");
+    HtmlElementSet* noscripts = page->getElementsByTagName("noscript");
+    ASSERT_NOT(noscripts->empty());
     delete browser;
   }
 };

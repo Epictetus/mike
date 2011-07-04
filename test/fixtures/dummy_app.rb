@@ -108,3 +108,7 @@ get "/all-elements.html" do
 </html>
 HTML
 end
+
+get "/noscript.html" do
+  "<html><body><noscript><div id='nojs'>FOOOO!</div></noscript></body></html>"
+end
