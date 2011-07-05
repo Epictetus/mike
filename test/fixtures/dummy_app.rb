@@ -47,7 +47,7 @@ get "/xpath.html" do
 end
 
 get "/anchors.html" do
-  "<html><body><div>I am a link!</div><div>I am a div!</div><a href='#' name='link'>I am a link!</a><form><button id='buuu'>I am a button!</button><input type='submit' name='foo' value='I am a submit!' /></form></body></html>"
+  "<html><body><div>I am a link!</div><div>I am a div!</div><a href='/fields.html' name='link'>I am a link!</a><form><button id='buuu'>I am a button!</button><input type='submit' name='foo' value='I am a submit!' /></form></body></html>"
 end
 
 get "/fields.html" do

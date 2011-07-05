@@ -4,6 +4,8 @@
 
 #include "utils/CppunitMacros.h"
 #include "html/HtmlPage.h"
+#include "Window.h"
+#include "Browser.h"
 
 using namespace std;
 using namespace mike;
@@ -17,6 +19,7 @@ class MikeHtmlElementTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testIsField);
   CPPUNIT_TEST(testIsCheckBox);
   CPPUNIT_TEST(testIsRadio);
+  CPPUNIT_TEST(testLinkClick);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -65,6 +68,15 @@ protected:
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/fields.html");
     ASSERT(page->getElementByXpath("//input[@type='radio']")->isRadio());
     delete page;
+  }
+
+  void testLinkClick()
+  {
+    Browser* browser = new Browser();
+    ref<HtmlPage> page = (HtmlPage*)browser->open("http://localhost:4567/anchors.html");
+    page->getElementByXpath("//a")->click();
+    printf("%s\n", page->getEnclosingWindow()->getPage()->getUrl().c_str());
+    delete browser;
   }
 };
 

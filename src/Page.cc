@@ -1,3 +1,4 @@
+#include <libxml/uri.h>
 #include "Page.h"
 #include "Frame.h"
 #include "Window.h"
@@ -14,10 +15,7 @@ namespace mike
 		   bool force_base/*=false*/)
   {
     Request* request = Request::Get(url);
-
-    if (cookie_enabled)
-      request->enableCookieSession(session_token);
-
+    request->enableCookieSession(cookie_enabled, session_token);
     return Factory(request, force_base);
   }
   
@@ -107,6 +105,21 @@ namespace mike
     return frame_ ? frame_->getWindow() : NULL;
   }
 
+  string Page::getUrlFor(string url)
+  {
+    xmlChar* xuri = xmlCharStrdup(url.c_str());
+    xmlChar* xbase = xmlCharStrdup(getUrl().c_str());
+    xmlChar* xresult = xmlBuildURI(xuri, xbase);
+
+    string result = (char*)xresult;
+
+    xmlFree(xuri);
+    xmlFree(xbase);
+    xmlFree(xresult);
+
+    return result;
+  }
+  
   //============================= OPERATIONS ===================================
   
   void Page::reload()

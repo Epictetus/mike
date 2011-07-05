@@ -187,7 +187,7 @@ namespace mike
     HtmlFrame* getFrame(int n);
     HtmlFrame* getFrame(string name);
     HtmlFrame* getNamedFrame(string name);
- 
+
     /**
      * Evaluates given javascript within page context.
      *

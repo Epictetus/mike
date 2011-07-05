@@ -1,6 +1,9 @@
 #include "utils/Helpers.h"
 #include "html/HtmlElement.h"
 #include "html/HtmlPage.h"
+#include "Window.h"
+#include "Frame.h"
+#include "Browser.h"
 
 namespace mike
 {
@@ -60,6 +63,42 @@ namespace mike
       return true;
     } else {
       return false;
+    }
+  }
+
+  //============================= OPERATIONS ===================================
+
+  void HtmlElement::click()
+  {
+    bool can_continue = true;
+    Browser* browser = page_->getEnclosingWindow()->getBrowser();
+
+    if (browser->isJavaEnabled()) {
+      // process javascripts and store result in can_continue
+      // -> process parents clicks...
+      // --> process document click
+      // ---> process window click
+    }
+    
+    if (can_continue) {
+      if (isLink()) {
+	Window* window;
+
+	bool in_new_window = hasAttribute("target", "blank_");
+	string url = page_->getUrlFor(getAttribute("href"));
+
+	if (in_new_window)
+	  window = page_->getEnclosingWindow()->getBrowser()->newWindow();
+	else
+	  window = page_->getEnclosingWindow();
+	
+	Request* request = Request::Get(url);
+	request->enableCookieSession(browser->isCookieEnabled(), browser->getSessionToken());
+	request->setReferer(page_->getUrl());
+
+	Page* page = Page::Factory(request);
+	window->setPage(page);
+      }
     }
   }
 }

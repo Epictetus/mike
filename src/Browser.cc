@@ -98,9 +98,16 @@ namespace mike
   {
     disableJava();
   }
+
+  Window* Browser::newWindow()
+  {
+    Window* window = new Window(this);
+    windows_.push_back(window);
+    return window;
+  }
   
   // XXX: in the future it should return read only list...
-  list<Window*> Browser::getWindows()
+  list<Window*>& Browser::getWindows()
   {
     return windows_;
   }
@@ -120,12 +127,9 @@ namespace mike
 
   Page* Browser::open(string url)
   {
-    Window* window = new Window(this);
-    windows_.push_back(window);
-
+    Window* window = newWindow();
     Page* page = Page::Open(url, cookieEnabled_, sessionToken_);
-    window->setPage(page);
-    
+    window->setPage(page);    
     return page;
   }
 

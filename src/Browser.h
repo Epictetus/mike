@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include "utils/Ref.h"
 
 namespace mike
 {
@@ -69,6 +70,13 @@ namespace mike
     string getSessionToken() const;
 
     /**
+     * Creates new empty window and returns it.
+     *
+     * \return New window.
+     */
+    Window* newWindow();
+    
+    /**
      * Returns list of all currently opened windows.
      *
      * \code
@@ -78,7 +86,7 @@ namespace mike
      *   assert(windows.size() == 2);
      * \endcode
      */
-    list<Window*> getWindows();
+    list<Window*>& getWindows();
 
     /**
      * Returns specified window if opened, otherwise throws 'WindowNotFound' error.

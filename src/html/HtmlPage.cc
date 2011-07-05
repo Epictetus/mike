@@ -63,21 +63,6 @@ namespace mike
     return strjoin(result, size, " | ");
   }
 
-  string buildUri(string uri, string base)
-  {
-    xmlChar* xuri = xmlCharStrdup(uri.c_str());
-    xmlChar* xbase = xmlCharStrdup(base.c_str());
-    xmlChar* xresult = xmlBuildURI(xuri, xbase);
-
-    string result = (char*)xresult;
-
-    xmlFree(xuri);
-    xmlFree(xbase);
-    xmlFree(xresult);
-
-    return result;
-  }
-
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
@@ -281,7 +266,7 @@ namespace mike
 	  unsigned int line = 0;
 	  
 	  if (script->hasAttribute("src")) {
-	    filename = buildUri(script->getAttribute("src"), getUrl());
+	    filename = getUrlFor(script->getAttribute("src"));
 
 	    if (!loadAsset(filename, &content)) {
 	      // TODO: debug info...
@@ -346,7 +331,7 @@ namespace mike
 	
 	if (elem->hasAttribute("src")) {
 	  try {
-	    string uri = buildUri(elem->getAttribute("src"), getUrl());
+	    string uri = getUrlFor(elem->getAttribute("src"));
 	    Page* page = Page::Open(uri, browser->isCookieEnabled(), browser->getSessionToken());
 
 	    HtmlFrame* frame = new HtmlFrame(frame_);

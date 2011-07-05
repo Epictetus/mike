@@ -80,6 +80,11 @@ namespace mike {
     {
       curlHeaders_ = curl_slist_append(curlHeaders_, header.c_str());
     }
+
+    void Request::setReferer(string url)
+    {
+      setHeader("Referer: " + url);
+    }
   
     void Request::setData(string data)
     {
@@ -132,6 +137,13 @@ namespace mike {
     {
       cookieEnabled_ = !token.empty();
       sessionToken_  = token;
+    }
+
+    void Request::enableCookieSession(bool enable, string token)
+    {
+      if (enable) {
+	enableCookieSession(token);
+      }
     }
 
     /////////////////////////////// PROTECTED  ///////////////////////////////////

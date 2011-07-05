@@ -73,6 +73,19 @@ namespace mike
      */
     bool isButton();
 
+    //
+    // onmousedown -> onmouseup -> onclick
+    // onmouseup discards obdblclick
+    // element events -> document events -> window events
+    //
+    
+    void click();
+    void dblClick();
+    void mouseOver();
+    void mouseOut();
+    
+    void mouseDown();
+    void mouseUp();
   };
 }
 

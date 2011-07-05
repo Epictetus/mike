@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "http/Request.h"
+#include "utils/Ref.h"
 
 namespace mike
 {
@@ -141,12 +142,23 @@ namespace mike
      * \return Window which contains frame with this page.
      */
     Window* getEnclosingWindow();
-    
+
+    /**
+     * Returns absolute URL based on current or if absolute addres passed then
+     * just returns it.
+     *
+     * \param url Relative URL
+     * \return Absolute url based on current.
+     */
+    string getUrlFor(string url);
+
   protected:
     http::Request* request_;
     PageType type_;
     Frame* frame_;
+    void* ref_;
 
+    
     /**
      * Opens the page in given frame. For the security reasons each instance can
      * be enclosed only once.

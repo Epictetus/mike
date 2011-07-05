@@ -96,6 +96,13 @@ namespace mike {
       void setHeader(string header);
 
       /**
+       * Shortcut for setting referer header.
+       *
+       * \param url Referer page.
+       */
+      void setReferer(string url);
+      
+      /**
        * Sets given string as POST data, eg:
        *
        * \code
@@ -135,9 +142,11 @@ namespace mike {
        * Enables cookies within encapsulated seession. Session is distinguised by given
        * instance's token.
        *
+       * \param enable If false then session will not be enabled.
        * \param token Cookie session token.
        */
       void enableCookieSession(string token);
+      void enableCookieSession(bool enable, string token);
       
     protected:
       string url_;

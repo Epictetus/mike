@@ -29,6 +29,7 @@ namespace mike
      */
     virtual ~HtmlEventHandler();
 
+
   protected:
     HtmlPage* page_;
   };
