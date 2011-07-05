@@ -21,11 +21,11 @@ namespace mike
    * Available page types.
    */
   enum PageType {
-    UNKNOWN_PAGE,
-    XML_PAGE,
-    HTML_PAGE,
-    TEXT_PAGE,
-    BINARY_PAGE
+    kUnknownPage,
+    kBinaryPage,
+    kTextPage,
+    kXmlPage,
+    kHtmlPage
   };
   
   /**
@@ -85,7 +85,7 @@ namespace mike
      * \param request Performed request for this page.
      * \param type Kind of page.
      */
-    explicit Page(Request* request, PageType type=UNKNOWN_PAGE);
+    explicit Page(Request* request, PageType type=kUnknownPage);
     
     /**
      * Destructor.

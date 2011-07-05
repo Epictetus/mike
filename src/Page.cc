@@ -48,7 +48,7 @@ namespace mike
     throw "Invalid request."; // just in case, should never appear...
   }
 
-  Page::Page(Request* request, PageType type/*=UNKNOWN_PAGE*/)
+  Page::Page(Request* request, PageType type/*=kUnknownPage*/)
     : type_(type)
   {
     request_ = request;
@@ -89,12 +89,12 @@ namespace mike
 
   bool Page::isXml()
   {
-    return (type_ == XML_PAGE || type_ == HTML_PAGE);
+    return (type_ == kXmlPage || type_ == kHtmlPage);
   }
 
   bool Page::isHtml()
   {
-    return type_ == HTML_PAGE;
+    return type_ == kHtmlPage;
   }
 
   Frame* Page::getEnclosingFrame()

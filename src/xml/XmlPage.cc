@@ -61,7 +61,7 @@ namespace mike
   //============================= LIFECYCLE ====================================
   
   XmlPage::XmlPage(Request* request)
-    : Page(request, XML_PAGE)
+    : Page(request, kXmlPage)
   {
     doc_ = NULL;
     prepareDocument();

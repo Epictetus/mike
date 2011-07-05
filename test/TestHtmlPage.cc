@@ -73,13 +73,13 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* elem;
-    elem = page->getElement(BY_XPATH, "//a");
+    elem = page->getElement(kByXpath, "//a");
     ASSERT_EQUAL(elem->getText(), "I am a link!");
-    elem = page->getElement(BY_ID, "buuu");
+    elem = page->getElement(kById, "buuu");
     ASSERT_EQUAL(elem->getText(), "I am a button!");
-    elem = page->getElement(BY_PATH, "/html/body/a[1]");
+    elem = page->getElement(kByPath, "/html/body/a[1]");
     ASSERT_EQUAL(elem->getText(), "I am a link!");
-    //elem = page->getElement(BY_CSS, "#buuu");
+    //elem = page->getElement(kByCss, "#buuu");
     //ASSERT_EQUAL(elem->getText(), "I am a button!");
     //delete elem;
     delete page;

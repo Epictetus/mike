@@ -27,10 +27,10 @@ namespace mike
    * Available locator types.
    */
   enum LocatorType {
-    BY_PATH,
-    BY_XPATH,
-    BY_CSS,
-    BY_ID
+    kByPath,
+    kByXpath,
+    kByCss,
+    kById
   };
   
   /**
@@ -226,11 +226,10 @@ namespace mike
     void loadFrames();
 
     /**
-     * Removes all "<noscript>...</noscript>" nodes.
+     * Removes all contents from within "<noscript>...</noscript>" nodes.
      */
     void removeNoScriptNodes();
   };
 }
-
 
 #endif /* _MIKE_HTML_PAGE_H_ */

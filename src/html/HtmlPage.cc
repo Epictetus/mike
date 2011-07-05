@@ -12,38 +12,38 @@ namespace mike
   /////////////////////////////// CONSTS  //////////////////////////////////////
 
   // links/buttons xpaths
-  static const string linkXpath = \
+  static const string kLinkXpath = \
     "//a[text()='%L' or @id='%L' or @name='%L']";
-  static const string buttonXpath = \
+  static const string kButtonXpath = \
     "//button[text()='%L' or @id='%L' or @name='%L']";
-  static const string inputButtonXpath = \
+  static const string kInputButtonXpath = \
     "//input[@type='submit' or @type='reset' or @type='image' or @type='button'][@value='%L' or @id='%L' or @name='%L']";
 
   // form fields xpaths
-  static const string selectFieldXpath = \
+  static const string kSelectFieldXpath = \
     "//select[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
-  static const string textareaXpath = \
+  static const string kTextareaXpath = \
     "//textarea[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
-  static const string inputFieldXpath = \
+  static const string kInputFieldXpath = \
     "//input[@type!='hidden' and @type!='reset' and @type!='submit' and @type!='image'][@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
 
   // complex locators
-  static const string linkLocators[] = {
-    linkXpath
+  static const string kLinkLocators[] = {
+    kLinkXpath
   };
-  static const string buttonLocators[] = {
-    inputButtonXpath,
-    buttonXpath
+  static const string kButtonLocators[] = {
+    kInputButtonXpath,
+    kButtonXpath
   };
-  static const string linkOrButtonLocators[] = {
-    linkXpath,
-    buttonXpath,
-    inputButtonXpath
+  static const string kLinkOrButtonLocators[] = {
+    kLinkXpath,
+    kButtonXpath,
+    kInputButtonXpath
   };
-  static const string formFieldLocators[] = {
-    inputFieldXpath,
-    selectFieldXpath,
-    textareaXpath
+  static const string kFormFieldLocators[] = {
+    kInputFieldXpath,
+    kSelectFieldXpath,
+    kTextareaXpath
   };
   
   /////////////////////////////// HELPERS //////////////////////////////////////
@@ -85,7 +85,7 @@ namespace mike
   HtmlPage::HtmlPage(Request* request)
     : XmlPage(request)
   {
-    type_ = HTML_PAGE;
+    type_ = kHtmlPage;
     eventHandler_ = new HtmlEventHandler(this);
     javaScriptHandler_ = new JavaScriptHandler(this);
   }
@@ -147,38 +147,38 @@ namespace mike
 
   HtmlElement* HtmlPage::getLinkOrButton(string locator)
   {
-    string xpath = buildXpathForLocator(linkOrButtonLocators, 3, locator);
+    string xpath = buildXpathForLocator(kLinkOrButtonLocators, 3, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getLink(string locator)
   {
-    string xpath = buildXpathForLocator(linkLocators, 1, locator);
+    string xpath = buildXpathForLocator(kLinkLocators, 1, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getButton(string locator)
   {
-    string xpath = buildXpathForLocator(buttonLocators, 2, locator);
+    string xpath = buildXpathForLocator(kButtonLocators, 2, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getField(string locator)
   {
-    string xpath = buildXpathForLocator(formFieldLocators, 3, locator);
+    string xpath = buildXpathForLocator(kFormFieldLocators, 3, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getElement(LocatorType type, string locator)
   {
     switch (type) {
-    case BY_XPATH:
+    case kByXpath:
       return getElementByXpath(locator);
-    case BY_CSS:
+    case kByCss:
       return getElementByCss(locator);
-    case BY_ID:
+    case kById:
       return getElementById(locator);
-    case BY_PATH:
+    case kByPath:
       return getElementByPath(locator);
     }
   }
