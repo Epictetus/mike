@@ -47,6 +47,7 @@ protected:
   {
     Request *req = Request::Get("http://localhost:4567/simple");
     req->perform();
+    ASSERT_EQUAL(req->getResponse()->getUrl(), "http://localhost:4567/simple");
     ASSERT_EQUAL(req->getResponse()->getCode(), 200);
     ASSERT_EQUAL(req->getResponse()->getHeader("Content-Type"), "text/html;charset=utf-8");
     ASSERT_EQUAL(req->getResponse()->getHeader("No-Such-Header"), "");

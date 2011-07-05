@@ -74,7 +74,7 @@ namespace mike
 
   string Page::getUrl()
   {
-    return request_->getUrl();
+    return getResponse()->getUrl();
   }
 
   stringstream* Page::getStream()

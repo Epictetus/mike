@@ -110,8 +110,12 @@ namespace mike {
 	  char* content_type;
 	  curl_easy_getinfo(curl_, CURLINFO_CONTENT_TYPE, &content_type);
 
+	  char* effective_url;
+	  curl_easy_getinfo(curl_, CURLINFO_EFFECTIVE_URL, &effective_url);
+
 	  // Generate response
-	  response_ = new Response(response_code, buffer, response_headers.toMap(), content_type);
+	  response_ = new Response(effective_url, response_code, buffer,
+				   response_headers.toMap(), content_type);
 	}
       }
 

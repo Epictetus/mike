@@ -17,11 +17,11 @@ AC_LANG_CPLUSPLUS
 
 AC_ARG_WITH([v8],
 	AC_HELP_STRING([--with-v8=<path>], [Path to V8's directory.]),
-	v8dir=$withval, v8dir=[/usr])
+	v8dir=$withval, v8dir=[/usr/lib/v8])
 
 AC_MSG_CHECKING([for v8 engine])
 
-LDFLAGS="-L$v8dir/lib $LDFLAGS"
+LDFLAGS="-L$v8dir $LDFLAGS"
 CPPFLAGS="-I$v8dir/include $CPPFLAGS"
 
 AC_MSG_RESULT([$v8dir])

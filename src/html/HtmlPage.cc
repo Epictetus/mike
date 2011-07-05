@@ -9,29 +9,58 @@
 
 namespace mike
 {
-  // links/buttons locators
-  const string XPATH_LINK_LOCATOR            = "//a[text()='%L' or @id='%L' or @name='%L']";
-  const string XPATH_BUTTON_LOCATOR          = "//button[text()='%L' or @id='%L' or @name='%L']";
-  const string XPATH_SUBMIT_OR_RESET_LOCATOR = "//input[@type='submit' or @type='reset'][@value='%L' or @id='%L' or @name='%L']";
+  /////////////////////////////// CONSTS  //////////////////////////////////////
 
-  // form fields locators
-  const string XPATH_INPUT_FIELD_LOCATOR     = "//input[@type!='hidden' and @type!='reset' and @type!='submit' and @type!='image'][@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
-  const string XPATH_SELECT_FIELD_LOCATOR    = "//select[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
-  const string XPATH_TEXTAREA_LOCATOR        = "//textarea[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  // links/buttons xpaths
+  static const string linkXpath = \
+    "//a[text()='%L' or @id='%L' or @name='%L']";
+  static const string buttonXpath = \
+    "//button[text()='%L' or @id='%L' or @name='%L']";
+  static const string inputButtonXpath = \
+    "//input[@type='submit' or @type='reset' or @type='image' or @type='button'][@value='%L' or @id='%L' or @name='%L']";
+
+  // form fields xpaths
+  static const string selectFieldXpath = \
+    "//select[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  static const string textareaXpath = \
+    "//textarea[@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+  static const string inputFieldXpath = \
+    "//input[@type!='hidden' and @type!='reset' and @type!='submit' and @type!='image'][@name='%L' or @id='%L' or @id=//label[text()='%L']/@for]";
+
+  // complex locators
+  static const string linkLocators[] = {
+    linkXpath
+  };
+  static const string buttonLocators[] = {
+    inputButtonXpath,
+    buttonXpath
+  };
+  static const string linkOrButtonLocators[] = {
+    linkXpath,
+    buttonXpath,
+    inputButtonXpath
+  };
+  static const string formFieldLocators[] = {
+    inputFieldXpath,
+    selectFieldXpath,
+    textareaXpath
+  };     
   
   /////////////////////////////// HELPERS //////////////////////////////////////
 
-  string buildXpathForLocator(string parts[], int size, string locator)
+  string buildXpathForLocator(const string parts[], int size, string locator)
   {
     locator = xpathSanitize(locator);
-
+    string result[size];
+    
     for (int i = 0, pos = 0; i < size; i++) {
-      while ((pos = parts[i].find("%L")) > 0) {
-	parts[i] = parts[i].substr(0, pos) + locator + parts[i].substr(pos+2);
-      }
+      result[i] = parts[i];
+      
+      while ((pos = result[i].find("%L")) > 0)
+	result[i] = result[i].substr(0, pos) + locator + result[i].substr(pos+2);
     }
 
-    return strjoin(parts, size, " | ");
+    return strjoin(result, size, " | ");
   }
 
   string buildUri(string uri, string base)
@@ -118,29 +147,25 @@ namespace mike
 
   HtmlElement* HtmlPage::getLinkOrButton(string locator)
   {
-    string locators[3] = { XPATH_LINK_LOCATOR, XPATH_BUTTON_LOCATOR, XPATH_SUBMIT_OR_RESET_LOCATOR };
-    string xpath = buildXpathForLocator(locators, 3, locator);
+    string xpath = buildXpathForLocator(linkOrButtonLocators, 3, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getLink(string locator)
   {
-    string locators[1] = { XPATH_LINK_LOCATOR };
-    string xpath = buildXpathForLocator(locators, 1, locator);
+    string xpath = buildXpathForLocator(linkLocators, 1, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getButton(string locator)
   {
-    string locators[2] = { XPATH_BUTTON_LOCATOR, XPATH_SUBMIT_OR_RESET_LOCATOR };
-    string xpath = buildXpathForLocator(locators, 2, locator);
+    string xpath = buildXpathForLocator(buttonLocators, 2, locator);
     return getElementByXpath(xpath);
   }
 
   HtmlElement* HtmlPage::getField(string locator)
   {
-    string locators[3] = { XPATH_INPUT_FIELD_LOCATOR, XPATH_SELECT_FIELD_LOCATOR, XPATH_TEXTAREA_LOCATOR };
-    string xpath = buildXpathForLocator(locators, 3, locator);
+    string xpath = buildXpathForLocator(formFieldLocators, 3, locator);
     return getElementByXpath(xpath);
   }
 

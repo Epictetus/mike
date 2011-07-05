@@ -25,8 +25,10 @@ namespace mike {
 
     //============================= LIFECYCLE ====================================
 
-    Response::Response(long code, stringstream* content, map<string,string> headers, string content_type)
+    Response::Response(string url, long code, stringstream* content, map<string,string> headers,
+		       string content_type)
       : code_(code)
+      , url_(url)
     {
       headers_ = headers;
       content_ = content;
@@ -49,6 +51,11 @@ namespace mike {
     string Response::getBody()
     {
       return content_->str();
+    }
+
+    string Response::getUrl()
+    {
+      return url_;
     }
 
     stringstream* Response::getStream()

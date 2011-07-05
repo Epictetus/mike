@@ -21,12 +21,14 @@ namespace mike {
       /**
        * Creates new response.
        *
+       * \param url Effective URL.
        * \param code HTTP response code.
        * \param content Stream with response body.
        * \param headers Map of HTTP header's keys and values.
        * \param content_type Response content type.
        */
-      Response(long code, stringstream* content, map<string,string> headers, string content_type);
+      Response(string url, long code, stringstream* content, map<string,string> headers,
+	       string content_type);
 
       /**
        * Destructor.
@@ -43,6 +45,11 @@ namespace mike {
        */
       string getBody();
 
+      /**
+       * \return Effective URL.
+       */
+      string getUrl();
+      
       /**
        * \return Stream with page content.
        */
@@ -77,6 +84,7 @@ namespace mike {
       bool isHtml();
 
     protected:
+      string url_;
       long code_;
       stringstream* content_;
       string contentType_;
