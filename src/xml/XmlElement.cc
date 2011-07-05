@@ -81,14 +81,9 @@ namespace mike
     return hasContent(value);
   }
 
-  string XmlElement::getName()
-  {
-    return (char*)node_->name;
-  }
-
   string XmlElement::getTagName()
   {
-    return getName();
+    return (char*)node_->name;
   }
 
   bool XmlElement::hasChildren()

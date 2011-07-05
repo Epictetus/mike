@@ -8,7 +8,8 @@
 #include "xml/XmlPage.h"
 #include "html/HtmlElement.h"
 #include "html/HtmlFrame.h"
-#include "utils/Pector.h"
+#include "html/HtmlEventHandler.h"
+#include "javascript/JavaScriptHandler.h"
 
 #include "html/elements/HtmlHtmlElement.h"
 #include "html/elements/HtmlHeadElement.h"
@@ -37,15 +38,17 @@ namespace mike
    */
   class HtmlPage : public XmlPage
   {
+    friend class Window;
+    
   public:
     explicit HtmlPage(Request* request);
     virtual ~HtmlPage();
 
     // override
     vector<HtmlElement*> getElementsByXpath(string xpath);
+    vector<HtmlElement*> getElementsByTagName(string tag);
     HtmlElement* getElementByXpath(string xpath);
     HtmlElement* getElementByPath(string path);
-    vector<HtmlElement*> getElementsByTagName(string tag);
 
     virtual void reload();
 
@@ -184,9 +187,19 @@ namespace mike
     HtmlFrame* getFrame(int n);
     HtmlFrame* getFrame(string name);
     HtmlFrame* getNamedFrame(string name);
+ 
+    /**
+     * Evaluates given javascript within page context.
+     *
+     * \param script Code to evaluate.
+     * \return Result of evaluated expression (as string).
+     */
+    string evaluate(string script);
     
   protected:
     htmlDocPtr doc_;
+    HtmlEventHandler* eventHandler_;
+    JavaScriptHandler* javaScriptHandler_;
     vector<HtmlFrame*> frames_;
     
     // override
@@ -197,6 +210,15 @@ namespace mike
      * Processes all javascripts within this page.
      */
     void processScripts();
+
+    /**
+     * Loads specified asset file content to given pointer.
+     *
+     * \param url File to load.
+     * \param content Ponter to which file content will be loaded.
+     * \return Whether file has been loaded or not;
+     */
+    bool loadAsset(string uri, string* content);
     
     /**
      * Loads all iframes and frames, and opens them in virtual frames.

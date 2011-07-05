@@ -21,7 +21,9 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/html/HtmlPage.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlAttrs.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlElement.cc \
-	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc
+	$(TESTEE_SOURCES_DIR)/html/HtmlEventHandler.cc \
+	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc \
+	$(TESTEE_SOURCES_DIR)/javascript/JavaScriptHandler.cc 
 
 # List of test files.
 TEST_FILES = \
@@ -30,7 +32,7 @@ TEST_FILES = \
 	TestXmlPage.cc \
 	TestXmlElement.cc \
 	TestHtmlPage.cc \
-	TestHtmlElements.cc \
+	TestHtmlElement.cc \
 	TestHistory.cc \
 	TestBrowser.cc \
 	TestWindow.cc \

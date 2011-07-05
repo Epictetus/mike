@@ -123,13 +123,7 @@ namespace mike
     Window* window = new Window(this);
     windows_.push_back(window);
 
-    Request* request = Request::Get(url);
-
-    if (isCookieEnabled()) {
-      request->enableCookieSession(getSessionToken());
-    }
-
-    Page* page = Page::Factory(request);
+    Page* page = Page::Open(url, cookieEnabled_, sessionToken_);
     window->setPage(page);
     
     return page;

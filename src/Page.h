@@ -51,9 +51,13 @@ namespace mike
      * \endcode
      *
      * \param url URL to open.
+     * \param cookie_enabled Enable cookies?
+     * \param session_token Unique session id.
+     * \param force_base Forces usage of base class instead of type-specific.
      * \return Page object.
      */
-    static Page* Open(string url);
+    static Page* Open(string url, bool cookie_enabled=false, string session_token="",
+		      bool force_base=false);
     
     /**
      * Performs given request, and depending on response content type creates new instance of
@@ -70,9 +74,10 @@ namespace mike
      * Note: you don't need to delete req object, this will be done automatically on page destroy.
      *
      * \param request Request to perform.
+     * \param force_base Forces usage of base class instead of type-specific.
      * \return Page object.
      */
-    static Page* Factory(Request* request);
+    static Page* Factory(Request* request, bool force_base=false);
 
     /**
      * Creates new page instance. Don't call it directly, use 'Factory' or 'Open' instead. 

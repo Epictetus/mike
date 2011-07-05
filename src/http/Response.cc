@@ -21,17 +21,6 @@ namespace mike {
       return list<string>();
     }
 
-    bool matchContentType(string mime, string opts[], int numopts)
-    {
-      for (int i = 0; i < numopts; i++) {
-	if (mime == opts[i]) {
-	  return true;
-	}
-      }
-      
-      return false;
-    }
-
     /////////////////////////////// PUBLIC ///////////////////////////////////////
 
     //============================= LIFECYCLE ====================================
@@ -81,13 +70,13 @@ namespace mike {
     bool Response::isHtml()
     {
       string opts[2] = {"text/html", "application/xhtml+xml"};
-      return matchContentType(getContentType(), opts, 2); 
+      return isIncluded(getContentType(), opts, 2); 
     }
 
     bool Response::isXml()
     {
       string opts[2] = {"application/xml", "text/xml"};
-      return matchContentType(getContentType(), opts, 2); 
+      return isIncluded(getContentType(), opts, 2); 
     }
   }
 }

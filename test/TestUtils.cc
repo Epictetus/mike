@@ -14,6 +14,7 @@ class MikeUtilsTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testStrstrip);
   CPPUNIT_TEST(testStrjoin);
   CPPUNIT_TEST(testStrsplit);
+  CPPUNIT_TEST(testIsIncluded);
   CPPUNIT_TEST(testXpathSanitize);
   CPPUNIT_TEST_SUITE_END();
 
@@ -55,6 +56,13 @@ protected:
     ASSERT_EQUAL(xpathSanitize("foo&bar"), "foo&amp;bar");
     ASSERT_EQUAL(xpathSanitize("foo\"bar"), "foo&quot;bar");
     ASSERT_EQUAL(xpathSanitize("foo'bar"), "foo\\'bar");
+  }
+
+  void testIsIncluded()
+  {
+    string opts[3] = { "one", "two", "three" };
+    ASSERT(isIncluded("one", opts, 3));
+    ASSERT_NOT(isIncluded("foo", opts, 3));
   }
   
 };

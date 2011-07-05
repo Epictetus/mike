@@ -15,6 +15,8 @@
 
 namespace mike
 {
+  class Window;
+  
   /**
    * Error raised when there is no elements in document matching given conditions (like xpath,
    * id, etc..). 
@@ -48,6 +50,8 @@ namespace mike
    */
   class XmlPage : public Page
   {
+    friend class Window;
+
   public:
     explicit XmlPage(Request* request);
     virtual ~XmlPage();

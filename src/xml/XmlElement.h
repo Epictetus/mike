@@ -27,10 +27,8 @@ namespace mike
   class XmlElement
   {
     friend class XmlPage;
-  public:
-    static int created;
-    static int destroyed;
     
+  public:
     /**
      * Creates new element.
      *
@@ -85,7 +83,6 @@ namespace mike
     /**
      * \return Element's tag name.
      */
-    string getName();
     string getTagName();
 
     /**

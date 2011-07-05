@@ -44,48 +44,35 @@ namespace mike
     virtual ~HtmlElement();
 
     /**
-     * Converts element to specified complex type. Original object will NOT be deleted
-     * after this operation!
-     *
-     * \code
-     *   HtmlElement elem = page->getElementByXpath("//div")
-     *   HtmlDivElement* div = elem->cast<HtmlDivElement>();
-     *   //...
-     *   delete elem;
-     *   delete div;
-     * \endcode
-     *
-     * \return Element converted to specified type.
+     * \return Whether element is a form field.
      */
-    template <typename T> T* cast()
-    {
-      return new T((HtmlPage*)page_, node_);
-    }
+    bool isField();
 
     /**
-     * Acts similar to 'cast', but removes original object after conversion.
-     *
-     * \code
-     *   HtmlDivElement* div;
-     *   div = page->getElementByXpath("//div")->conv<HtmlDivElement>();
-     *   //...
-     *   delete div;
-     * \endcode
-     *
-     * \return Element converted to specified type.
+     * \return Whether element is a checkbox field.
      */
-    template <typename T> T* conv()
-    {
-      T* p = cast<T>();
-      delete this;
-      return p;
-    }
+    bool isCheckBox();
 
-  protected:
     /**
-     * Removes this element from the page.
+     * \return Whether element is a radio field.
      */
-    void unlink();
+    bool isRadio();
+    
+    /**
+     * \return Whether element is a select field.
+     */
+    bool isSelect();
+
+    /**
+     * \return Whether element is a link.
+     */
+    bool isLink();
+
+    /**
+     * \return Whether element is a button.
+     */
+    bool isButton();
+
   };
 }
 

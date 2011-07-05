@@ -8,9 +8,8 @@ namespace mike {
     
     size_t curlWriteHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
     {
-      if (wdata == NULL) {
+      if (wdata == NULL)
 	return 0;
-      }
 
       string buf = string((char*)ptr, size * nmemb);
       stringstream* response = (stringstream*)wdata;
@@ -21,9 +20,8 @@ namespace mike {
 
     size_t curlHeaderHandler(void *ptr, size_t size, size_t nmemb, void *wdata)
     {
-      if (wdata == NULL) {
+      if (wdata == NULL)
 	return 0;
-      }
 
       string line = string((char*)ptr);
       Headers* headers = (Headers*)wdata;

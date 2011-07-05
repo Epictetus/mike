@@ -29,7 +29,6 @@ protected:
     vector<XmlElement*> elems = page->getElementsByTagName("elem");
     XmlElement* elem = elems[0];
     ASSERT_EQUAL(elem->getAttribute("foo"), "bar");
-    ASSERT_EQUAL(elem->getAttribute("foo"), "bar"); // it has to be done twice here, to test attrs cache...
     ASSERT_EQUAL(elem->getAttribute("bar"), "");
     delete page;
   }
@@ -72,7 +71,7 @@ protected:
     XmlPage* page = (XmlPage*)Page::Open("http://localhost:4567/xml-elements.xml");
     vector<XmlElement*> elems = page->getElementsByTagName("elem");
     XmlElement* elem = elems[0];
-    ASSERT_EQUAL(elem->getName(), "elem");
+    ASSERT_EQUAL(elem->getTagName(), "elem");
     delete page;
   }
 

@@ -80,4 +80,14 @@ namespace mike
 
     return arg;
   }
+
+  bool isIncluded(string elem, string opts[], int numopts)
+  {
+    for (int i = 0; i < numopts; i++) {
+      if (elem == opts[i])
+	return true;
+    }
+    
+    return false;
+  }
 }

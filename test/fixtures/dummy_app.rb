@@ -37,7 +37,7 @@ get "/anchors.html" do
 end
 
 get "/fields.html" do
-  "<html><body><form action='/'><input type='text' name='foo' /><input type='password' id='pass' /><label for='bar'>Hello label!</label><textarea id='bar'></textarea><input type='submit' id='opts' /><select id='opts'><option value='1'>Foo</option></select></form></body></html>";
+  "<html><body><form action='/'><input type='text' name='foo' /><input type='password' id='pass' /><label for='bar'>Hello label!</label><textarea id='bar'></textarea><input type='submit' id='opts' /><input type='checkbox' name='checkme' value='foo'/><input type='radio' name='radiooo' value='foo'/><select id='opts'><option value='1'>Foo</option></select></form></body></html>";
 end
 
 get "/xml-elements.xml" do
@@ -111,4 +111,25 @@ end
 
 get "/noscript.html" do
   "<html><body><noscript><div id='nojs'>FOOOO!</div></noscript></body></html>"
+end
+
+get "/simple-js.html" do
+<<-HTML
+<html>
+<head>
+  <script type='text/javascript'>
+    var test = 1;
+  </script>
+</head>
+<body>
+  <script src='/simple.js'></script>
+  <script type='text/nojavascript>test+=1</script>
+</body>
+</html>
+HTML
+end
+
+get "/simple.js" do
+  content_type "text/javascript"
+  "test+=1";
 end

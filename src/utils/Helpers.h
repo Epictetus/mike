@@ -45,6 +45,16 @@ namespace mike
   string xpathSanitize(string arg);
 
   /**
+   * Returns true when given string element is included in specified array.
+   *
+   * \param elem Searched element.
+   * \param opts Array with possible options.
+   * \param numopts Given array's size.
+   * \return Whether given element is included in the array or not.
+   */
+  bool isIncluded(string elem, string opts[], int numopts);
+      
+  /**
    * Deletes all pointers in given vector and clears it out.
    *
    * \code
@@ -66,6 +76,7 @@ namespace mike
     c->clear();
   }
 
+  // TODO: figure out if there is easier way to cast vector of pointers...
   /**
    * Casts all pointers from given vector to specified type.
    *

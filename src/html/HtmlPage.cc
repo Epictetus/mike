@@ -57,10 +57,14 @@ namespace mike
     : XmlPage(request)
   {
     type_ = HTML_PAGE;
+    eventHandler_ = new HtmlEventHandler(this);
+    javaScriptHandler_ = new JavaScriptHandler(this);
   }
 
   HtmlPage::~HtmlPage()
   {
+    delete eventHandler_;
+    delete javaScriptHandler_;
     delete_all< vector<HtmlFrame*> >(&frames_);
   }
 
@@ -215,6 +219,12 @@ namespace mike
     processScripts();
   }
 
+  string HtmlPage::evaluate(string script)
+  {
+    // TODO: replace 0 with eval line number
+    return javaScriptHandler_->evaluate(script, "<eval>", 0);
+  }
+
   /////////////////////////////// PROTECTED ////////////////////////////////////
 
   void HtmlPage::enclose(Frame* frame)
@@ -233,11 +243,49 @@ namespace mike
 
   void HtmlPage::processScripts()
   {
-    if (frame_ && doc_) {
-      if (frame_->getWindow()->getBrowser()->isJavaEnabled()) {
-	removeNoScriptNodes();
-	vector<HtmlElement*> scripts = getElementsByTagName("script");
+    if (frame_ && frame_->getWindow()->getBrowser()->isJavaEnabled()) {
+      removeNoScriptNodes();
+      vector<HtmlElement*> scripts = getElementsByTagName("script");
+
+      for (vector<HtmlElement*>::iterator it = scripts.begin(); it != scripts.end(); it++) {
+	HtmlElement* script = *it;
+	bool is_javascript = script->hasAttribute("type", "text/javascript") || !script->hasAttribute("type");
+
+	if (is_javascript) {
+	  string content, filename;
+	  unsigned int line = 0;
+	  
+	  if (script->hasAttribute("src")) {
+	    filename = buildUri(script->getAttribute("src"), getUrl());
+
+	    if (!loadAsset(filename, &content)) {
+	      // TODO: debug info...
+	      continue;
+	    }
+	  } else {
+	    filename = getUrl();
+	    content = script->getContent();
+	    line = xmlGetLineNo(script->node_);
+	  }
+	    
+	  javaScriptHandler_->evaluate(content, filename, line);
+	} else {
+	  // Unknown script error or debug info?...
+	}
       }
+    }
+  }
+
+  bool HtmlPage::loadAsset(string uri, string* content)
+  {
+    try {
+      Browser* browser = frame_->getWindow()->getBrowser();
+      Page* asset = Page::Open(uri, browser->isCookieEnabled(), browser->getSessionToken(), true);
+      *content = asset->getContent();
+      delete asset;
+      return true;
+    } catch (ConnectionError err) {
+      return false;
     }
   }
 
@@ -245,8 +293,18 @@ namespace mike
   {
     vector<HtmlElement*> nodes = getElementsByTagName("noscript");
 
-    for (pector<HtmlElement>::iterator it = nodes.begin(); it != nodes.end(); it++)
-      (*it)->unlink();
+    for (vector<HtmlElement*>::iterator it = nodes.begin(); it != nodes.end(); it++) {
+      xmlNodePtr noscript = (*it)->node_;
+      xmlNodePtr node = noscript->children;
+      noscript->children = NULL;
+      
+      while (node) {
+	xmlNodePtr tmp = node;
+	node = node->next;
+	xmlUnlinkNode(tmp);
+	xmlFree(tmp);
+      }
+    }
   }
   
   // XXX: add infinity loop prevention for frames opening!
@@ -258,19 +316,14 @@ namespace mike
       vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getWindow()->getBrowser();
 
-      for (pector<HtmlElement>::iterator it = frames.begin(); it != frames.end(); it++) {
+      for (vector<HtmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
 	HtmlElement* elem = *it;
 	
 	if (elem->hasAttribute("src")) {
-	  string uri = buildUri(elem->getAttribute("src"), getUrl());
-	  Request* request = Request::Get(uri);
-
-	  if (browser->isCookieEnabled()) {
-	    request->enableCookieSession(browser->getSessionToken());
-	  }
-
 	  try {
-	    Page* page = Page::Factory(request);
+	    string uri = buildUri(elem->getAttribute("src"), getUrl());
+	    Page* page = Page::Open(uri, browser->isCookieEnabled(), browser->getSessionToken());
+
 	    HtmlFrame* frame = new HtmlFrame(frame_);
 	    frames_.push_back(frame);
 
@@ -280,7 +333,7 @@ namespace mike
 	    
 	    page->enclose((Frame*)frame);
 	  } catch (ConnectionError err) {
-	    delete request;
+	    // TODO: debug info...
 	  }
 	}
       }

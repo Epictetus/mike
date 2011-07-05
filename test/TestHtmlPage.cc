@@ -31,6 +31,7 @@ class MikeHtmlPageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetFramesWithFrameset);
   CPPUNIT_TEST(testDiscardNoScriptElementsWhenJavaScriptEnabled);
   CPPUNIT_TEST(testNoScriptElementsWhenJavaScriptDisabled);
+  CPPUNIT_TEST(testSimpleJavaScript);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -88,7 +89,7 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* elem = page->getElement("I am a link!");
-    ASSERT_EQUAL(elem->getName(), "a");
+    ASSERT_EQUAL(elem->getTagName(), "a");
     delete page;
   }
   
@@ -110,10 +111,10 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* link = page->getLinkOrButton("I am a link!");
-    ASSERT_EQUAL(link->getName(), "a");
+    ASSERT_EQUAL(link->getTagName(), "a");
     ASSERT(link->hasAttribute("name", "link"));
     link = page->getLinkOrButton("link");
-    ASSERT_EQUAL(link->getName(), "a");
+    ASSERT_EQUAL(link->getTagName(), "a");
     delete page;
   }
 
@@ -121,10 +122,10 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* button = page->getLinkOrButton("I am a button!");
-    ASSERT_EQUAL(button->getName(), "button");
+    ASSERT_EQUAL(button->getTagName(), "button");
     ASSERT(button->hasAttribute("id", "buuu"));
     button = page->getLinkOrButton("buuu");
-    ASSERT_EQUAL(button->getName(), "button");
+    ASSERT_EQUAL(button->getTagName(), "button");
     delete page;
   }
 
@@ -132,10 +133,10 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* submit = page->getLinkOrButton("I am a submit!");
-    ASSERT_EQUAL(submit->getName(), "input");
+    ASSERT_EQUAL(submit->getTagName(), "input");
     ASSERT(submit->hasAttribute("name", "foo"));
     submit = page->getLinkOrButton("foo");
-    ASSERT_EQUAL(submit->getName(), "input");
+    ASSERT_EQUAL(submit->getTagName(), "input");
     delete page;
   }
 
@@ -150,7 +151,7 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* link = page->getLinkOrButton("I am a link!");
-    ASSERT_EQUAL(link->getName(), "a");
+    ASSERT_EQUAL(link->getTagName(), "a");
     delete page;
   }
 
@@ -158,9 +159,9 @@ protected:
   {
     HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/anchors.html");
     HtmlElement* button = page->getLinkOrButton("I am a button!");
-    ASSERT_EQUAL(button->getName(), "button");
+    ASSERT_EQUAL(button->getTagName(), "button");
     HtmlElement* submit = page->getLinkOrButton("I am a submit!");
-    ASSERT_EQUAL(submit->getName(), "input");
+    ASSERT_EQUAL(submit->getTagName(), "input");
     delete page;
   }
 
@@ -173,7 +174,7 @@ protected:
     ASSERT(password->hasAttribute("id", "pass"));
     HtmlElement* select = page->getField("opts");
     ASSERT(select->hasAttribute("id", "opts"));
-    ASSERT_EQUAL(select->getName(), "select");
+    ASSERT_EQUAL(select->getTagName(), "select");
     HtmlElement* textarea = page->getField("Hello label!");
     ASSERT(textarea->hasAttribute("id", "bar"));
     delete page;
@@ -214,7 +215,7 @@ protected:
     Browser* browser = new Browser();
     browser->enableJava();
     HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/noscript.html");
-    vector<HtmlElement*> noscripts = page->getElementsByTagName("noscript");
+    vector<HtmlElement*> noscripts = page->getElementsByXpath("//noscript//*");
     ASSERT(noscripts.empty());
     delete browser;
   }
@@ -224,8 +225,18 @@ protected:
     Browser* browser = new Browser();
     browser->disableJava();
     HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/noscript.html");
-    vector<HtmlElement*> noscripts = page->getElementsByTagName("noscript");
+    vector<HtmlElement*> noscripts = page->getElementsByXpath("//noscript//*");
     ASSERT_NOT(noscripts.empty());
+    delete browser;
+  }
+
+  void testSimpleJavaScript()
+  {
+    Browser* browser = new Browser();
+    browser->enableJava();
+    HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/simple-js.html");
+    page->evaluate("test+=1;");
+    ASSERT_EQUAL(page->evaluate("test;"), "3");
     delete browser;
   }
 };

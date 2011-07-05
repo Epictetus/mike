@@ -17,27 +17,17 @@ AC_LANG_CPLUSPLUS
 
 AC_ARG_WITH([v8],
 	AC_HELP_STRING([--with-v8=<path>], [Path to V8's directory.]),
-	v8dir=$withval, v8dir=[:])
+	v8dir=$withval, v8dir=[/usr])
 
 AC_MSG_CHECKING([for v8 engine])
 
-if test x$v8dir = x:; then
-   v8dir=[$(pwd)/deps/v8]
+LDFLAGS="-L$v8dir/lib $LDFLAGS"
+CPPFLAGS="-I$v8dir/include $CPPFLAGS"
 
-#   LDFLAGS="-L$v8dir/lib $LDFLAGS"
-#   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
-#   LIBV8=-lv8
+AC_MSG_RESULT([$v8dir])
 
-   AC_MSG_RESULT([$v8dir])
-else
-#   LDFLAGS="-L$v8dir/lib $LDFLAGS"
-#   CPPFLAGS="-I$v8dir/include $CPPFLAGS"
-
-   AC_MSG_RESULT([$v8dir])
-   
-   AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
-   AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
-fi
+AC_CHECK_LIB([v8], [main], [LIBV8=-lv8], AC_MSG_ERROR([this package requires v8.]))
+AC_CHECK_HEADERS([v8.h v8-debug.h], [], AC_MSG_ERROR([this package requires v8's header files.]), AC_INCLUDES_DEFAULT)
 
 AC_SUBST([LIVB8])
 
@@ -45,7 +35,7 @@ AC_SUBST([LIVB8])
 
 AC_ARG_WITH([xml2],
 	AC_HELP_STRING([--with-xml2=<path>], [Path to libXML2's include dir.]),
-	xml2_include=$withval, xml2_include=/usr/include/libxml2)
+	xml2_include=$withval, xml2_include=[/usr/include/libxml2])
 
 CPPFLAGS="-I$xml2_include $CPPFLAGS"
 	

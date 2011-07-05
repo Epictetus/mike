@@ -10,17 +10,22 @@ namespace mike
 
   //============================= LIFECYCLE ====================================
 
-  Page* Page::Open(string url)
+  Page* Page::Open(string url, bool cookie_enabled/*=false*/, string session_token/*=""*/,
+		   bool force_base/*=false*/)
   {
-    Request* req = Request::Get(url);
-    return Factory(req);
+    Request* request = Request::Get(url);
+
+    if (cookie_enabled)
+      request->enableCookieSession(session_token);
+
+    return Factory(request, force_base);
   }
   
-  Page* Page::Factory(Request* request)
+  Page* Page::Factory(Request* request, bool force_base/*=false*/)
   {
     if (request) {
       Response* response = NULL;
-      
+
       try {
 	response = request->perform();
       } catch (ConnectionError err) {
@@ -29,13 +34,14 @@ namespace mike
       }
       
       if (response) {
-	if (response->isHtml()) {
-	  return new HtmlPage(request);
-	} else if (response->isXml()) {
-	  return new XmlPage(request);
-	} else {
-	  return new Page(request);
+	if (!force_base) {
+	  if (response->isHtml())
+	    return new HtmlPage(request);
+	  else if (response->isXml())
+	    return new XmlPage(request);
 	}
+	
+	return new Page(request);
       }
     }
 
