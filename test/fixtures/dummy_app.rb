@@ -5,6 +5,20 @@ set :port, 4567
 set :host, "localhost"
 enable :sessions
 
+helpers do
+  def protect!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['user', 'pass']
+  end
+end
+
 get "/simple" do
   "Kukuryku!"
 end
@@ -132,4 +146,9 @@ end
 get "/simple.js" do
   content_type "text/javascript"
   "test+=1";
+end
+
+get "/protected.html" do
+  protect!
+  "Top secret!"
 end

@@ -23,6 +23,7 @@ class MikeHttpTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testIsXmlMethod);
   CPPUNIT_TEST(testCookiesWhenEnabled);
   CPPUNIT_TEST(testCookiesWhenDisabled);
+  CPPUNIT_TEST(testHttpAuth);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -140,6 +141,18 @@ protected:
     ASSERT_EQUAL(show->getResponse()->getBody(), "foo=");
     delete set;
     delete show;
+  }
+
+  void testHttpAuth()
+  {
+    Request *req = Request::Get("http://user:pass@localhost:4567/protected.html");
+    req->perform();
+    ASSERT_EQUAL(req->getResponse()->getCode(), 200);
+    delete req;
+    req = Request::Get("http://user:failpass@localhost:4567/protected.html");
+    req->perform();
+    ASSERT_EQUAL(req->getResponse()->getCode(), 401);
+    delete req;
   }
 
 };

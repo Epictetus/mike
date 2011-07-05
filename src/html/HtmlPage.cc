@@ -44,7 +44,7 @@ namespace mike
     inputFieldXpath,
     selectFieldXpath,
     textareaXpath
-  };     
+  };
   
   /////////////////////////////// HELPERS //////////////////////////////////////
 
