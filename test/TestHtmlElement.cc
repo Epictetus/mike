@@ -15,6 +15,8 @@ class MikeHtmlElementTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testIsLink);
   CPPUNIT_TEST(testIsSelect);
   CPPUNIT_TEST(testIsField);
+  CPPUNIT_TEST(testIsCheckBox);
+  CPPUNIT_TEST(testIsRadio);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -48,6 +50,20 @@ protected:
     ASSERT(page->getElementByXpath("//input[@type='password']")->isField());
     ASSERT_NOT(page->getElementByXpath("//select")->isField());
     ASSERT_NOT(page->getElementByXpath("//input[@type='submit']")->isField());
+    delete page;
+  }
+
+  void testIsCheckBox()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/fields.html");
+    ASSERT(page->getElementByXpath("//input[@type='checkbox']")->isCheckBox());
+    delete page;
+  }
+
+  void testIsRadio()
+  {
+    HtmlPage* page = (HtmlPage*)Page::Open("http://localhost:4567/fields.html");
+    ASSERT(page->getElementByXpath("//input[@type='radio']")->isRadio());
     delete page;
   }
 };
