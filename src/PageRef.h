@@ -129,11 +129,11 @@ namespace mike
   }
   
   template <typename T> bool PageRef<T>::operator==(T* other) {
-    return (T*)window_->getPage() == other;
+    return !empty() && (T*)window_->getPage() == other;
   }
 
   template <typename T> bool PageRef<T>::operator!=(T* other) {
-    return (T*)window_->getPage() != other;
+    return !empty() && (T*)window_->getPage() != other;
   }  
 }
 
