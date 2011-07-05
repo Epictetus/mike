@@ -212,7 +212,8 @@ namespace mike
     // override
     virtual void enclose(Frame* frame);
     virtual void parseDocument();
-
+    virtual XmlElement* newElement(xmlNodePtr);
+    
     /**
      * Processes all javascripts within this page.
      */

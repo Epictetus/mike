@@ -84,7 +84,7 @@ namespace mike
       XmlElement* elements[nodeset->nodeNr];
 	
       for (int i = 0; i < nodeset->nodeNr; i++) {
-	elements[i] = new XmlElement(this, nodeset->nodeTab[i]);
+	elements[i] = newElement(nodeset->nodeTab[i]);
 	usedElements_.push_back(elements[i]);
       }
       
@@ -100,7 +100,7 @@ namespace mike
     xmlXPathObjectPtr found = findByXPath(doc_, xpath);
     
     if (found) {
-      XmlElement* elem = new XmlElement(this, found->nodesetval->nodeTab[0]);
+      XmlElement* elem = newElement(found->nodesetval->nodeTab[0]);
       xmlXPathFreeObject(found);
       usedElements_.push_back(elem);
       return elem;
@@ -139,7 +139,7 @@ namespace mike
       }
 
       if (node) {
-	XmlElement* elem = new XmlElement(this, node);
+	XmlElement* elem = newElement(node);
 	usedElements_.push_back(elem);
 	return elem;
       }
@@ -200,7 +200,7 @@ namespace mike
   {
     while (node) {
       if (node->name && (strcmp((char*)node->name, tag.c_str()) == 0)) {
-	XmlElement* elem = new XmlElement(this, node);
+	XmlElement* elem = newElement(node);
 	usedElements_.push_back(elem);
 	elems->push_back(elem);
       }
@@ -208,5 +208,10 @@ namespace mike
       getElementsByTagNameIter(tag, node->children, elems);
       node = node->next;
     }
+  }
+
+  XmlElement* XmlPage::newElement(xmlNodePtr node)
+  {
+    return new XmlElement(this, node);
   }
 }

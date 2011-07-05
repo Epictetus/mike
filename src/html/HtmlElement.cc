@@ -5,11 +5,27 @@
 #include "Frame.h"
 #include "Browser.h"
 
+#include "html/HtmlAnchorElement.h";
+
 namespace mike
-{
+{  
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
+
+  HtmlElement* HtmlElement::Factory(HtmlPage* page, xmlNodePtr node)
+  {
+    if (node) {
+      string tag = (char*)node->name;
+
+      if (tag == "a")
+	return (HtmlElement*)(new HtmlAnchorElement(page, node));
+      else
+	return new HtmlElement(page, node);
+    }
+
+    throw "Invalid HTML node.";
+  }
   
   HtmlElement::HtmlElement(HtmlPage* page, xmlNodePtr node)
     : XmlElement((XmlPage*)page, node)
@@ -68,37 +84,22 @@ namespace mike
 
   //============================= OPERATIONS ===================================
 
-  void HtmlElement::click()
+  bool HtmlElement::click()
   {
-    bool can_continue = true;
-    Browser* browser = page_->getEnclosingWindow()->getBrowser();
-
-    if (browser->isJavaEnabled()) {
+    if (getBrowser()->isJavaEnabled()) {
       // process javascripts and store result in can_continue
       // -> process parents clicks...
       // --> process document click
       // ---> process window click
     }
-    
-    if (can_continue) {
-      if (isLink()) {
-	Window* window;
 
-	bool in_new_window = hasAttribute("target", "blank_");
-	string url = page_->getUrlFor(getAttribute("href"));
+    return true;
+  }
 
-	if (in_new_window)
-	  window = page_->getEnclosingWindow()->getBrowser()->newWindow();
-	else
-	  window = page_->getEnclosingWindow();
-	
-	Request* request = Request::Get(url);
-	request->enableCookieSession(browser->isCookieEnabled(), browser->getSessionToken());
-	request->setReferer(page_->getUrl());
-
-	Page* page = Page::Factory(request);
-	window->setPage(page);
-      }
-    }
+  /////////////////////////////// PROTECTED ////////////////////////////////////
+  
+  Browser* HtmlElement::getBrowser()
+  {
+    return page_->getEnclosingWindow()->getBrowser();
   }
 }

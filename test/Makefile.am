@@ -21,6 +21,7 @@ TESTEE_FILES = \
 	$(TESTEE_SOURCES_DIR)/html/HtmlPage.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlAttrs.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlElement.cc \
+	$(TESTEE_SOURCES_DIR)/html/HtmlAnchorElement.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlEventHandler.cc \
 	$(TESTEE_SOURCES_DIR)/html/HtmlFrame.cc \
 	$(TESTEE_SOURCES_DIR)/javascript/JavaScriptHandler.cc 

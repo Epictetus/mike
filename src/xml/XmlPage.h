@@ -131,6 +131,14 @@ namespace mike
      * Recursive iterator for 'getElementsByTagName' method.
      */
     void getElementsByTagNameIter(string tag, xmlNodePtr node, vector<XmlElement*>* elems);
+
+    /**
+     * Kind of factory to create new XmlElement references.
+     *
+     * \return New element.
+     */
+    virtual XmlElement* newElement(xmlNodePtr node);
+
   };
 }
 

@@ -281,6 +281,11 @@ namespace mike
     xmlFree(body);
   }
 
+  XmlElement* HtmlPage::newElement(xmlNodePtr node)
+  {
+    return (XmlElement*)HtmlElement::Factory(this, node);
+  }
+
   void HtmlPage::processScripts()
   {
     if (frame_ && frame_->getWindow()->getBrowser()->isJavaEnabled()) {

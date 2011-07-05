@@ -31,6 +31,7 @@ namespace mike
   using namespace std;
 
   class HtmlPage;
+  class Browser;
 
   /**
    * Complex representation of HTML elements.
@@ -40,6 +41,8 @@ namespace mike
     friend class HtmlPage;
     
   public:
+    static HtmlElement* Factory(HtmlPage* page, xmlNodePtr node);
+
     HtmlElement(HtmlPage* page, xmlNodePtr node);
     virtual ~HtmlElement();
 
@@ -79,13 +82,16 @@ namespace mike
     // element events -> document events -> window events
     //
     
-    void click();
+    virtual bool click();
     void dblClick();
     void mouseOver();
     void mouseOut();
     
     void mouseDown();
     void mouseUp();
+
+  protected:
+    Browser* getBrowser();
   };
 }
 
