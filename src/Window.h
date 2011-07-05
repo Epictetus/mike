@@ -9,6 +9,7 @@ namespace mike
   using namespace std;
 
   class Browser;
+  class Window;
   class Frame;
   class Page;
   

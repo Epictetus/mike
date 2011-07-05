@@ -195,6 +195,13 @@ namespace mike
      * \return Result of evaluated expression (as string).
      */
     string evaluate(string script);
+
+    void click(string locator);
+    void click(LocatorType type, string locator);
+    void clickLinkOrButton(string locator);
+    void clickLink(string locator);
+    void clickButton(string locator);
+    void pressButton(string locator);
     
   protected:
     htmlDocPtr doc_;

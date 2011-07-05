@@ -73,9 +73,9 @@ protected:
   void testLinkClick()
   {
     Browser* browser = new Browser();
-    ref<HtmlPage> page = (HtmlPage*)browser->open("http://localhost:4567/anchors.html");
-    page->getElementByXpath("//a")->click();
-    printf("%s\n", page->getEnclosingWindow()->getPage()->getUrl().c_str());
+    PageRef<HtmlPage> page = (HtmlPage*)browser->open("http://localhost:4567/anchors.html");
+    page->clickLink("I am a link!");
+    ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/fields.html");
     delete browser;
   }
 };

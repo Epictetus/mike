@@ -235,6 +235,36 @@ namespace mike
     return javaScriptHandler_->evaluate(script, "<eval>", 0);
   }
 
+  void HtmlPage::click(string locator)
+  {
+    clickLinkOrButton(locator);
+  }
+  
+  void HtmlPage::click(LocatorType type, string locator)
+  {
+    getElement(type, locator)->click();
+  }
+
+  void HtmlPage::clickLinkOrButton(string locator)
+  {
+    getLinkOrButton(locator)->click();
+  }
+
+  void HtmlPage::clickLink(string locator)
+  {
+    getLink(locator)->click();
+  }
+
+  void HtmlPage::pressButton(string locator)
+  {
+    getButton(locator)->click();
+  }
+
+  void HtmlPage::clickButton(string locator)
+  {
+    pressButton(locator);
+  }
+  
   /////////////////////////////// PROTECTED ////////////////////////////////////
 
   void HtmlPage::enclose(Frame* frame)
