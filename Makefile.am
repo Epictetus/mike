@@ -1,29 +1,71 @@
-SUBDIRS = src
+SOURCE_FILES = \
+	src/Page.cc \
+	src/History.cc \
+	src/Browser.cc \
+	src/Window.cc \
+	src/Frame.cc \
+	src/utils/Helpers.cc \
+	src/http/Response.cc \
+	src/http/Request.cc \
+	src/http/Headers.cc \
+	src/xml/XmlElement.cc \
+	src/xml/XmlPage.cc \
+	src/html/HtmlPage.cc \
+	src/html/HtmlAttrs.cc \
+	src/html/HtmlElement.cc \
+	src/html/HtmlAnchorElement.cc \
+	src/html/HtmlEventHandler.cc \
+	src/html/HtmlFrame.cc \
+	src/javascript/JavaScriptHandler.cc \
+	src/javascript/glue/Window.cc
 
-if HAVE_CPPUNIT 
-   SUBDIRS += test
-endif
+# Build this part only if unit/integration testing is enabled.
+if HAVE_CPPUNIT
 
-V8DIR = deps/v8
-V8LIBTYPE = static
-V8MODE = release
-V8SNAPSHOT = off
+TEST_FILES = \
+	test/TestHttp.cc \
+	test/TestPage.cc \
+	test/TestXmlPage.cc \
+	test/TestXmlElement.cc \
+	test/TestHtmlPage.cc \
+	test/TestHtmlElement.cc \
+	test/TestHistory.cc \
+	test/TestBrowser.cc \
+	test/TestWindow.cc \
+	test/TestUtils.cc \
+	test/TestPector.cc \
+	test/TestJavaScriptWindow.cc \
+	test/Main.cc
 
-v8:
-	@echo "Compiling v8 in deps/v8"
-	mkdir -p $(V8DIR)/lib
-	arch=`./tools/arch-detect.sh` && cd $(V8DIR) && scons library=$(V8LIBTYPE) mode=$(V8MODE) snapshot=$(V8SNAPSHOT) arch=$$arch
-	cp $(V8DIR)/*.{a,so} $(V8DIR)/lib/ &>/dev/null || true
+# Don't install this program but run as test suite.
+noinst_PROGRAMS = test-suite
+check_PROGRAMS  = test-suite
 
-tmp-dir:
+test_suite_SOURCES = \
+	$(SOURCE_FILES) \
+	$(TEST_FILES)
+
+test_suite_CPPFLAGS = -Isrc
+test_suite_LDFLAGS  = -lcppunit
+
+TESTS = test-suite
+
+endif # HAVE_CPPUNIT
+
+# Custom targets.
+
+mkdir-tmp:
 	mkdir -p tmp
 
 stop-dummy-app:
+	@echo "Stopping server with dummy application"
 	[ -f tmp/dummy_app.pid ] && kill `cat tmp/dummy_app.pid` &>/dev/null || true
 	rm -f tmp/dummy_app.pid
 
-start-dummy-app: tmp-dir stop-dummy-app
-	@echo "Starting dummy web application"
-	nohup ruby test/fixtures/dummy_app.rb &>tmp/dummy_app.log & echo $$! >tmp/dummy_app.pid && sleep 2
+start-dummy-app: mkdir-tmp
+	@echo "Starting server with dummy application"
+	nohup ruby test/fixtures/dummy_app.rb &>tmp/dummy_app.log & echo $$! >tmp/dummy_app.pid
 
-test: start-dummy-app check
+restart-dummy-app: stop-dummy-app start-dummy-app
+
+test: restart-dummy-app check

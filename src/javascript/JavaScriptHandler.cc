@@ -1,6 +1,10 @@
+#include <assert.h>
+
 #include "javascript/JavaScriptHandler.h"
 #include "html/HtmlPage.h"
 #include "html/HtmlElement.h"
+
+#include "javascript/glue/Window.h"
 
 namespace mike
 {
@@ -8,7 +12,18 @@ namespace mike
   {
     HandleScope scope;
     page_ = page;
-    context_ = Context::New();
+
+    // Setting up new context with window object as a global.
+    Handle<ObjectTemplate> global_tpl = glue::Window::BuildTemplate();
+    context_ = Context::New(NULL, global_tpl);
+
+    // We have to get global object prototype, because this object is passed as
+    // a holder to all function calls. Only this way we can access data from the
+    // internal fields.
+    Handle<Object> global = Handle<Object>::Cast(context_->Global()->GetPrototype());
+
+    // Now we need to current enclosing window in js window internal field.
+    WrapPtr<Window>(global, page_->getEnclosingWindow());
   }
 
   JavaScriptHandler::~JavaScriptHandler()

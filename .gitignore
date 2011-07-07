@@ -1,13 +1,6 @@
 /Makefile
 /Makefile.in
 
-/src/Makefile
-/src/Makefile.in
-
-/test/*suite
-/test/Makefile
-/test/Makefile.in
-
 /build-aux
 /build-m4
 /autom4te.cache
@@ -20,12 +13,14 @@
 
 eproject.cfg
 
+test-suite
 .libs
 .deps
 .dirstamp
 *.status
 *.log
 *.o
+*.Po
 *.lo
 *.la
 *.so

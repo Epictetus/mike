@@ -8,7 +8,7 @@
 #include "html/HtmlAnchorElement.h";
 
 namespace mike
-{  
+{
   /////////////////////////////// PUBLIC ///////////////////////////////////////
 
   //============================= LIFECYCLE ====================================
@@ -86,6 +86,9 @@ namespace mike
 
   bool HtmlElement::click()
   {
+    mouseDown();
+    mouseUp();
+
     if (getBrowser()->isJavaEnabled()) {
       // process javascripts and store result in can_continue
       // -> process parents clicks...
@@ -93,6 +96,16 @@ namespace mike
       // ---> process window click
     }
 
+    return true;
+  }
+
+  bool HtmlElement::mouseDown()
+  {
+    return true;
+  }
+
+  bool HtmlElement::mouseUp()
+  {
     return true;
   }
 

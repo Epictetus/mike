@@ -46,7 +46,8 @@ AC_SUBST([LIBXML2])
 
 # Init Automage with following options. 
 
-AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+AM_INIT_AUTOMAKE([subdir-objects foreign -Wall -Werror])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
 # Check for programs.
 
@@ -110,11 +111,6 @@ LDFLAGS="$MIKE_LIBS $LDFLAGS"
 # Specify makefiles. 
 
 AC_CONFIG_FILES(Makefile)
-AC_CONFIG_FILES(src/Makefile)
-
-if test x$cppunit = xyes; then
-   AC_CONFIG_FILES(test/Makefile)
-fi
 
 # Generate output. 
 

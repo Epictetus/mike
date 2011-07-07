@@ -87,8 +87,8 @@ namespace mike
     void mouseOver();
     void mouseOut();
     
-    void mouseDown();
-    void mouseUp();
+    virtual bool mouseDown();
+    virtual bool mouseUp();
 
   protected:
     Browser* getBrowser();

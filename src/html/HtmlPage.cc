@@ -72,7 +72,7 @@ namespace mike
   {
     type_ = kHtmlPage;
     eventHandler_ = new HtmlEventHandler(this);
-    javaScriptHandler_ = new JavaScriptHandler(this);
+    javaScriptHandler_ = NULL;
   }
 
   HtmlPage::~HtmlPage()
@@ -225,8 +225,10 @@ namespace mike
   void HtmlPage::reload()
   {
     Page::reload();
-    loadFrames();
-    processScripts();
+
+    if (frame_) {
+      enclose(frame_);
+    }
   }
 
   string HtmlPage::evaluate(string script)
@@ -289,34 +291,36 @@ namespace mike
   void HtmlPage::processScripts()
   {
     if (frame_ && frame_->getWindow()->getBrowser()->isJavaEnabled()) {
+      // We need to be sure that there is no active javascript context before scripts
+      // processing. Everything has to be run in fresh context here.
+      delete javaScriptHandler_;
+      javaScriptHandler_ = new JavaScriptHandler(this);
+
+      // Removing all noscript sections.
       removeNoScriptNodes();
-      vector<HtmlElement*> scripts = getElementsByTagName("script");
+
+      // Finding all java scripts.
+      vector<HtmlElement*> scripts = getElementsByXpath("//script[@type='text/javascript' or not(@type)]");
 
       for (vector<HtmlElement*>::iterator it = scripts.begin(); it != scripts.end(); it++) {
 	HtmlElement* script = *it;
-	bool is_javascript = script->hasAttribute("type", "text/javascript") || !script->hasAttribute("type");
-
-	if (is_javascript) {
-	  string content, filename;
-	  unsigned int line = 0;
+	string content, filename;
+	unsigned int line = 0;
 	  
-	  if (script->hasAttribute("src")) {
-	    filename = getUrlFor(script->getAttribute("src"));
-
-	    if (!loadAsset(filename, &content)) {
-	      // TODO: debug info...
-	      continue;
-	    }
-	  } else {
-	    filename = getUrl();
-	    content = script->getContent();
-	    line = xmlGetLineNo(script->node_);
+	if (script->hasAttribute("src")) {
+	  filename = getUrlFor(script->getAttribute("src"));
+	  
+	  if (!loadAsset(filename, &content)) {
+	    // TODO: debug info...
+	    continue;
 	  }
-	    
-	  javaScriptHandler_->evaluate(content, filename, line);
 	} else {
-	  // Unknown script error or debug info?...
+	  filename = getUrl();
+	  content = script->getContent();
+	  line = xmlGetLineNo(script->node_);
 	}
+	
+	javaScriptHandler_->evaluate(content, filename, line);
       }
     }
   }

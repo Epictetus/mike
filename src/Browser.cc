@@ -27,6 +27,7 @@ namespace mike
 
   Browser::~Browser()
   {
+    expected_popups_.clear();
     closeAll();
   }
 
@@ -123,6 +124,56 @@ namespace mike
     throw WindowNotExistsError();
   }
 
+  //============================= EXPECTATIONS =================================
+
+  void Browser::expectAlert()
+  {
+    PopupExpectation e;
+    e.kind = kPopupAlert;
+    e.flags = kSkipMessage;
+    expected_popups_.push_back(e);
+  }
+
+  void Browser::expectAlert(string msg)
+  {
+    PopupExpectation e;
+    e.kind = kPopupAlert;
+    e.flags = kMatchMessage;
+    e.message = msg;
+    expected_popups_.push_back(e);
+  }
+
+  void Browser::expectAlerts(int n)
+  {
+    while (n-- > 0)
+      expectAlert();
+  }
+
+  void Browser::expectConfirmation(bool choice)
+  {
+    PopupExpectation e;
+    e.kind = kPopupConfirm;
+    e.flags = kSkipMessage;
+    e.choice = choice ? "yes" : "no";
+    expected_popups_.push_back(e);
+  }
+
+  void Browser::expectConfirmation(string msg, bool choice)
+  {
+    PopupExpectation e;
+    e.kind = kPopupConfirm;
+    e.flags = kMatchMessage;
+    e.message = msg;
+    e.choice = choice ? "yes" : "no";
+    expected_popups_.push_back(e);
+  }
+
+  void Browser::expectConfirmations(int n, bool choice)
+  {
+    while (n-- > 0)
+      expectConfirmation(choice);
+  }
+  
   //============================= OPERATIONS ===================================
 
   Page* Browser::open(string url)

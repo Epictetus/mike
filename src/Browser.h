@@ -11,6 +11,11 @@ namespace mike
   class Page;
   class Window;
 
+  namespace glue
+  {
+    class Window;
+  }
+  
   /**
    * Error raised when trying to get window which is not open in particular browser instance.
    */
@@ -20,6 +25,23 @@ namespace mike
     const char* getReason() const { return "Window index out of range"; }
     const char* operator*() { return getReason(); }
   };
+
+  enum PopupType {
+    kPopupAlert,
+    kPopupConfirm
+  };
+
+  enum PopupExpectationFlag {
+    kMatchMessage = 1,
+    kSkipMessage = 2
+  };
+  
+  typedef struct popup_expectation {
+    PopupExpectationFlag flags;
+    PopupType kind;
+    string message;
+    string choice;
+  } PopupExpectation;
   
   /**
    * Instance of this class represents single, separatelly configured browser. You can configure
@@ -36,6 +58,8 @@ namespace mike
    */
   class Browser
   {
+    friend class glue::Window;
+    
   public:
     /**
      * Creates configured browser instance.
@@ -184,6 +208,51 @@ namespace mike
      */
     Page* open(string url);
     Page* getPage(string url);
+
+    /**
+     * Sets expectation of one alert box with any message.
+     */
+    void expectAlert();
+
+    /**
+     * Sets expectation of one alert box with given message.
+     *
+     * \param msg Expected message.
+     */
+    void expectAlert(string msg);
+
+    /**
+     * Sets expectation of given number of alerts with any message.
+     *
+     * \param n Number of expected alerts.
+     */
+    void expectAlerts(int n);
+
+    /**
+     * Sets expectation of one confirmation box with any message, and sets prefered choice
+     * for it.
+     *
+     * \param choice Prefered choice (true = Yes, false = No).
+     */
+    void expectConfirmation(bool choice);
+
+    /**
+     * Sets expectation of one confirmation box with given message, and sets prefered choice
+     * for it.
+     *
+     * \param msg Expected message.
+     * \param bool Prefered choice.
+     */
+    void expectConfirmation(string text, bool choice);
+
+    /**
+     * Sets expectation of given number of confirmationswith given message, and sets prefered
+     * choice for all of them.
+     *
+     * \param n Number of expected windows.
+     * \param bool Prefered choice.
+     */
+    void expectConfirmations(int n, bool choice);
     
   protected:
     bool javaEnabled_;
@@ -192,6 +261,7 @@ namespace mike
     string customUserAgent_;
     string sessionToken_;
     list<Window*> windows_;
+    list<PopupExpectation> expected_popups_;
 
     /**
      * Generates UUID token for current browser instance.
