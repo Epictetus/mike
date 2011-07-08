@@ -3,6 +3,8 @@
 
 #include <string>
 #include <list>
+#include <exception>
+
 #include "Window.h"
 
 namespace mike
@@ -18,19 +20,20 @@ namespace mike
   /**
    * Error raised when trying to get window which is not open in particular browser instance.
    */
-  class WindowNotExistsError
+  class WindowNotExistsError : public exception
   {
   public:
-    const char* getReason() const { return "Window index out of range"; }
-    const char* operator*() { return getReason(); }
+    explicit WindowNotExistsError() {};
+    virtual ~WindowNotExistsError() throw() {};
+    virtual const char* what() const throw() { return "Window index out of range"; }
   };
 
-  class UnexpectedAlertError
+  class UnexpectedAlertError : public exception
   {
   public:
-    UnexpectedAlertError(string msg) : msg_(msg) {}
-    const char* getReason() const { return ("Unexpected alert: " + string(msg_)).c_str(); }
-    const char* operator*() { return getReason(); }
+    explicit UnexpectedAlertError(string msg) : msg_(msg) {}
+    virtual ~UnexpectedAlertError() throw() {};
+    virtual const char* what() const throw() { return ("Unexpected alert: " + string(msg_)).c_str(); }
   protected:
     string msg_;
   };

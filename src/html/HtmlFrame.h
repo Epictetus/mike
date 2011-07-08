@@ -2,6 +2,8 @@
 #define _MIKE_HTML_FRAME_H_
 
 #include <string>
+#include <exception>
+
 #include "Frame.h"
 
 namespace mike
@@ -14,11 +16,12 @@ namespace mike
   /**
    * Error raised when specified frame index is out of range.
    */
-  class FrameNotExistsError
+  class FrameNotExistsError : public exception
   {
   public:
-    const char* getReason() const { return "Frame index out of range"; }
-    const char* operator*() { return getReason(); }
+    explicit FrameNotExistsError() {};
+    virtual ~FrameNotExistsError() throw() {};
+    virtual const char* what() const throw() { return "Frame index out of range"; }
   };
 
   /**
@@ -27,8 +30,9 @@ namespace mike
   class NamedFrameNotExistsError : public FrameNotExistsError
   {
   public:
-    NamedFrameNotExistsError(string name) : name_(name) {}
-    const char* getReason() const { return ("Frame " + name_ + " doesn't exist").c_str(); }
+    explicit NamedFrameNotExistsError(string name) : name_(name) {}
+    virtual ~NamedFrameNotExistsError() throw() {};
+    virtual const char* what() const throw() { return ("Frame " + name_ + " doesn't exist").c_str(); }
   protected:
     string name_;
   };

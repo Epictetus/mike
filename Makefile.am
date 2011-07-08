@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = color-tests
+
 SOURCE_FILES = \
 	src/Page.cc \
 	src/History.cc \
@@ -45,8 +47,8 @@ test_suite_SOURCES = \
 	$(SOURCE_FILES) \
 	$(TEST_FILES)
 
-test_suite_CPPFLAGS = -Isrc
-test_suite_LDFLAGS  = -lcppunit
+test_suite_CPPFLAGS = $(CPPUNIT_FLAGS) -Isrc
+test_suite_LDFLAGS  = $(CPPUNIT_LIBS)
 
 TESTS = test-suite
 
@@ -54,18 +56,19 @@ endif # HAVE_CPPUNIT
 
 # Custom targets.
 
-mkdir-tmp:
-	mkdir -p tmp
+tmp-dir:
+	@test -d tmp || mkdir tmp
 
-stop-dummy-app:
-	@echo "Stopping server with dummy application"
-	[ -f tmp/dummy_app.pid ] && kill `cat tmp/dummy_app.pid` &>/dev/null || true
-	rm -f tmp/dummy_app.pid
+dummy-stop:
+	@test -f tmp/dummy.pid && kill -9 $$(cat tmp/dummy.pid) &>/dev/null; true
+	@rm -f tmp/dummy.pid
 
-start-dummy-app: mkdir-tmp
-	@echo "Starting server with dummy application"
-	nohup ruby test/fixtures/dummy_app.rb &>tmp/dummy_app.log & echo $$! >tmp/dummy_app.pid
+dummy-start: tmp-dir
+	@chmod u+x ./test/fixtures/dummy
+	./test/fixtures/dummy &>tmp/dummy.log & echo $$! >tmp/dummy.pid
 
-restart-dummy-app: stop-dummy-app start-dummy-app
+dummy-restart: dummy-stop dummy-start
 
-test: restart-dummy-app check
+test: test-suite dummy-restart
+	@sleep 2
+	./test-suite

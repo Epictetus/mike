@@ -1,9 +1,6 @@
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <string.h>
+#include "test/Macros.h"
 #include <time.h>
 
-#include "utils/CppunitMacros.h"
 #include "History.h"
 #include "Page.h"
 

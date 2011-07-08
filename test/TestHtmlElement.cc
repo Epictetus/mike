@@ -1,8 +1,5 @@
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <string.h>
+#include "test/Macros.h"
 
-#include "utils/CppunitMacros.h"
 #include "html/HtmlPage.h"
 #include "Window.h"
 #include "Browser.h"

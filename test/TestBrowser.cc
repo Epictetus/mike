@@ -1,12 +1,9 @@
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <string.h>
+#include "test/Macros.h"
 
-#include "utils/CppunitMacros.h"
 #include "Browser.h"
 #include "Window.h"
 #include "Page.h"
-#include "utils/SystemInfo.h"
+#include "Config.h"
 
 using namespace std;
 using namespace mike;

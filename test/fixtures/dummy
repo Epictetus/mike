@@ -1,9 +1,13 @@
+#!/usr/bin/env ruby
+
 require 'rubygems'
 require 'sinatra'
 
 set :port, 4567
 set :host, "localhost"
 enable :sessions
+
+File.open("tmp/dummy.pid", "w+") { |f| f.print(Process.pid) }
 
 helpers do
   def protect!

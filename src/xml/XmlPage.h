@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <exception>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -21,12 +22,12 @@ namespace mike
    * Error raised when there is no elements in document matching given conditions (like xpath,
    * id, etc..). 
    */
-  class ElementNotFoundError
+  class ElementNotFoundError : public exception
   {
   public:
-    ElementNotFoundError(string condition) : condition_(condition) {}
-    const char* getReason() { return ("No element matches to a given conditions: " + condition_).c_str(); }
-    const char* operator*() { return getReason(); }
+    explicit ElementNotFoundError(string condition) : condition_(condition) {}
+    virtual ~ElementNotFoundError() throw() {};
+    virtual const char* what() throw() { return ("No element matches to a given conditions: " + condition_).c_str(); }
   protected:
     string condition_;
   };
@@ -34,12 +35,12 @@ namespace mike
   /**
    * Error raised when invalid XPath expression is used to find element(s).
    */
-  class InvalidXpathExpressionError
+  class InvalidXpathExpressionError : public exception
   {
   public:
-    InvalidXpathExpressionError(string expr) : expr_(expr) {}
-    const char* getReason() { return ("Invalid XPath expression: " + expr_).c_str(); }
-    const char* operator*() { return getReason(); }
+    explicit InvalidXpathExpressionError(string expr) : expr_(expr) {}
+    virtual ~InvalidXpathExpressionError() throw() {};
+    virtual const char* what() throw() { return ("Invalid XPath expression: " + expr_).c_str(); }
   protected:
     string expr_;
   };

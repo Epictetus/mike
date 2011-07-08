@@ -5,7 +5,7 @@
 #include "Frame.h"
 #include "Browser.h"
 
-#include "html/HtmlAnchorElement.h";
+#include "html/HtmlAnchorElement.h"
 
 namespace mike
 {

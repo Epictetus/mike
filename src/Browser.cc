@@ -1,10 +1,11 @@
 #include <string.h>
 #include <uuid/uuid.h>
+
 #include "http/Request.h"
-#include "utils/SystemInfo.h"
 #include "utils/Helpers.h"
 #include "Page.h"
 #include "Browser.h"
+#include "Config.h"
 
 namespace mike
 {

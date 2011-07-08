@@ -5,7 +5,9 @@
 #include <list>
 #include <string>
 #include <sstream>
+#include <exception>
 #include <curl/curl.h>
+
 #include "http/Response.h"
 #include "http/Headers.h"
 
@@ -22,13 +24,13 @@ namespace mike {
     /**
      * Error throwed when requested page can't be reached. 
      */
-    class ConnectionError
+    class ConnectionError : public exception
     {
     public:
-      ConnectionError(string url) : url_(url) {}
-      const char* getReason() const { return ("Page " + url_ + " can't be reached.").c_str(); }
-      const char* getUrl() const { return url_.c_str(); }
-      const char* operator*() { return getReason(); }
+      explicit ConnectionError(string url) : url_(url) {}
+      virtual ~ConnectionError() throw() {};
+      virtual const char* what() const throw() { return ("Page " + url_ + " can't be reached.").c_str(); }
+      virtual const char* url() const { return url_.c_str(); }
     protected:
       string url_;
     };

@@ -1,7 +1,5 @@
-#include <cppunit/extensions/HelperMacros.h>
-#include <string.h>
+#include "test/Macros.h"
 
-#include "utils/CppunitMacros.h"
 #include "Browser.h"
 #include "Window.h"
 #include "Frame.h"

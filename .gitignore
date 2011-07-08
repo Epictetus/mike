@@ -6,13 +6,12 @@
 /autom4te.cache
 /aclocal.m4
 /libtool
-/stamp-h1
-/config.h*
 /configure
 /tmp
 
-eproject.cfg
+/src/Config.h
 
+stamp-h1
 test-suite
 .libs
 .deps
@@ -31,3 +30,5 @@ test-suite
 *~
 \#*
 .\#*
+
+eproject.cfg

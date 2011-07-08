@@ -47,7 +47,7 @@ AC_SUBST([LIBXML2])
 # Init Automage with following options. 
 
 AM_INIT_AUTOMAKE([subdir-objects foreign -Wall -Werror])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 # Check for programs.
 
@@ -87,7 +87,7 @@ AC_CHECK_HEADER([uuid/uuid.h], [], [AC_MSG_ERROR(this package requires uuid/uuid
 
 # Config header.
 
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([src/Config.h])
 
 # Package settings.
 
