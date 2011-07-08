@@ -14,18 +14,48 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(MikeJavaScriptWindowTest);
   CPPUNIT_TEST(testWindowAndThisObject);
+  CPPUNIT_TEST(testAnyExpectedAlert);
+  CPPUNIT_TEST(testSpecificExpectedAlert);
+  CPPUNIT_TEST(testUnexpectedAlerts);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
 
   void testWindowAndThisObject()
   {
-    Browser* browser = new Browser();
-    PageRef<HtmlPage> page = (HtmlPage*)browser->open("http://localhost:4567/simple.html");
+    Browser browser;
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/simple.html");
     ASSERT_EQUAL(page->evaluate("window == this ? 'y' : 'n'"), "y");
     ASSERT_EQUAL(page->evaluate("window = 'cantoverwrite'; window == this ? 'y' : 'n'"), "y");
     ASSERT_EQUAL(page->evaluate("window == window.window ? 'y' : 'n'"), "y");
-    delete browser;
+    ASSERT_EQUAL(page->evaluate("window.constructor.toString()"), "function DOMWindow() { [native code] }");
+  }
+
+  void testAnyExpectedAlert()
+  {
+    Browser browser;
+    browser.expectAlert();
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
+  }
+
+  void testSpecificExpectedAlert()
+  {
+    Browser browser;
+    browser.expectAlert("Hello Alert!");
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
+  }
+
+  void testUnexpectedAlerts()
+  {
+    Browser browser;
+    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedAlertError);
+    browser.expectAlert("Hello Other Alert!");
+    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedAlertError);
+  }
+
+  void testNotFullyMetExpectationsForAlerts()
+  {
+    // TODO: pending...
   }
 };
 

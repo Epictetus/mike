@@ -3,16 +3,15 @@
 
 #include <string>
 #include <list>
+#include "Window.h"
 
 namespace mike
 {
   using namespace std;
 
   class Page;
-  class Window;
 
-  namespace glue
-  {
+  namespace glue {
     class Window;
   }
   
@@ -26,9 +25,19 @@ namespace mike
     const char* operator*() { return getReason(); }
   };
 
+  class UnexpectedAlertError
+  {
+  public:
+    UnexpectedAlertError(string msg) : msg_(msg) {}
+    const char* getReason() const { return ("Unexpected alert: " + string(msg_)).c_str(); }
+    const char* operator*() { return getReason(); }
+  protected:
+    string msg_;
+  };
+
   enum PopupType {
-    kPopupAlert,
-    kPopupConfirm
+    kPopupAlert = 1,
+    kPopupConfirm = 2
   };
 
   enum PopupExpectationFlag {
@@ -261,7 +270,7 @@ namespace mike
     string customUserAgent_;
     string sessionToken_;
     list<Window*> windows_;
-    list<PopupExpectation> expected_popups_;
+    list<PopupExpectation> expectedPopups_;
 
     /**
      * Generates UUID token for current browser instance.

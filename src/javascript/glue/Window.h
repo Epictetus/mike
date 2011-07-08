@@ -10,7 +10,7 @@ namespace mike {
     class Window : public JsObject
     {
     public:
-      static Handle<ObjectTemplate> BuildTemplate();
+      static Handle<FunctionTemplate> BuildTemplate();
 
       // Properties
       static Handle<Value> JS_GetWindow(Local<String> name, const AccessorInfo& info);

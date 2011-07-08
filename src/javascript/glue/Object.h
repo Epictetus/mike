@@ -18,7 +18,11 @@ namespace mike {
       {
 	assert(!handle.IsEmpty());
 	assert(handle->InternalFieldCount() > field);
-	return (T*)handle->GetPointerFromInternalField(field);
+
+	T* ptr = (T*)handle->GetPointerFromInternalField(field);
+
+	assert(ptr);
+	return ptr;
       }
     };
   }

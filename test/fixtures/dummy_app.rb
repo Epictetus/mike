@@ -152,3 +152,7 @@ get "/protected.html" do
   protect!
   "Top secret!"
 end
+
+get "/alert.html" do
+  "<html><body><script>alert('Hello Alert!');</script></body></html>"
+end

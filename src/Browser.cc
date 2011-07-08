@@ -4,7 +4,6 @@
 #include "utils/SystemInfo.h"
 #include "utils/Helpers.h"
 #include "Page.h"
-#include "Window.h"
 #include "Browser.h"
 
 namespace mike
@@ -27,7 +26,7 @@ namespace mike
 
   Browser::~Browser()
   {
-    expected_popups_.clear();
+    expectedPopups_.clear();
     closeAll();
   }
 
@@ -131,7 +130,7 @@ namespace mike
     PopupExpectation e;
     e.kind = kPopupAlert;
     e.flags = kSkipMessage;
-    expected_popups_.push_back(e);
+    expectedPopups_.push_back(e);
   }
 
   void Browser::expectAlert(string msg)
@@ -140,7 +139,7 @@ namespace mike
     e.kind = kPopupAlert;
     e.flags = kMatchMessage;
     e.message = msg;
-    expected_popups_.push_back(e);
+    expectedPopups_.push_back(e);
   }
 
   void Browser::expectAlerts(int n)
@@ -155,7 +154,7 @@ namespace mike
     e.kind = kPopupConfirm;
     e.flags = kSkipMessage;
     e.choice = choice ? "yes" : "no";
-    expected_popups_.push_back(e);
+    expectedPopups_.push_back(e);
   }
 
   void Browser::expectConfirmation(string msg, bool choice)
@@ -165,7 +164,7 @@ namespace mike
     e.flags = kMatchMessage;
     e.message = msg;
     e.choice = choice ? "yes" : "no";
-    expected_popups_.push_back(e);
+    expectedPopups_.push_back(e);
   }
 
   void Browser::expectConfirmations(int n, bool choice)

@@ -3,6 +3,7 @@
 #include "javascript/JavaScriptHandler.h"
 #include "html/HtmlPage.h"
 #include "html/HtmlElement.h"
+#include "Browser.h"
 
 #include "javascript/glue/Window.h"
 
@@ -14,16 +15,16 @@ namespace mike
     page_ = page;
 
     // Setting up new context with window object as a global.
-    Handle<ObjectTemplate> global_tpl = glue::Window::BuildTemplate();
-    context_ = Context::New(NULL, global_tpl);
+    Handle<FunctionTemplate> window_tpl = glue::Window::BuildTemplate();
+    context_ = Context::New(NULL, window_tpl->InstanceTemplate());
+    
+    Handle<Object> global_instance = context_->Global();
+    Handle<Object> global_proto = Handle<Object>::Cast(global_instance->GetPrototype());
 
-    // We have to get global object prototype, because this object is passed as
-    // a holder to all function calls. Only this way we can access data from the
-    // internal fields.
-    Handle<Object> global = Handle<Object>::Cast(context_->Global()->GetPrototype());
-
-    // Now we need to current enclosing window in js window internal field.
-    WrapPtr<Window>(global, page_->getEnclosingWindow());
+    // Internal fields have to be set within prototype, beacuse not global object directly,
+    // only its proto is passed as This or Holder to properties and functions. 
+    global_proto->SetInternalField(0, global_instance);
+    global_proto->SetInternalField(1, External::New((void*)page_->getEnclosingWindow()));
   }
 
   JavaScriptHandler::~JavaScriptHandler()
@@ -45,11 +46,34 @@ namespace mike
       
     if (try_catch.HasCaught()) {
       printf("JS: Compile error\n");
+      return "";
     } else {
       Handle<Value> result = script->Run();
 
       if (try_catch.HasCaught()) {
+	Handle<Value> err = try_catch.Exception();
+
+	if (!err->IsString()) {
+	  Handle<Object> exp = Handle<Object>::Cast(err);
+	
+	  if (!exp.IsEmpty()) {
+	    int exp_type = exp->GetHiddenValue(String::New("expectation"))->Int32Value();
+	    String::Utf8Value str(exp->GetHiddenValue(String::New("message"))->ToString());
+	    string exp_msg = *str;
+
+	    switch (exp_type) {
+	    case kPopupAlert:
+	      throw UnexpectedAlertError(exp_msg);
+	    //case kPopupConfirm:
+	    //  throw UnexpectedConfirmError(exp_msg);
+	    default:
+	      break;
+	    }
+	  }
+	}
+
 	printf("JS: Runtime error\n");
+	return "";
       } else {
 	String::Utf8Value str(result->ToString());
 	return *str ? *str : "";
