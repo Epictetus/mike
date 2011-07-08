@@ -5,7 +5,7 @@
 #include "html/HtmlElement.h"
 #include "Browser.h"
 
-#include "javascript/glue/Window.h"
+#include "javascript/glue/WindowWrap.h"
 
 namespace mike
 {
@@ -15,16 +15,16 @@ namespace mike
     page_ = page;
 
     // Setting up new context with window object as a global.
-    Handle<FunctionTemplate> window_tpl = glue::Window::BuildTemplate();
+    Handle<FunctionTemplate> window_tpl = glue::WindowWrap::NewTemplate();
     context_ = Context::New(NULL, window_tpl->InstanceTemplate());
     
     Handle<Object> global_instance = context_->Global();
     Handle<Object> global_proto = Handle<Object>::Cast(global_instance->GetPrototype());
 
     // Internal fields have to be set within prototype, beacuse not global object directly,
-    // only its proto is passed as This or Holder to properties and functions. 
-    global_proto->SetInternalField(0, global_instance);
-    global_proto->SetInternalField(1, External::New((void*)page_->getEnclosingWindow()));
+    // only its proto is passed as This or Holder to properties and functions.
+    glue::ObjectWrap::Wrap(global_proto, global_instance, 0);
+    glue::ObjectWrap::Wrap<Window>(global_proto, page_->getEnclosingWindow(), 1);
   }
 
   JavaScriptHandler::~JavaScriptHandler()
@@ -57,8 +57,8 @@ namespace mike
 	  Handle<Object> exp = Handle<Object>::Cast(err);
 	
 	  if (!exp.IsEmpty()) {
-	    int exp_type = exp->GetHiddenValue(String::New("expectation"))->Int32Value();
-	    String::Utf8Value str(exp->GetHiddenValue(String::New("message"))->ToString());
+	    int exp_type = exp->Get(String::New("expectation"))->Int32Value();
+	    String::Utf8Value str(exp->Get(String::New("message"))->ToString());
 	    string exp_msg = *str;
 
 	    switch (exp_type) {

@@ -18,8 +18,9 @@ SOURCE_FILES = \
 	src/html/HtmlAnchorElement.cc \
 	src/html/HtmlEventHandler.cc \
 	src/html/HtmlFrame.cc \
-	src/javascript/JavaScriptHandler.cc \
-	src/javascript/glue/Window.cc
+	src/javascript/glue/ObjectWrap.cc \
+	src/javascript/glue/WindowWrap.cc \
+	src/javascript/JavaScriptHandler.cc
 
 # Build this part only if unit/integration testing is enabled.
 if HAVE_CPPUNIT

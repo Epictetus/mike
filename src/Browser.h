@@ -5,7 +5,7 @@
 #include <list>
 #include <exception>
 
-#include "Window.h"
+#include "javascript/glue/WindowWrap.h"
 
 namespace mike
 {
@@ -13,10 +13,6 @@ namespace mike
 
   class Page;
 
-  namespace glue {
-    class Window;
-  }
-  
   /**
    * Error raised when trying to get window which is not open in particular browser instance.
    */
@@ -70,7 +66,7 @@ namespace mike
    */
   class Browser
   {
-    friend class glue::Window;
+    friend class glue::WindowWrap;
     
   public:
     /**
