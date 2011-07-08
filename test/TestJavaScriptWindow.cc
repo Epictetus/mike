@@ -25,9 +25,9 @@ protected:
   {
     Browser browser;
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/simple.html");
-    ASSERT_EQUAL(page->evaluate("window == this ? 'y' : 'n'"), "y");
-    ASSERT_EQUAL(page->evaluate("window = 'cantoverwrite'; window == this ? 'y' : 'n'"), "y");
-    ASSERT_EQUAL(page->evaluate("window == window.window ? 'y' : 'n'"), "y");
+    ASSERT_EQUAL(page->evaluate("window == this"), "true");
+    ASSERT_EQUAL(page->evaluate("window = 'cantoverwrite'; window == this;"), "true");
+    ASSERT_EQUAL(page->evaluate("window == window.window"), "true");
     ASSERT_EQUAL(page->evaluate("window.constructor.toString()"), "function DOMWindow() { [native code] }");
   }
 
