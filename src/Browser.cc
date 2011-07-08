@@ -154,7 +154,7 @@ namespace mike
     PopupExpectation e;
     e.kind = kPopupConfirm;
     e.flags = kSkipMessage;
-    e.choice = choice ? "yes" : "no";
+    e.choice = choice;
     expectedPopups_.push_back(e);
   }
 
@@ -164,7 +164,7 @@ namespace mike
     e.kind = kPopupConfirm;
     e.flags = kMatchMessage;
     e.message = msg;
-    e.choice = choice ? "yes" : "no";
+    e.choice = choice;
     expectedPopups_.push_back(e);
   }
 

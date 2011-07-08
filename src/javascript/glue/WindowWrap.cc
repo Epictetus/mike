@@ -32,25 +32,20 @@ namespace mike {
 
     //============================= PROPERTIES ===================================
     
-    Handle<Value> WindowWrap::JS_GetWindow(Local<String> name, const AccessorInfo& info)
+    JS_GETTER(WindowWrap, Window)
     {
       // window == this, so we can't return `info.Holder()` or `info.This()`, since
       // they are just prototypes of he global obj.
       return Unwrap(info.Holder());
     }
+    JS_END
 
-    //============================= METHODS    ===================================
+    //============================= FUNCTIONS  ===================================
 
-    Handle<Value> WindowWrap::JS_Alert(const Arguments& args)
+    JS_FUNCTION(WindowWrap, Alert)
     {
-      HandleScope scope;
-      string message;
+      JS_ARG_UTF8(message, 0);
       
-      if (args.Length() > 0) {
-	String::Utf8Value str(args[0]->ToString());
-	message = *str;
-      }
-
       // Pick up expectations defined in browser.
       Window* window = UnwrapWindow(args.Holder());
       list<PopupExpectation>& expects = window->getBrowser()->expectedPopups_;
@@ -63,16 +58,48 @@ namespace mike {
 	if (e.kind == kPopupAlert) {
 	  bool match_msg = e.flags & kMatchMessage == kMatchMessage;
 
-	  if (!match_msg || (args.Length() > 0 && e.message == message))
-	    return Undefined();
+	  if (!match_msg || (JS_ARGC > 0 && e.message == message))
+	    return JS_UNDEF;
 	}
       }
 
-      // Throw v8 exception to disallow to continue execution.
-      Handle<Object> err(Object::New());
-      err->Set(String::New("expectation"), Integer::New(kPopupAlert));
-      err->Set(String::New("message"), String::New(message.c_str()));
-      ThrowException(err);
+      // If alert was unexpected then throw v8 exception to disallow
+      // continue execution.
+      Handle<Object> err(JS_OBJ2);
+      err->Set(JS_STR("expectation"), JS_INT(kPopupAlert));
+      err->Set(JS_STR("message"), JS_STR(message.c_str()));
+      JS_THROW_OBJ(err);
     }    
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Confirm)
+    {
+      JS_ARG_UTF8(message, 0);
+
+      // Pick up expectations defined in browser.
+      Window* window = UnwrapWindow(args.Holder());
+      list<PopupExpectation>& expects = window->getBrowser()->expectedPopups_;
+
+      // Check if browser was expecting this confirmation.
+      if (!expects.empty()) {
+	PopupExpectation e = expects.front();
+	expects.pop_front();
+
+	if (e.kind == kPopupConfirm) {
+	  bool match_msg = e.flags & kMatchMessage == kMatchMessage;
+
+	  if (!match_msg || (JS_ARGC > 0 && e.message == message))
+	    return JS_BOOL(e.choice);
+	}
+      }
+
+      // If confirmation was unexpected then throw v8 exception to disallow
+      // continue execution.
+      Handle<Object> err(JS_OBJ2);
+      err->Set(JS_STR("expectation"), JS_INT(kPopupConfirm));
+      err->Set(JS_STR("message"), JS_STR(message.c_str()));
+      JS_THROW_OBJ(err);
+    }
+    JS_END
   }
 }

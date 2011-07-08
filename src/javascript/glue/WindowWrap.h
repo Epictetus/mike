@@ -17,11 +17,13 @@ namespace mike
       static Handle<FunctionTemplate> NewTemplate();
 
       // Properties
-      static Handle<Value> JS_GetWindow(Local<String> name, const AccessorInfo& info);
 
-      // Methods
-      static Handle<Value> JS_Alert(const Arguments& args);
-      static Handle<Value> JS_Confirm(const Arguments& args);
+      JS_GETTER_D(Window);
+
+      // Functions
+      
+      JS_FUNCTION_D(Alert);
+      JS_FUNCTION_D(Confirm);
     };
   }
 }

@@ -48,7 +48,7 @@ namespace mike
     PopupExpectationFlag flags;
     PopupType kind;
     string message;
-    string choice;
+    bool choice;
   } PopupExpectation;
   
   /**

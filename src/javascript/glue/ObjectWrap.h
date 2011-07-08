@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <v8.h>
 
+#include "javascript/Macros.h"
+
 namespace mike {
   namespace glue
   {
