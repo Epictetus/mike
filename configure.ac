@@ -67,6 +67,11 @@ else
    AC_MSG_RESULT([no, unit tests disabled])
 fi
 
+if test x$CPPUNIT_LIBS = x; then
+   CPPUNIT_LIBS=-lcppunit
+   AC_SUBST([CPPUNIT_LIBS])
+fi
+
 AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
 
 # Check for required libraries.

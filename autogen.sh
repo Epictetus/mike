@@ -1,3 +1,3 @@
 #!/bin/sh
-AUTOHEADER=true autoreconf -i || exit 1
+autoconf -i && automake -i || exit 1
 ./configure $@

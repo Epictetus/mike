@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = color-tests
+ACLOCAL_AMFLAGS = -I build-m4
 
 SOURCE_FILES = \
 	src/Page.cc \
