@@ -61,18 +61,18 @@ ifdef([AM_PATH_CPPUNIT], [AM_PATH_CPPUNIT()], [])
 AC_CHECK_LIB([cppunit], [main], [cppunit=yes], [cppunit=no])
 AC_MSG_CHECKING([whether unit tests are available])
 
-if test x$cppunit = xyes; then
+if test x$cppunit=xyes; then
    AC_MSG_RESULT([yes])
 else
    AC_MSG_RESULT([no, unit tests disabled])
 fi
 
-if test x$CPPUNIT_LIBS = x; then
-   CPPUNIT_LIBS=-lcppunit
+if test "$CPPUNIT_LIBS"="x"; then
+   CPPUNIT_LIBS="-lcppunit"
    AC_SUBST([CPPUNIT_LIBS])
 fi
 
-AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit = xyes])
+AM_CONDITIONAL(HAVE_CPPUNIT, [test x$cppunit=xyes])
 
 # Check for required libraries.
 
