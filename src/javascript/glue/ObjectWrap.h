@@ -7,7 +7,10 @@
 
 #include "javascript/Macros.h"
 
-namespace mike {
+namespace mike
+{
+  class Window;
+  
   namespace glue
   {
     using namespace v8;
@@ -16,6 +19,11 @@ namespace mike {
     class ObjectWrap
     {
     public:
+      /**
+       * \return Enclosing window object unwrapped form current global object.  
+       */
+      static Window* GetWindow();
+      
       /**
        * Unwraps external object of specified type from given handle's internal field.
        *
@@ -27,7 +35,7 @@ namespace mike {
       {
 	assert(!handle.IsEmpty());
 	assert(handle->InternalFieldCount() > field);
-	return (T*)External::Unwrap(handle->GetInternalField(1));
+	return (T*)External::Unwrap(handle->GetInternalField(field));
       }
 
       /**

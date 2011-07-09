@@ -21,10 +21,8 @@ namespace mike
     Handle<Object> global_instance = context_->Global();
     Handle<Object> global_proto = Handle<Object>::Cast(global_instance->GetPrototype());
 
-    // Internal fields have to be set within prototype, beacuse not global object directly,
-    // only its proto is passed as This or Holder to properties and functions.
-    glue::ObjectWrap::Wrap(global_proto, global_instance, 0);
-    glue::ObjectWrap::Wrap<Window>(global_proto, page_->getEnclosingWindow(), 1);
+    // Wrap enclosing window within global object.
+    glue::ObjectWrap::Wrap<Window>(global_proto, page_->getEnclosingWindow(), 0);
   }
 
   JavaScriptHandler::~JavaScriptHandler()
@@ -55,7 +53,8 @@ namespace mike
 
 	if (!err->IsString()) {
 	  Handle<Object> exp = Handle<Object>::Cast(err);
-	
+	  page_->getEnclosingWindow()->getBrowser()->clearExpectations();
+	  
 	  if (!exp.IsEmpty()) {
 	    int exp_type = exp->Get(String::New("expectation"))->Int32Value();
 	    String::Utf8Value str(exp->Get(String::New("message"))->ToString());
@@ -64,10 +63,8 @@ namespace mike
 	    switch (exp_type) {
 	    case kPopupAlert:
 	      throw UnexpectedAlertError(exp_msg);
-	    //case kPopupConfirm:
-	    //  throw UnexpectedConfirmError(exp_msg);
-	    default:
-	      break;
+	    case kPopupConfirm:
+	      throw UnexpectedConfirmError(exp_msg);
 	    }
 	  }
 	}

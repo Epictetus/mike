@@ -14,6 +14,10 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testAnyExpectedAlert);
   CPPUNIT_TEST(testSpecificExpectedAlert);
   CPPUNIT_TEST(testUnexpectedAlerts);
+  CPPUNIT_TEST(testAnyExpectedConfirm);
+  CPPUNIT_TEST(testSpecificExpectedConfirm);
+  CPPUNIT_TEST(testUnexpectedConfirm);
+  CPPUNIT_TEST(testNotFullyMetExpectations);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -50,10 +54,39 @@ protected:
     ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedAlertError);
   }
 
-  void testNotFullyMetExpectationsForAlerts()
+  void testAnyExpectedConfirm()
   {
-    // TODO: pending...
+    Browser browser;
+    browser.expectConfirm(true);
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
+    ASSERT_EQUAL(page->evaluate("res"), "true");
   }
+
+  void testSpecificExpectedConfirm()
+  {
+    Browser browser;
+    browser.expectConfirm("Are you sure?", false);
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
+    ASSERT_EQUAL(page->evaluate("res"), "false");
+  }
+
+  void testUnexpectedConfirm()
+  {
+    Browser browser;
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+    browser.expectConfirm("Foobar!", true);
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+    browser.expectAlert("Bla!");
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+  }
+
+  void testNotFullyMetExpectations()
+  {
+    Browser browser;
+    browser.expectConfirm("Foobar!");
+    browser.expectAlert("Foobar!");
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), ExpectationNotMet);
+  }  
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeJavaScriptWindowTest);

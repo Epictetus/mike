@@ -160,3 +160,7 @@ end
 get "/alert.html" do
   "<html><body><script>alert('Hello Alert!');</script></body></html>"
 end
+
+get "/confirm.html" do
+  "<html><body><script>var res = confirm('Are you sure?');</script></body></html>"
+end

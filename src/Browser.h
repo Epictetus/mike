@@ -12,7 +12,25 @@ namespace mike
   using namespace std;
 
   class Page;
+  class HtmlPage;
 
+  enum PopupType {
+    kPopupAlert = 1,
+    kPopupConfirm = 2
+  };
+
+  enum PopupExpectationFlag {
+    kMatchMessage = 1,
+    kSkipMessage = 2
+  };
+  
+  typedef struct popup_expectation {
+    PopupExpectationFlag flags;
+    PopupType kind;
+    string message;
+    bool choice;
+  } PopupExpectation;
+  
   /**
    * Error raised when trying to get window which is not open in particular browser instance.
    */
@@ -34,23 +52,34 @@ namespace mike
     string msg_;
   };
 
-  enum PopupType {
-    kPopupAlert = 1,
-    kPopupConfirm = 2
+  class UnexpectedConfirmError : public exception
+  {
+  public:
+    explicit UnexpectedConfirmError(string msg) : msg_(msg) {}
+    virtual ~UnexpectedConfirmError() throw() {};
+    virtual const char* what() const throw() { return ("Unexpected confirm: " + string(msg_)).c_str(); }
+  protected:
+    string msg_;
+  };
+  
+  class ExpectationNotMet : public exception
+  {
+  public:
+    explicit ExpectationNotMet(PopupType type, string msg) : type_(type), msg_(msg) {}
+    virtual ~ExpectationNotMet() throw() {};
+    virtual const char* what() const throw() { return ("Unexpected " + type() + ": " + string(msg_)).c_str(); }
+    const string type() const
+    {
+      switch (type_) {
+      case kPopupAlert:   return "alert";
+      case kPopupConfirm: return "confirm";
+      }
+    }
+  protected:
+    string msg_;
+    PopupType type_;
   };
 
-  enum PopupExpectationFlag {
-    kMatchMessage = 1,
-    kSkipMessage = 2
-  };
-  
-  typedef struct popup_expectation {
-    PopupExpectationFlag flags;
-    PopupType kind;
-    string message;
-    bool choice;
-  } PopupExpectation;
-  
   /**
    * Instance of this class represents single, separatelly configured browser. You can configure
    * browser by passing various parameters to constructor (configurable language, user agent string
@@ -67,6 +96,7 @@ namespace mike
   class Browser
   {
     friend class glue::WindowWrap;
+    friend class HtmlPage;
     
   public:
     /**
@@ -242,8 +272,8 @@ namespace mike
      *
      * \param choice Prefered choice (true = Yes, false = No).
      */
-    void expectConfirmation(bool choice);
-
+    void expectConfirm(bool choice);
+    
     /**
      * Sets expectation of one confirmation box with given message, and sets prefered choice
      * for it.
@@ -251,7 +281,7 @@ namespace mike
      * \param msg Expected message.
      * \param bool Prefered choice.
      */
-    void expectConfirmation(string text, bool choice);
+    void expectConfirm(string text, bool choice);
 
     /**
      * Sets expectation of given number of confirmationswith given message, and sets prefered
@@ -260,7 +290,12 @@ namespace mike
      * \param n Number of expected windows.
      * \param bool Prefered choice.
      */
-    void expectConfirmations(int n, bool choice);
+    void expectConfirms(int n, bool choice);
+
+    /**
+     * Removes all declared expectations.
+     */
+    void clearExpectations();
     
   protected:
     bool javaEnabled_;

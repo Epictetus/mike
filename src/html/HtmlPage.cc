@@ -274,6 +274,20 @@ namespace mike
     Page::enclose(frame);
     loadFrames();
     processScripts();
+    checkExpectations();
+  }
+
+  void HtmlPage::checkExpectations()
+  {
+    Browser* browser = getEnclosingWindow()->getBrowser();
+    list<PopupExpectation> expects = browser->expectedPopups_;
+
+    if (!expects.empty()) {
+      PopupExpectation first = expects.front();
+      ExpectationNotMet err(first.kind, first.message);
+      browser->clearExpectations();
+      throw err;
+    }
   }
 
   void HtmlPage::parseDocument()

@@ -149,7 +149,7 @@ namespace mike
       expectAlert();
   }
 
-  void Browser::expectConfirmation(bool choice)
+  void Browser::expectConfirm(bool choice)
   {
     PopupExpectation e;
     e.kind = kPopupConfirm;
@@ -158,7 +158,7 @@ namespace mike
     expectedPopups_.push_back(e);
   }
 
-  void Browser::expectConfirmation(string msg, bool choice)
+  void Browser::expectConfirm(string msg, bool choice)
   {
     PopupExpectation e;
     e.kind = kPopupConfirm;
@@ -168,10 +168,15 @@ namespace mike
     expectedPopups_.push_back(e);
   }
 
-  void Browser::expectConfirmations(int n, bool choice)
+  void Browser::expectConfirms(int n, bool choice)
   {
     while (n-- > 0)
-      expectConfirmation(choice);
+      expectConfirm(choice);
+  }
+
+  void Browser::clearExpectations()
+  {
+    expectedPopups_.clear();
   }
   
   //============================= OPERATIONS ===================================

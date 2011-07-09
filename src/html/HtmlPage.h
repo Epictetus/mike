@@ -220,6 +220,11 @@ namespace mike
     void processScripts();
 
     /**
+     * Checks whether all expected popups appears during scripts execution.
+     */
+    void checkExpectations();
+    
+    /**
      * Loads specified asset file content to given pointer.
      *
      * \param url File to load.

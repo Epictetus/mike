@@ -9,9 +9,9 @@
 #define JS_STR2(s,c) v8::String::New(s,c)
 #define JS_SYM(s) v8::String::NewSymbol(s)
 #define JS_INT(i) v8::Integer::New(i)
-#define JS_FUNC(f) v8::FunctionTemplate::New(f)->GetFunction()
+#define JS_FUNC_TPL(f) v8::FunctionTemplate::New(f)
+#define JS_FUNC(f) JS_FUNC_TPL(f)->GetFunction()
 #define JS_OBJ(o) v8::Object::New(o)
-#define JS_OBJ2 v8::Object::New()
 #define JS_BOOL(b) v8::Boolean::New(b)
 
 #define JS_THROW_OBJ(obj) v8::ThrowException(obj)

@@ -13,7 +13,6 @@ namespace mike
     class WindowWrap : public ObjectWrap
     {
     public:
-      static Window* UnwrapWindow(Handle<Object> handle);
       static Handle<FunctionTemplate> NewTemplate();
 
       // Properties
