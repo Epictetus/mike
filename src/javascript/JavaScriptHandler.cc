@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <exception>
 
 #include "javascript/JavaScriptHandler.h"
 #include "html/HtmlPage.h"
@@ -33,18 +34,18 @@ namespace mike
   string JavaScriptHandler::evaluate(string source, string fname, unsigned int line)
   {
     HandleScope scope;
-    TryCatch try_catch;
-
-    context_->Enter();
-  
+    Context::Scope context_scope(context_);
+    
+    string out = "";
+      
     Local<String> s = String::New(source.c_str());
     Local<String> n = String::New(fname.c_str());
     
+    TryCatch try_catch;
     Local<Script> script = Script::Compile(s, n);
       
     if (try_catch.HasCaught()) {
       printf("JS: Compile error\n");
-      return "";
     } else {
       Handle<Value> result = script->Run();
 
@@ -54,7 +55,7 @@ namespace mike
 	if (!err->IsString()) {
 	  Handle<Object> exp = Handle<Object>::Cast(err);
 	  page_->getEnclosingWindow()->getBrowser()->clearExpectations();
-	  
+	    
 	  if (!exp.IsEmpty()) {
 	    int exp_type = exp->Get(String::New("expectation"))->Int32Value();
 	    String::Utf8Value str(exp->Get(String::New("message"))->ToString());
@@ -67,14 +68,17 @@ namespace mike
 	      throw UnexpectedConfirmError(exp_msg);
 	    }
 	  }
+	} else {
+	  printf("JS: Runtime error\n");
 	}
-
-	printf("JS: Runtime error\n");
-	return "";
       } else {
 	String::Utf8Value str(result->ToString());
-	return *str ? *str : "";
+	  
+	if (*str)
+	  out = string(*str);
       }
     }
+    
+    return out;
   }
 }
