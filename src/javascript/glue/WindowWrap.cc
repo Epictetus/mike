@@ -27,7 +27,7 @@ namespace mike {
 
     //============================= PROPERTIES ===================================
     
-    JS_GETTER(WindowWrap, Window)
+    JS_GETTER(WindowWrap, Window) // window
     {
       // window == this, so we can't return `info.Holder()` or `info.This()`, since
       // they are just prototypes of the global obj. Global object have to be returned
@@ -38,12 +38,12 @@ namespace mike {
 
     //============================= FUNCTIONS  ===================================
 
-    JS_FUNCTION(WindowWrap, Alert)
+    JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);
       
       // Pick up expectations defined in browser.
-      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
+      list<PopupExpectation>& expects = GetWindow()->etBrowser()->expectedPopups_;
 
       // Check if browser was expecting this alert.
       if (!expects.empty()) {
@@ -68,7 +68,7 @@ namespace mike {
     }    
     JS_END
 
-    JS_FUNCTION(WindowWrap, Confirm)
+    JS_FUNCTION(WindowWrap, Confirm) // confirm(msg)
     {
       JS_ARG_UTF8(message, 0);
 
