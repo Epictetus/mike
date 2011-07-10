@@ -43,7 +43,7 @@ namespace mike {
       JS_ARG_UTF8(message, 0);
       
       // Pick up expectations defined in browser.
-      list<PopupExpectation>& expects = GetWindow()->etBrowser()->expectedPopups_;
+      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this alert.
       if (!expects.empty()) {

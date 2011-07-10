@@ -280,7 +280,7 @@ namespace mike
   void HtmlPage::checkExpectations()
   {
     Browser* browser = getEnclosingWindow()->getBrowser();
-    list<PopupExpectation> expects = browser->expectedPopups_;
+    list<PopupExpectation>& expects = browser->expectedPopups_;
 
     if (!expects.empty()) {
       PopupExpectation first = expects.front();

@@ -21,6 +21,7 @@ namespace mike
     , customUserAgent_(user_agent)
     , cookieEnabled_(cookie_enabled)
     , javaEnabled_(java_enabled)
+    , onLine_(true)
   {
     generateSessionToken();
   }
@@ -100,6 +101,21 @@ namespace mike
     disableJava();
   }
 
+  void Browser::workOffLine()
+  {
+    onLine_ = false;
+  }
+
+  void Browser::workOnLine()
+  {
+    onLine_ = true;
+  }
+
+  bool Browser::isOnLine()
+  {
+    return onLine_;
+  }
+  
   Window* Browser::newWindow()
   {
     Window* window = new Window(this);

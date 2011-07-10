@@ -194,6 +194,21 @@ namespace mike
      */
     void disableJava();
     void disableJavaScript();
+
+    /**
+     * Enables offline mode.
+     */
+    void workOffLine();
+
+    /**
+     * Enables online mode.
+     */
+    void workOnLine();
+
+    /**
+     * \return Whether browser works in on line or off line mode.
+     */
+    bool isOnLine();
     
     /**
      * Closes all windows opened within current instance (called automatically when browser object
@@ -303,6 +318,7 @@ namespace mike
     string language_;
     string customUserAgent_;
     string sessionToken_;
+    bool onLine_;
     list<Window*> windows_;
     list<PopupExpectation> expectedPopups_;
 
