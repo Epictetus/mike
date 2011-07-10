@@ -13,7 +13,6 @@ SOURCE_FILES = \
 	src/xml/XmlElement.cc \
 	src/xml/XmlPage.cc \
 	src/html/HtmlPage.cc \
-	src/html/HtmlAttrs.cc \
 	src/html/HtmlElement.cc \
 	src/html/HtmlAnchorElement.cc \
 	src/html/HtmlEventHandler.cc \
